@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta  charset=utf-8 />
+<meta name="renderer" content="webkit"/>
+<meta http-equiv="X-UA-Compatible" content="IE=8,9,10">
+<title>图像，头像截取工具</title>
+<link href="css/ShearPhoto.css" rel="stylesheet" type="text/css" media="all">
+<script  type="text/javascript" src="js/ShearPhoto.js" ></script><!--拉伸，截图的核心文件-->
+<script  type="text/javascript"  src="js/move.js" ></script><!--拖拽DIV JS文件 -->
+<script  type="text/javascript"  src="js/processdata.js" ></script><!--与服务器交互数据JS文件 -->
+<script  type="text/javascript"  src="js/UpImg.js" ></script>     <!--上传截图的JS文件 -->
+<script  type="text/javascript"  src="js/webcam.js" ></script>   <!--在线拍照 -->
+<script  type="text/javascript"  src="js/handle.js" ></script>    <!--设置和处理对象方法的文件，要修改设置，请进入这个文件 -->
+</head>
+<body>
+<!--ShearPhoto1.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写
+
+      经过数20天的开发，shearphoto的第一个版本终于完成，
+我开发shearphoto的全因是切图，截图这类WEB插件实在太少，我特此还专门在网上下载过几个关于截图插件，
+基本上互联网上所有的截图插件我都看过了一遍，压根没有令我满意的，要不功能太小，要不BUG超多
+要不都基于FLASH的，基于FLASH的截图很不好，扩展性非常差，不方便二次开发这是一个重点问题。
+还有些截图插件是收费200块去版权，本来就不怎么让人满意，还收费呢！我就不点名是哪个截图插件了。
+于是就想到自己开发一个这样的插件。
+本人开发shearphoto前提，首先是不会对代码进行加密，所有代码都是开源的，必须兼容目前所有浏览器（包括IE6）。
+也就是说你可以对shearphoto任意修改！另外shearphoto不会对你收取任何费用，当然如果你要找本人定制开发就另谈了！
+
+        再说说这20天开发，那简直就是人间炼狱，每天12小时，烟量不段增加，无数的开发难题困扰着，光插件内的JS方法重写，就超过5次。
+重写又重写，重写又有BUG，很多时候，真的无法解决了，我想过放弃，做这种插件首先不赚钱，还占用大量的时间。
+每次想到放弃，我都想安慰自己"都开发了一大半了，放弃了就什么都没了，放弃就输了"，正是我这种不屈服的精神，shearphoto终于完成了，
+shearphoto是我内心挣扎和汗水交织而成的作品，我不敢说shearphoto没有BUG，也不敢说shearphoto的代码没有问题。目前shearphoto还处于公测阶段，如果你发现有BUG或者某些代码写得不好，请第一时间联系我
+QQ399195513
+
+      shearphoto是JS面向对象开发，绝对不含JQUERY，更不含第三方代码，更更没有第三方插件，全部采用原生JS和原生PHP开发。
+为什么shearphoto不使用JQUERY，本人玩了JQUERY三年，对JQUERY一点好感也没有，反而造就了一批懒人，对技术的提升没有半点好处。
+再者，JQUERY是一个类库，很多方法都帮你写好了，如果使用了JQUERY，那插件的功劳是不是要算上JQUERY一份呢，因此shearphoto在开发前就严重拒绝JQUERY驾入
+以后的后续升级也不会有JQUERY的存在！shearphoto的原则：免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写。
+有人问：为什么只有PHP后端，没有JAVA和NET，很遗含告诉你，本人不懂JAVA和NET，但是以后的升级我会加上去的，当然你JAVA和NET玩得牛B，你可以在我的JS基础上编写。
+目前shearphoto只支持PHP，如果你把JAVA或NET写了，可以发我一份,那么你就是shearphoto开发者之一！呵呵！
+      
+      shearphoto的应用范围：
+1：网站会员头像截取，shearphoto能自由设置按比例截图或不按比例截图，也可以对图片旋转，在线拍照，你可以截取不同比例的，不同大小，各种旋转的图片。后台 前台均有设置接口，非常简单
+2：商城商品图片切割，例如这个商品图片，有的图像部份我要去掉，那么shearphoto就能帮助你进行切割，又例如这个图片太大了，我想切小点，shearphoto也能帮你实现
+3：在线美工切图等
+shearphoto的用途非常广，shearphoto截图灵敏，拉伸或拖拽时都非常流畅，不像FLASH的截图插件那么卡，半于反应不过来，shearphoto易于二次开发，所有代码都是开源的HTML,JS PHP编写，二次非常简单
+shearphoto的官方网站：www.shearphoto.com,网站有开发文档，以及shearphoto讨论区，大家可以在官网进行交流心得或者定制开发
+你也可以加入shearphoto官方QQ群：461550716，分享与我进行交流。
+
+    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：ShearPhoto1.1
+    
+                                                        版本号:ShearPhoto1.1
+                                                        shearphoto官网：www.shearphoto.com
+                                                        shearphoto官方QQ群：461550716
+                                                                                                              2015年8月7日
+                                                                                                                  明哥先生
+
+
+ShearPhoto1.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写-->
+<!--头部-->
+<div class="header">
+        <img src="images/logo.png" alt="ShearPhoto官方网站：www.shearphoto.com" title="ShearPhoto官方网站：www.shearphoto.com">
+<H1>ShearPhoto官方网站：<a href="http://www.shearphoto.com">www.shearphoto.com</a> 官方QQ群：461550716</H1>
+        <strong>
+                ShearPhoto 作者：明哥先生 QQ399195513-兼容所有浏览器，乞今最好的切图，截图工具！
+  </strong>
+</div>
+<!--头部-->
+<!--主功能部份-->
+
+        <div id="main">
+           <div class="point">
+                </div>
+                <!--没加载方法前-->
+                <div id="SelectBox">
+                <form    name="FORM" enctype="multipart/form-data" method="post"  target="POSTiframe"   > 
+                        <a href="javascript:;" id="selectImage"><input type="file"  name="UpFile" /></a>
+                 </form>           
+                        <a href="javascript:;" id="PhotoLoading"></a>
+                        <a href="javascript:;" id="camerasImage"></a>
+                </div>
+                <!--没加载方法前结束-->
+                <div id="relat">
+                        <div id="black">
+                        </div>
+                        <div id="movebox">
+                                <div id="smallbox">
+                                        <img src="images/default.png" class="MoveImg" />
+                                </div>
+                                <i id="BottomRight">
+                                </i>
+                                <i id="TopRight">
+                                </i>
+                                <i id="Bottomleft">
+                                </i>
+                                <i id="Topleft">
+                                </i>
+                                <i id="Topmiddle">
+                                </i>
+                                <i id="leftmiddle">
+                                </i>
+                                <i id="Rightmiddle">
+                                </i>
+                                <i id="Bottommiddle">
+                                </i>
+                        </div>
+                        <img src="images/default.png" class="BigImg" />
+                </div>
+        </div>
+        <div id="Shearbar">
+                <a id="LeftRotate" href="javascript:;">
+                        <em>
+                        </em>
+                        向左旋转
+                </a>
+                <em class="hint L">
+                </em>
+                <div class="ZoomDist" id="ZoomDist">
+                        <div id="ZoomBar">
+                        </div>
+                        <span class="progress">
+                        </span>
+                </div>
+                <em class="hint R">
+                </em>
+                <a id="RightRotate" href="javascript:;">
+                        向右旋转
+                        <em>
+                        </em>
+                </a>
+                <p class="Psava">
+                        <a id="againIMG"  href="javascript:;">重新选择</a>
+                        <a id="saveShear" href="javascript:;">保存截图</a>
+                </p>
+        </div>
+
+<!--主功能部份-->
+ <!--相册-->
+<div id="photoalbum">
+<h1>假如：这是一个相册--------试试点击图片</h1>
+<i id="close"></i>
+<ul>
+<li><img src="file/photo/1.jpg" serveUrl="file/photo/1.jpg" /></li>
+<li><img src="file/photo/2.jpg" serveUrl="file/photo/2.jpg" /></li>
+<li><img src="file/photo/3.jpg" serveUrl="file/photo/3.jpg" /></li>
+<li><img src="file/photo/4.jpg" serveUrl="file/photo/4.jpg" /></li>
+<li><img src="file/photo/5.jpg" serveUrl="file/photo/5.jpg" /></li>
+<li><img src="file/photo/6.jpg" serveUrl="file/photo/6.jpg" /></li>
+<li><img src="file/photo/7.jpg"  serveUrl="file/photo/7.jpg"/></li>
+<li><img src="file/photo/8.jpg" serveUrl="file/photo/8.jpg" /></li>
+</ul>
+</div>
+<!--相册-->
+<!--拍照-->
+<div id="CamBox">
+<p class="lens"></p>
+<div id="CamFlash"></div>
+<p class="cambar">
+<a href="javascript:;" id="CamOk"  >拍照</a>
+<a href="javascript:;" id="camClose">关闭</a>
+<div style="clear:both;"></div>
+</p>
+<div id="timing">3</div>
+</div>
+<!--拍照-->
+<!--底部-->  
+  <div class="bottom">
+   ShearPhoto作者：
+   <span><img src="images/Author.png" title="这是shearphoto作者肖像，请你保留，不要删除" /> </span> 明哥先生 QQ399195513&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;ShearPhoto兼容目前所有浏览器&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;ShearPhoto官方网站：
+   <a href="http://www.shearphoto.com">www.shearphoto.com</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;官方QQ群：461550716 
+   <br /> Copyright &copy; 2015 明哥先生. All Rights Reserved
+ <!--作者统计使用量，你可以删走 -->
+   <script language="javascript" type="text/javascript" src="http://js.users.51.la/18250727.js"></script>
+<noscript><a href="http://www.51.la/?18250727" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/18250727.asp" style="border:none" /></a></noscript>
+   <!--作者统计使用量，你可以删走 -->
+  </div>
+  <!--底部-->
+</body>
+</html>
