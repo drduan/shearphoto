@@ -1,6 +1,11 @@
+
+
+
+#shearphoto  
+ &emsp;&emsp;您可以使用shearphotp  
+ >*截图，切图，头像上传，头像截图，PHP头像截图插件，JS截图插件  
+ 
 ---
-  
-  
   **ShearPhoto** 完美支持Linux Windows 服务器，国外空间等完美通过。  
   *ShearPhoto1.1暂时只支持PHP，后续会加.NET和Java以及Nodejs等后端版本*。
   PHP支持5.2X至6的版本  
