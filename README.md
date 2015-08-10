@@ -1,23 +1,9 @@
+1:ShearPhoto 完美支持Linux Windows 服务器，国外空间等完美通过。 
 
+2:兼容IE6及所有浏览器！ 
 
+3:ShearPhoto拖动拉伸超准，超流畅，在互联网同类型软件绝对排行第一，除了shearphoto，你别无选择！ 
 
-#shearphoto  
- &emsp;&emsp; *shearphoto 是一种PHP头像截图插件，JS截图插件 ,您可以使用shearphotp*  
- >*截图，切图，头像上传，头像截图*  
- 
----
-  **ShearPhoto** 完美支持Linux Windows 服务器，国外空间等完美通过。  
-  *ShearPhoto1.1暂时只支持PHP，后续会加.NET和Java以及Nodejs等后端版本*。
-  PHP支持5.2X至6的版本  
-**浏览器支持**  
-    &emsp;IE6+ 和 chrome ， Firefox 等主流现代浏览器.  
-**测试方法**  
-    &emsp;解压,得到文件,文件放在网站任意目录都可以运行，如果你纯测的话，你是不需要进行设置了，直接运行index.html .  
-**强调**  
-    &emsp;必须用http或https协议运行index.html，必须保证有PHP环境。不要那么SB直接点开index.html然后，问我为什么这个插件没用  记得经常来www.shearphoto.com看看哦，程序会不定期进行升级，官网里面有DEMO演试的
+4：能自由设置截框比例，设置方法里面也有注释！打开handle.js文件找到 ”proportional“设置行，第一个参数进行设置 设置0表示不需要按比例，如设置3/4表示截框3/4的比例， 设置完成后，也需要对shearphoto.config.php这个后端文件相应设置，同样是找到"proportional"设置截框的比例，和JS端保持一致哦！ 
 
-**版权声明**  
-
-shearphoto官网：(www.shearphoto.com) **shearphoto官方QQ群：461550716**
-
-shearphoto20天心血开发而成， 你可以对shearphoto进行任意二次开发，但请你**保留源码内的版权注释！** 否则shearphoto有权终止你使用。
+4:ShearPhoto接口多多，请自己下载体验，很多骂ShearPhoto不能设置比例，麻烦你看清楚设置方法，ShearPhoto绝对可以设置比例，绝不会犯低级错误
