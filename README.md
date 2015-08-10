@@ -13,6 +13,6 @@
 
 **版权声明**  
 
-shearphoto官网：[www.shearphoto.com shearphoto]  **官方QQ群：461550716**
+shearphoto官网：[www.shearphoto.com]  ** shearphoto官方QQ群：461550716**
 
 shearphoto20天心血开发而成， 你可以对shearphoto进行任意二次开发，但请你**保留源码内的版权注释！** 否则shearphoto有权终止你使用。
