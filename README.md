@@ -2,8 +2,8 @@
 
 
 #shearphoto  
- &emsp;&emsp; *您可以使用shearphotp*  
- >*截图，切图，头像上传，头像截图，PHP头像截图插件，JS截图插件*  
+ &emsp;&emsp; *shearphoto 是一种PHP头像截图插件，JS截图插件 ,您可以使用shearphotp*  
+ >*截图，切图，头像上传，头像截图*  
  
 ---
   **ShearPhoto** 完美支持Linux Windows 服务器，国外空间等完美通过。  
