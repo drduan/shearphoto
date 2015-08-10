@@ -2,7 +2,7 @@
 
 
 #shearphoto  
- &emsp;&emsp;##*您可以使用shearphotp*  
+ &emsp;&emsp; *您可以使用shearphotp*  
  >*截图，切图，头像上传，头像截图，PHP头像截图插件，JS截图插件*  
  
 ---
