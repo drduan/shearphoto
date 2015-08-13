@@ -1,4 +1,4 @@
-/*************ShearPhoto1.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
+/*************ShearPhoto1.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
 
       经过数20天的开发，shearphoto的第一个版本终于完成，
 我开发shearphoto的全因是切图，截图这类WEB插件实在太少，我特此还专门在网上下载过几个关于截图插件，
@@ -30,21 +30,22 @@ shearphoto的用途非常广，shearphoto截图灵敏，拉伸或拖拽时都非
 shearphoto的官方网站：www.shearphoto.com,网站有开发文档，以及shearphoto讨论区，大家可以在官网进行交流心得或者定制开发
 你也可以加入shearphoto官方QQ群：461550716，分享与我进行交流。
 
-    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：ShearPhoto1.1
+    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：shearphoto1.2
     
-                                                        版本号:ShearPhoto1.1
+                                                        版本号:shearphoto1.2
                                                         shearphoto官网：www.shearphoto.com
                                                         shearphoto官方QQ群：461550716
                                                                                                               2015年8月7日
                                                                                                                   明哥先生
 
 
-****************ShearPhoto1.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
+****************ShearPhoto1.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
 
-ShearPhoto.MoveDiv=function() {
-          this.arg = new Array(), this.ReckonWH  = this.DivW = this.DivH =this.selectionempty=this.addevent= this.DivDownEVe = this.DomMoveEve = this.DomUpEve =  false;
-  }
- ShearPhoto.MoveDiv.prototype = {
+ShearPhoto.MoveDiv = function() {
+          this.arg = new Array(), this.ReckonWH = this.DivW = this.DivH = this.selectionempty = this.addevent = this.DivDownEVe = this.DomMoveEve = this.DomUpEve = this.eveMold = false;
+};
+
+ShearPhoto.MoveDiv.prototype = {
           ZeroSetting:function() {
                     var left = parseFloat(this.arg.form.style.left), top = parseFloat(this.arg.form.style.top);
                     var size = this._size_(window, true);
@@ -72,7 +73,7 @@ ShearPhoto.MoveDiv=function() {
                     }
           },
           reckon:function(obj, se) {
-			        this._size_(obj);
+                    this._size_(obj);
                     var this_ = this;
                     if (se === true) {
                               var addfun = function() {
@@ -101,7 +102,7 @@ ShearPhoto.MoveDiv=function() {
                                         CH:h
                               };
                     } else {
-						      w = obj.offsetWidth;
+                              w = obj.offsetWidth;
                               h = obj.offsetHeight;
                               ReckonWH = {
                                         W:w,
@@ -114,126 +115,144 @@ ShearPhoto.MoveDiv=function() {
                     this.ReckonWH = ReckonWH;
           },
           DomUp:function(dom) {
-			   var this_ = this;
-                     return function() {
-                             dom.releaseCapture && dom.releaseCapture();
-                              typeof this_.DomMoveEve === "function" && this_.delEvent(document, "mousemove", this_.DomMoveEve);
-							   if (typeof this_.DomUpEve === "function") {
-                                        this_.delEvent(document, "mouseup", this_.DomUpEve);
-                                        this_.delEvent(window, "mouseup", this_.DomUpEve);
+                    var this_ = this;
+                    return function() {
+                              dom.releaseCapture && dom.releaseCapture();
+                              typeof this_.DomMoveEve === "function" && this_.delEvent(document, this_.eveMold[1], this_.DomMoveEve);
+                              if (typeof this_.DomUpEve === "function") {
+                                        this_.delEvent(document, this_.eveMold[2], this_.DomUpEve);
+                                        this_.delEvent(window, this_.eveMold[2], this_.DomUpEve);
                                         this_.delEvent(window, "blur", this_.DomUpEve);
-                                        this_.delEvent(dom,"losecapture", this_.DomUpEve);
-                               }
-                               return false;
-							 
+                                        this_.delEvent(dom, "losecapture", this_.DomUpEve);
+                              }
+                              return false;
                     };
           },
-		   DivWHFun:function() {
-			  this.DivW = this.arg.form.offsetWidth;
-              this.DivH = this.arg.form.offsetHeight; 
-			   },
-          DomMove:function(this_, dom, disX, disY,formLeft,formTop) {
-                    var argform = this_.arg.form, DivW = this_.DivW, DivH = this_.DivH, MoveScale,MoveFun=function(){};
+          DivWHFun:function() {
+                    this.DivW = this.arg.form.offsetWidth;
+                    this.DivH = this.arg.form.offsetHeight;
+          },
+          DomMove:function(this_, dom, disX, disY, formLeft, formTop) {
+                    var argform = this_.arg.form, DivW = this_.DivW, DivH = this_.DivH, MoveScale, MoveFun = function() {};
                     var shifting = this_.arg.shifting = Object.prototype.toString.call(this_.arg.shifting) === "[object Array]" && this_.arg.shifting.length > 1 ? this_.arg.shifting :new Array(0, 0);
                     var argMoveWidth = this_.arg.MoveWidth - shifting[0];
                     var argMoveHeight = this_.arg.MoveHeight - shifting[1];
-				     if (typeof this_.DomUpEve === "function") {
-                              this_.delEvent(document, "mouseup", this_.DomUpEve);
-                              this_.delEvent(window, "mouseup", this_.DomUpEve);
+                    if (typeof this_.DomUpEve === "function") {
+                              this_.delEvent(document, this_.eveMold[2], this_.DomUpEve);
+                              this_.delEvent(window, this_.eveMold[2], this_.DomUpEve);
                               this_.delEvent(window, "blur", this_.DomUpEve);
                               this_.delEvent(dom, "losecapture", this_.DomUpEve);
-					 }
-	 	
+                    }
                     this_.DomUpEve = this_.DomUp(dom);
-                    this_.addEvent(document, "mouseup", this_.DomUpEve);
-                    this_.addEvent(window, "mouseup", this_.DomUpEve);
+                    this_.addEvent(document, this_.eveMold[2], this_.DomUpEve);
+                    this_.addEvent(window, this_.eveMold[2], this_.DomUpEve);
                     this_.addEvent(window, "blur", this_.DomUpEve);
                     this_.addEvent(dom, "losecapture", this_.DomUpEve);
-				
-					
-				 var maxL = argMoveWidth - DivW, maxT = argMoveHeight - DivH, iL, iT, eveclientX, eveclientY;
-					typeof(this_.arg.MoveFun) === "function" &&(MoveFun=this_.arg.MoveFun);
-					  MoveScale=[maxL,maxT];
-				 return function(eve) {
+                    var maxL = argMoveWidth - DivW, maxT = argMoveHeight - DivH, iL, iT, eveclientX, eveclientY;
+                    typeof this_.arg.MoveFun === "function" && (MoveFun = this_.arg.MoveFun);
+                    MoveScale = [ maxL, maxT ];
+                    return function(eve) {
                               eve = eve || window.event;
-							   if(eve.button>1){this_.DomUp(this)(); return false};
-                              eveclientX = eve.clientX, eveclientY = eve.clientY;
+                              if (eve.button > 1) {
+                                        this_.DomUp(this)();
+                                        return false;
+                              }
+                              eveclientX = this_.eveMold[3](eve, "clientX"), eveclientY = this_.eveMold[3](eve, "clientY");
                               setTimeout(function() {
                                         iL = eveclientX - disX;
                                         iT = eveclientY - disY;
-                                        this_.selectionempty()
+                                        this_.selectionempty();
                                         iL = iL < -shifting[0] ? -shifting[0] :iL;
                                         iL = iL > maxL ? maxL :iL;
                                         iT = iT < -shifting[1] ? -shifting[1] :iT;
                                         iT = iT > maxT ? maxT :iT;
                                         argform.style.left = iL + "px", argform.style.top = iT + "px";
-										MoveFun(iL, iT,MoveScale);
+                                        MoveFun(iL, iT, MoveScale);
                               }, 1);
-							  return false
+                              return false;
                     };
           },
-		
-		  
           DivDown:function() {
                     var this_ = this;
-					  return function(event) {
-                              var event = event || window.event;
-							   if (event.button < 2) { 
-							var   formLeft = parseFloat(this_.arg.form.style.left) || 0;
-							 var  formTop  = parseFloat(this_.arg.form.style.top) || 0;
-							 var disX = event.clientX - formLeft;
-                              var disY = event.clientY - formTop;
-                              this.setCapture && this.setCapture();
-							 typeof(this_.arg.DivDownFun) === "function" &&  this_.arg.DivDownFun(this_);
-										 typeof this_.DomMoveEve === "function" && this_.delEvent(document, "mousemove", this_.DomMoveEve);
-                                        this_.DomMoveEve = this_.DomMove(this_, this, disX, disY,formLeft,formTop);
-                                        this_.addEvent(document, "mousemove", this_.DomMoveEve);
+                    return function(event) {
+                              var event = event || window.event, eventbutton = event.button, typebutton = typeof eventbutton, clientX, clientY;
+                              event.preventDefault && event.preventDefault();
+                              if (typebutton !== "number") {
+                                        this_.eveMold = [ "touchstart", "touchmove", "touchend", function(events, clientXY) {
+                                                  return events.touches[0][clientXY];
+                                        } ];
+                                        clientX = event.touches[0].clientX;
+                                        clientY = event.touches[0].clientY;
+                              } else {
+                                        this_.eveMold = [ "mousedown", "mousemove", "mouseup", function(events, clientXY) {
+                                                  return events[clientXY];
+                                        } ];
+                                        clientX = event.clientX;
+                                        clientY = event.clientY;
+                              }
+                              if (eventbutton < 2 || typebutton !== "number") {
+                                        var formLeft = parseFloat(this_.arg.form.style.left) || 0;
+                                        var formTop = parseFloat(this_.arg.form.style.top) || 0;
+                                        var disX = clientX - formLeft;
+                                        var disY = clientY - formTop;
+                                        this.setCapture && this.setCapture();
+                                        typeof this_.arg.DivDownFun === "function" && this_.arg.DivDownFun(this_);
+                                        typeof this_.DomMoveEve === "function" && this_.delEvent(document, this_.eveMold[1], this_.DomMoveEve);
+                                        this_.DomMoveEve = this_.DomMove(this_, this, disX, disY, formLeft, formTop);
+                                        this_.addEvent(document, this_.eveMold[1], this_.DomMoveEve);
                               } else {
                                         this_.DomUp(this)();
-                                      }
-							   return false;		  
-					 };
+                              }
+                              return false;
+                    };
+          },
+          ShearPhotoDown:function(obj, fun) {
+                    this.addEvent(obj, "mousedown", fun);
+                    this.addEvent(obj, "touchstart", fun);
+          },
+          delShearPhotoDown:function(obj, fun) {
+                    this.delEvent(obj, "mousedown", fun);
+                    this.delEvent(obj, "touchstart", fun);
           },
           et:function() {
-			    var this_ = this;
-			 var cursor = this.arg.cursor || "move";
-			  this_=this;
-			 for (var i = 0; i < this.arg.to.length; i++) {
-						      if (this.addevent === "add") {
+                    var this_ = this;
+                    var cursor = this.arg.cursor || "move";
+                    this_ = this;
+                    for (var i = 0; i < this.arg.to.length; i++) {
+                              if (this.addevent === "add") {
                                         if (typeof this.DivDownEVe !== "function") {
                                                   this.DivDownEVe = this.DivDown();
                                         } else {
-											        
-                                                  this.delEvent(this.arg.to[i], "mousedown", this.DivDownEVe);
+                                                  this.delShearPhotoDown(this.arg.to[i], this.DivDownEVe);
                                         }
-                                        this.addEvent(this.arg.to[i], "mousedown", this.DivDownEVe);
+                                        this.ShearPhotoDown(this.arg.to[i], this.DivDownEVe);
                               } else {
                                         this.arg.to[i].onmousedown = this.DivDown();
                               }
-                              this.arg.to[i].style["cursor"] = cursor;	  
-						 }
+                              this.arg.to[i].style["cursor"] = cursor;
+                    }
           },
-		  delDownEve:function(){
-			  for (var i = 0; i < this.arg.to.length; i++) {
-				            if (this.addevent === "add") {
-                                         if (typeof this.DivDownEVe === "function") {
-                                             this.delEvent(this.arg.to[i], "mousedown", this.DivDownEVe);
-                                              }
-										}
-				  }
-			  },
-          setdiv:function(argform, CW, CH,arg) {
-			     if( typeof(arg.centerFront)=== "function") {
-					var CWCH = arg.centerFront();
-					 CW=CWCH[0];
-					 CH=CWCH[1];
-					    }
-				    var DivT = (CH - this.DivH) / 2;
+          delDownEve:function() {
+                    for (var i = 0; i < this.arg.to.length; i++) {
+                              if (this.addevent === "add") {
+                                        if (typeof this.DivDownEVe === "function") {
+                                                  this.delShearPhotoDown(this.arg.to[i], this.DivDownEVe);
+                                        }
+                              }
+                    }
+          },
+          setdiv:function(argform, CW, CH, arg) {
+                    if (typeof arg.centerFront === "function") {
+                              var CWCH = arg.centerFront();
+                              CW = CWCH[0];
+                              CH = CWCH[1];
+                    }
+                    var DivT = (CH - this.DivH) / 2;
                     DivT = DivT < 0 ? 0 :DivT;
                     var DivL = (CW - this.DivW) / 2;
                     DivL = DivL < 0 ? 0 :DivL;
                     argform.style.top = DivT + "px", argform.style.left = DivL + "px";
-					typeof(arg.centerfun) === "function" && arg.centerfun(DivL,DivT,this);
+                    typeof arg.centerfun === "function" && arg.centerfun(DivL, DivT, this);
           },
           addEvent:function(obj, evetype, fun) {
                     var addevent = {
@@ -260,19 +279,19 @@ ShearPhoto.MoveDiv=function() {
           SetCenter:function(arg) {
                     if (arg.center) {
                               if (arg.center === 1) {
-								      var CW = this.ReckonWH.CW, CH = this.ReckonWH.CH;
+                                        var CW = this.ReckonWH.CW, CH = this.ReckonWH.CH;
                               } else {
                                         var ReckonWH = this._size_(arg.center, true);
                                         var CW = ReckonWH.CW, CH = ReckonWH.CH;
                               }
-                              this.setdiv(arg.form, CW, CH,arg);
+                              this.setdiv(arg.form, CW, CH, arg);
                     }
           },
           run:function(arg) {
-			        this.arg = arg;
+                    this.arg = arg;
                     this.DivW = arg.form.offsetWidth;
-                    this.DivH = arg.form.offsetHeight; 
-					this.SetCenter(arg);
+                    this.DivH = arg.form.offsetHeight;
+                    this.SetCenter(arg);
                     typeof arg.zIndex === "number" && (arg.form.style.zIndex = arg.zIndex);
                     this.et();
           }
