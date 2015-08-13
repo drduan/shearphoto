@@ -1,4 +1,4 @@
-/*************ShearPhoto1.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
+/*************ShearPhoto1.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
 
       经过数20天的开发，shearphoto的第一个版本终于完成，
 我开发shearphoto的全因是切图，截图这类WEB插件实在太少，我特此还专门在网上下载过几个关于截图插件，
@@ -30,19 +30,19 @@ shearphoto的用途非常广，shearphoto截图灵敏，拉伸或拖拽时都非
 shearphoto的官方网站：www.shearphoto.com,网站有开发文档，以及shearphoto讨论区，大家可以在官网进行交流心得或者定制开发
 你也可以加入shearphoto官方QQ群：461550716，分享与我进行交流。
 
-    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：ShearPhoto1.1
+    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：shearphoto1.2
     
-                                                        版本号:ShearPhoto1.1
+                                                        版本号:shearphoto1.2
                                                         shearphoto官网：www.shearphoto.com
                                                         shearphoto官方QQ群：461550716
                                                                                                               2015年8月7日
                                                                                                                   明哥先生
 
 
-****************ShearPhoto1.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
+****************ShearPhoto1.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
 
 window.ShearPhoto = function() {
-          this.transform = this.DomMoveEve = this.DomUpEve = this.MoveDivEve = this.zoomEve = false;
+          this.transform = this.DomMoveEve = this.DomUpEve = this.MoveDivEve = this.zoomEve = this.eveMold = false;
           this.DivDownEVe = {};
           this.transformFun();
           !this.addevent && window.addEventListener ? (this.addevent = "add", this.selectionempty = function() {
@@ -477,15 +477,23 @@ ShearPhoto.prototype = {
                     this.arg.scope.style.cursor = "";
                     this.arg.form.style.cursor = "move";
           },
+          ShearPhotoDown:function(obj, fun) {
+                    this.addEvent(obj, "mousedown", fun);
+                    this.addEvent(obj, "touchstart", fun);
+          },
+          delShearPhotoDown:function(obj, fun) {
+                    this.delEvent(obj, "mousedown", fun);
+                    this.delEvent(obj, "touchstart", fun);
+          },
           et:function() {
                     for (var a in this.arg.to) {
                               if (this.addevent === "add") {
                                         if (typeof this.DivDownEVe[a] !== "function") {
                                                   this.DivDownEVe[a] = this.DivDown(a);
                                         } else {
-                                                  this.delEvent(this.arg.to[a], "mousedown", this.DivDownEVe[a]);
+                                                  this.delShearPhotoDown(this.arg.to[a], this.DivDownEVe[a]);
                                         }
-                                        this.addEvent(this.arg.to[a], "mousedown", this.DivDownEVe[a]);
+                                        this.ShearPhotoDown(this.arg.to[a], this.DivDownEVe[a]);
                               } else {
                                         this.arg.to[a].onmousedown = this.DivDown(a);
                               }
@@ -519,10 +527,10 @@ ShearPhoto.prototype = {
                               typeof this_.arg.UpFun === "function" && this_.arg.UpFun();
                               dom.releaseCapture && dom.releaseCapture();
                               this_.DelPointerShape();
-                              typeof this_.DomMoveEve === "function" && this_.delEvent(document, "mousemove", this_.DomMoveEve);
+                              typeof this_.DomMoveEve === "function" && this_.delEvent(document, this_.eveMold[1], this_.DomMoveEve);
                               if (typeof this_.DomUpEve === "function") {
-                                        this_.delEvent(document, "mouseup", this_.DomUpEve);
-                                        this_.delEvent(window, "mouseup", this_.DomUpEve);
+                                        this_.delEvent(document, this_.eveMold[2], this_.DomUpEve);
+                                        this_.delEvent(window, this_.eveMold[2], this_.DomUpEve);
                                         this_.delEvent(window, "blur", this_.DomUpEve);
                                         this_.delEvent(dom, "losecapture", this_.DomUpEve);
                               }
@@ -605,14 +613,14 @@ ShearPhoto.prototype = {
           DomMove:function(this_, dom, disX, disY, PNW, PNH, formParent, MaxW, MaxH, strLL, strTT) {
                     var eveclientX, eveclientY, drawWH, iW, iH, argform, iHH, iWW, ImgMain = this_.arg.ImgMain, ImgDom = this_.arg.ImgDom;
                     if (typeof this_.DomUpEve === "function") {
-                              this_.delEvent(document, "mouseup", this_.DomUpEve);
-                              this_.delEvent(window, "mouseup", this_.DomUpEve);
+                              this_.delEvent(document, this_.eveMold[2], this_.DomUpEve);
+                              this_.delEvent(window, this_.eveMold[2], this_.DomUpEve);
                               this_.delEvent(window, "blur", this_.DomUpEve);
                               this_.delEvent(dom, "losecapture", this_.DomUpEve);
                     }
                     this_.DomUpEve = this_.DomUp(dom);
-                    this_.addEvent(document, "mouseup", this_.DomUpEve);
-                    this_.addEvent(window, "mouseup", this_.DomUpEve);
+                    this_.addEvent(document, this_.eveMold[2], this_.DomUpEve);
+                    this_.addEvent(window, this_.eveMold[2], this_.DomUpEve);
                     this_.addEvent(window, "blur", this_.DomUpEve);
                     this_.addEvent(dom, "losecapture", this_.DomUpEve);
                     return function(eve) {
@@ -621,7 +629,8 @@ ShearPhoto.prototype = {
                                         this_.DomUp(this)();
                                         return false;
                               }
-                              eveclientX = eve.clientX, eveclientY = eve.clientY, argform = this_.arg.form;
+                              eveclientX = this_.eveMold[3](eve, "clientX"), eveclientY = this_.eveMold[3](eve, "clientY"), 
+                              argform = this_.arg.form;
                               setTimeout(function() {
                                         iW = PNW * (eveclientX - disX);
                                         iH = PNH * (eveclientY - disY);
@@ -755,8 +764,22 @@ ShearPhoto.prototype = {
           DivDown:function(a) {
                     var this_ = this, PNW = 1, PNH = 1, strLL = "NO", strTT = "NO", MaxW, MaxH, W, H, formParentoffsetLeft, formParent, formParentoffsetTop;
                     return function(event) {
-                              event = event || window.event;
-                              if (event.button < 2) {
+                              var event = event || window.event, eventbutton = event.button, typebutton = typeof eventbutton, clientX, clientY;
+                              event.preventDefault && event.preventDefault();
+                              if (typebutton !== "number") {
+                                        this_.eveMold = [ "touchstart", "touchmove", "touchend", function(events, clientXY) {
+                                                  return events.touches[0][clientXY];
+                                        } ];
+                                        clientX = event.touches[0].clientX;
+                                        clientY = event.touches[0].clientY;
+                              } else {
+                                        this_.eveMold = [ "mousedown", "mousemove", "mouseup", function(events, clientXY) {
+                                                  return events[clientXY];
+                                        } ];
+                                        clientX = event.clientX;
+                                        clientY = event.clientY;
+                              }
+                              if (eventbutton < 2 || typebutton !== "number") {
                                         W = this_.formAllW, H = this_.formAllH, formParent = this_.formParent, formParentoffsetLeft = this_.formLeft, 
                                         formParentoffsetTop = this_.formTop;
                                         switch (a) {
@@ -836,12 +859,12 @@ ShearPhoto.prototype = {
                                              default:
                                                   break;
                                         }
-                                        var disX = event.clientX - PNW * W;
-                                        var disY = event.clientY - PNH * H;
+                                        var disX = clientX - PNW * W;
+                                        var disY = clientY - PNH * H;
                                         this.setCapture && this.setCapture();
-                                        typeof this_.DomMoveEve === "function" && this_.delEvent(document, "mousemove", this_.DomMoveEve);
+                                        typeof this_.DomMoveEve === "function" && this_.delEvent(document, this_.eveMold[1], this_.DomMoveEve);
                                         this_.DomMoveEve = this_.DomMove(this_, this, disX, disY, PNW, PNH, formParent, MaxW, MaxH, strLL, strTT);
-                                        this_.addEvent(document, "mousemove", this_.DomMoveEve);
+                                        this_.addEvent(document, this_.eveMold[1], this_.DomMoveEve);
                               } else {
                                         this_.DomUp(this)();
                               }
