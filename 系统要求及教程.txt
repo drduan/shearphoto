@@ -1,10 +1,10 @@
-ShearPhoto1.1
+ShearPhoto1.2
 支持linux window服务器，国外空间等完美通过
 
 
-ShearPhoto1.1暂时只支持PHP，后续会加NET和JAVA以及NODEJS等后端版本
+ShearPhoto1.2暂时只支持PHP，后续会加NET和JAVA以及NODEJS等后端版本
 
-PHP支持5.2X至6的版本
+PHP支持5.2X至7的版本
 
 
 浏览器支持：IE6+ 和 chrome ， Firefox 等主流现代浏览器.
