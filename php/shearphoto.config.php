@@ -2,7 +2,7 @@
 define('IOURL',dirname(dirname(__FILE__)));   //锁定相对目录   
 define('ShearURL',IOURL.DIRECTORY_SEPARATOR); //DIRECTORY_SEPARATOR 是斜杠符，为兼容WINDOW和LINUX
 $ShearPhoto["config"]=array(
-"proportional"=>1,//比例截图，JS端也要相应设置哦，不然系统会给你抱出错误,不设比例填0，如填比例 ：3/4  代表宽和高的比例是3/4
+"proportional"=>3/4,//比例截图，JS端也要相应设置哦，不然系统会给你抱出错误,不设比例填0，如填比例 ：3/4  代表宽和高的比例是3/4
 "width"=>array(
              //array(0,true),//此时的0   代表以用户取当时截取框的所截的大小为宽
              array(150,true),//@参数1要生成的宽 （高度不用设，系统会按比例做事），    @参数2：是否为该图加水印，water参数要有水印地址才有效true或false
@@ -13,9 +13,9 @@ $ShearPhoto["config"]=array(
 "temp"=>ShearURL."file".DIRECTORY_SEPARATOR."temp",  //等待截图的大图文件。就是上传图片的临时目录，截图后，图片会被删除
 "tempSaveTime"=>600,//临时图片（也就是temp内的图片）保存时间，需要永久保存请设为0。单位秒
 "saveURL"=>ShearURL."file".DIRECTORY_SEPARATOR."shearphoto_file",//后面不要加斜杠，系统会自动给补上！不要使用中文
-"filename"=>"shearphoto_".time()."_".mt_rand(1000000,99999999)."_"//文件名字定义！要生成多个文件时 系统会自动在后面补0 1 2  3.....;
+"filename"=>uniqid("shearphoto_")."_".mt_rand(100,999)."_"//文件名字定义！要生成多个文件时 系统会自动在后面补0 1 2  3.....;
 );
-/*************ShearPhoto1.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*********
+/*************ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*********
 
       经过数20天的开发，shearphoto的第一个版本终于完成，
 我开发shearphoto的全因是切图，截图这类WEB插件实在太少，我特此还专门在网上下载过几个关于截图插件，
@@ -47,14 +47,14 @@ shearphoto的用途非常广，shearphoto截图灵敏，拉伸或拖拽时都非
 shearphoto的官方网站：www.shearphoto.com,网站有开发文档，以及shearphoto讨论区，大家可以在官网进行交流心得或者定制开发
 你也可以加入shearphoto官方QQ群：461550716，分享与我进行交流。
 
-    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：ShearPhoto1.2
+    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：ShearPhoto1.3
     
-                                                        版本号:ShearPhoto1.2
+                                                        版本号:ShearPhoto1.3
                                                         shearphoto官网：www.shearphoto.com
                                                         shearphoto官方QQ群：461550716
                                                                                                               2015年8月7日
                                                                                                                   明哥先生
 
 
-****************ShearPhoto1.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*******/
+****************ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*******/
 ?>

@@ -1,4 +1,4 @@
-/*************ShearPhoto1.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
+/*************ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
 
       经过数20天的开发，shearphoto的第一个版本终于完成，
 我开发shearphoto的全因是切图，截图这类WEB插件实在太少，我特此还专门在网上下载过几个关于截图插件，
@@ -30,16 +30,16 @@ shearphoto的用途非常广，shearphoto截图灵敏，拉伸或拖拽时都非
 shearphoto的官方网站：www.shearphoto.com,网站有开发文档，以及shearphoto讨论区，大家可以在官网进行交流心得或者定制开发
 你也可以加入shearphoto官方QQ群：461550716，分享与我进行交流。
 
-    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：shearphoto1.2
+    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：shearphoto1.3
     
-                                                        版本号:shearphoto1.2
+                                                        版本号:shearphoto1.3
                                                         shearphoto官网：www.shearphoto.com
                                                         shearphoto官方QQ群：461550716
                                                                                                               2015年8月7日
                                                                                                                   明哥先生
 
 
-****************ShearPhoto1.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
+****************ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
 ShearPhoto.MINGGE(function() {
        var publicRelat= document.getElementById("relat");     //"relat"对像     
 	   var publicRelatImg=publicRelat.getElementsByTagName("img");  //"relat"下的两张图片对像   
@@ -50,7 +50,7 @@ ShearPhoto.MINGGE(function() {
 			        scopeWidth:500,                 //可拖动范围宽  也就是"main"对象的初始大小  
                     scopeHeight:500,                //可拖动范围高  也就是"main"对象的初始大小  
                     relat:publicRelat,                //请查看 id:"relat"对象 
-                    proportional:[1,               //截框的宽高比例（宽除以高的比例值，这个设置其实就是3/4,不设比例请设为0，注意更改比例后，后端也要进行相应设置，否则系统会给你抱出错误）
+                    proportional:[3/4,               //截框的宽高比例（宽除以高的比例值，这个设置其实就是3/4,不设比例请设为0，注意更改比例后，后端也要进行相应设置，否则系统会给你抱出错误）
 					 100,                             //启动后的截框初始宽度
 					 133.33333                        //比例设置后，这个高度无效，由宽和比例来决定
 					  ],   
@@ -87,7 +87,7 @@ ShearPhoto.MINGGE(function() {
 var photoalbum = document.getElementById("photoalbum");//相册对象
 /*选择图片上传*/
 var up = new ShearPhoto.frameUpImg({
-          UpType:new Array("jpg", "jpeg", "png", "gif"),//类限制，上传的一定是图片，你就不要更改了
+          UpType:new Array("jpg", "jpeg", "png", "gif"),//图片类限制，上传的一定是图片，你就不要更改了
           FilesSize:2,
           url:"php/upload.php",
           erro:function(msg) {
@@ -100,10 +100,10 @@ var up = new ShearPhoto.frameUpImg({
           }
 });
 
-up.run(function(data) {
+up.run(function(data) {//upload.php成功返回数据后
           data = ShearPhoto.JsonString.StringToJson(data);
           if (data === false) {
-                    Shear.SendUserMsg("错误:请保证在后端环境运行正常", 5e3, 0, "#f4102b", "#fff",  true,true);
+                    Shear.SendUserMsg("错误:请保证后端环境运行正常", 5e3, 0, "#f4102b", "#fff",  true,true);
                     return;
           }
           if (data["erro"]) {
@@ -132,9 +132,9 @@ PhotoLoading.onclick = function() {             //从相册选取事件
 };
 
  /*相册*/
- 
-  Shear.addEvent(document.getElementById("saveShear"), "click", function() { //按下截图事件
-   Shear.SendPHP();
+ /*截图，左旋，右旋，重新选择*/
+  Shear.addEvent(document.getElementById("saveShear"), "click", function() { //按下截图事件，提交到后端的shearphoto.php接收
+   Shear.SendPHP({shearphoto:"我要传参数到服端",mingge:"我要传第二个参数到服务器"});//我们示例截图并且传参数，后端文件shearphoto.php用 示例：$_POST["shearphoto"] 接收参数，不需要传参数请清空Shear.SendPHP里面的参数示例 Shear.SendPHP();
 });
 
  Shear.addEvent(document.getElementById("LeftRotate"), "click", function() {//向左旋转事件
@@ -150,42 +150,54 @@ PhotoLoading.onclick = function() {             //从相册选取事件
           Shear.pointhandle(3e3, 10, "已取消！重新选择", 2, "#fbeb61", "#3a414c");
 });
  
-
+ /*截图，左旋，右旋，重新选择*/
 /*拍照*/
- webcam.set_api_url("php/cam.up.php");     //拍照连接后端的URL文件    
-         webcam.set_quality(90);//拍照的图片质量
-         webcam.set_shutter_sound(true);//拍照声音
+ webcam.init_config={
+		width  : 500,                 //摄像头像素宽度，也就是说后端生成图片的大小
+		height : 500,                 //摄像头像素高度，也就是说后端生成图片的大小
+		server_width : 450,            //网页中flash的显示宽度
+		server_height : 450,           //网页中flash的显示高度
+		uploadfield : "UpFile",       //上传的FORMDATA名称， 不理解你就不要改，否则报错又问为什么了
+		postargs:{mingge:"shearphoto我爱你",shearphoto:"shearphoto好"}//示例传入POST参数到后端。后端示例$_POST['XXXX'] 接收！如果！ 不需要传参数，请把postargs删除，需填参数请保证参数格式
+	 },
+                     webcam.set_api_url("php/upload.php"); //拍照连接后端的URL文件    
+                     webcam.set_quality(95);//拍照的图片质量
+                     webcam.set_shutter_sound(true);//拍照声音
+					 
 var CamFlash = document.getElementById("CamFlash");
 var timing = document.getElementById("timing");
 var CamOk = document.getElementById("CamOk");
 var CamBox = document.getElementById("CamBox");
 var camerasImage = document.getElementById("camerasImage");
 var camClose = document.getElementById("camClose");
+var setCam = document.getElementById("setCam");
 
- webcam.noCamcall=function(){
-	 Shear.SendUserMsg("错误:检测不到摄象头！", 5e3, 0, "#f4102b", "#fff", true,true);
-	camClose.onclick(); 
+ webcam.noCamcall=function(msg){
+	 Shear.SendUserMsg(msg, 5e3, 0, "#f4102b", "#fff", true,true);
+	 camClose.onclick(); 
 	 }
+	 
+setCam.onclick =function() {webcam.configure();}//点击设置按钮事件
 camClose.onclick = function() { //拍照点关闭后
           webcam.Homing(timing);
           CamFlash.innerHTML = "";
           CamBox.style.display = "none";
 		  camerasImage.onclick=camerasImageOnclick;
 };
- var camerasImageOnclick = function() {            //按下拍照事件
+var camerasImageOnclick = function() {            //按下弹出拍照框事件
        CamBox.style.display = "block";
-	     CamFlash.innerHTML = webcam.get_html(450, 450, 450, 450);
-          webcam.newsnap(timing, CamFlash, CamOk);
-		  camerasImage.onclick=null;
+	     CamFlash.innerHTML = webcam.get_html();
+         webcam.newsnap(timing, CamFlash, CamOk);
+		 camerasImage.onclick=null;
 };
 camerasImage.onclick=camerasImageOnclick;
 
 
-webcam.set_hook("onComplete", function(data) {//拍照成功事件
+webcam.set_hook("onComplete", function(data) {//拍照服务器返回数据事件
          camClose.onclick();
-          data = ShearPhoto.JsonString.StringToJson(data);
+		 data = ShearPhoto.JsonString.StringToJson(data);
           if (data === false) {
-                    Shear.SendUserMsg("错误:请保证在后端环境运行正常", 5e3, 0, "#f4102b", "#fff", true,true);
+                    Shear.SendUserMsg("错误:请保证后端环境运行正常", 5e3, 0, "#f4102b", "#fff", true,true);
                     return;
           }
           if (data["erro"]) {

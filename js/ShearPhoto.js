@@ -1,4 +1,4 @@
-/*************ShearPhoto1.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
+/*************ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
 
       经过数20天的开发，shearphoto的第一个版本终于完成，
 我开发shearphoto的全因是切图，截图这类WEB插件实在太少，我特此还专门在网上下载过几个关于截图插件，
@@ -30,16 +30,16 @@ shearphoto的用途非常广，shearphoto截图灵敏，拉伸或拖拽时都非
 shearphoto的官方网站：www.shearphoto.com,网站有开发文档，以及shearphoto讨论区，大家可以在官网进行交流心得或者定制开发
 你也可以加入shearphoto官方QQ群：461550716，分享与我进行交流。
 
-    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：shearphoto1.2
+    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：shearphoto1.3
     
-                                                        版本号:shearphoto1.2
+                                                        版本号:shearphoto1.3
                                                         shearphoto官网：www.shearphoto.com
                                                         shearphoto官方QQ群：461550716
                                                                                                               2015年8月7日
                                                                                                                   明哥先生
 
 
-****************ShearPhoto1.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
+****************ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
 
 window.ShearPhoto = function() {
           this.transform = this.DomMoveEve = this.DomUpEve = this.MoveDivEve = this.zoomEve = this.eveMold = false;
@@ -691,7 +691,8 @@ ShearPhoto.prototype = {
                               this_.pointhandle(3e3, 10, "截图完成！已返回！", 2, "#fbeb61", "#3a414c");
                     });
           },
-          SendPHP:function() {
+          SendPHP:function(postArgs) {
+                    var POSTHTML = "";
                     var SendPHPSmaller = function(W, H, P) {
                               if (W < 1) {
                                         W = 1;
@@ -705,6 +706,11 @@ ShearPhoto.prototype = {
                     };
                     var this_ = this;
                     this.SendUserMsg("正在为你处理截图，稍等...", 0, 2, "#fbeb61", "#3a414c", true, true);
+                    if (Object.prototype.toString.call(postArgs) === "[object Object]") {
+                              for (var key in postArgs) {
+                                        POSTHTML += "&" + key + "=" + postArgs[key];
+                              }
+                    }
                     var SendArry = {};
                     SendArry.url = "../" + this.ImgUrl;
                     var R = {
@@ -737,7 +743,7 @@ ShearPhoto.prototype = {
                     SendArry.FH = Smaller[1];
                     this.MyAjax.carry({
                               url:this_.arg.url,
-                              data:"JSdate=" + ShearPhoto.JsonString.JsonToString(SendArry),
+                              data:"JSdate=" + ShearPhoto.JsonString.JsonToString(SendArry) + POSTHTML,
                               type:"POST",
                               timeout:1e4,
                               async:true,
@@ -746,7 +752,7 @@ ShearPhoto.prototype = {
                               success:function(serverdata) {
                                         serverdata = ShearPhoto.JsonString.StringToJson(serverdata);
                                         if (serverdata === false) {
-                                                  this_.SendUserMsg("错误:请保证在后端环境运行正常", 5e3, 0, "#f4102b", "#fff", false);
+                                                  this_.SendUserMsg("错误:请保证后端环境运行正常", 5e3, 0, "#f4102b", "#fff", false);
                                                   return;
                                         }
                                         if (serverdata["erro"]) {
