@@ -20,17 +20,24 @@ text-decoration:none
 	overflow: hidden;
 }
 
-.header h1 {
-	color:#FFF;
-	float:left;
-	font-size:15px;
-	display: inline-block;
-	margin-top: 20px;
-	margin-left: 100px;
+.header A {
+-moz-border-radius:5px;
+background:#3E8BFF;
+border-radius:5px;
+color:#FFF;
+display:inline-block;
+float:left;
+font-size:15px;
+font-weight:700;
+line-height:50px;
+margin-left:100px;
+margin-top:7px;
+text-align:center;
+width:150px
 }
-.header h1 a:hover{
-	color: #39F;
-text-decoration: underline;
+.header A:hover{
+	text-decoration: underline;
+	background-color: #0F6FFF;
 }
 
 .bottom a:hover{
@@ -145,7 +152,7 @@ z-index:180
 	border-radius:10px;
 	-moz-box-shadow:1px 1px 10px 0 #3b3b3f;
 	box-shadow:1px 1px 10px 0 #3b3b3f;
-	background:url(../images/Select.png) no-repeat;
+	background:url(../images/Select.jpg) no-repeat;
 	display:block;
 	height:74px;
 	margin-left:-112px;
@@ -535,19 +542,19 @@ border:1px solid #09F
 
 /*弹出拍照*/
 #CamBox {
-	-moz-border-radius:10px;
-	background:url(../images/cam_bg.jpg);
-	border-radius:10px;
-	left:50%;
-	position:absolute;
-	-moz-box-shadow:5px 5px 10px 0 #3b3b3f;
-	box-shadow:5px 5px 10px 0 #3b3b3f;
-	width:550px;
-	z-index: 250;
-	display: none;
-	top: 50%;
-	margin-left: -276px;
-	margin-top: -285px;
+-moz-border-radius:10px;
+border-radius:10px;
+left:50%;
+position:absolute;
+-moz-box-shadow:5px 5px 10px 0 #3b3b3f;
+box-shadow:5px 5px 10px 0 #3b3b3f;
+width:550px;
+z-index:250;
+display:none;
+top:50%;
+margin-left:-276px;
+margin-top:-285px;
+background:url(../images/cam_bg.jpg) #d5d5d5
 }
 
 #CamBox #CamFlash {
@@ -575,11 +582,11 @@ width:200px
 }
 
 #CamBox .cambar {
-height:50px;
-margin-left:auto;
-margin-right:auto;
-padding-top:20px;
-width:210px
+	height:50px;
+	margin-left:auto;
+	margin-right:auto;
+	padding-top:20px;
+	width:300px;
 }
 
 #CamBox .cambar a {
@@ -596,16 +603,21 @@ background:url(../images/cam.png) no-repeat 50%;
 height:50px;
 width:100%
 }
-#CamBox .cambar #camClose {
+
+#CamBox .cambar #camClose,#CamBox .cambar #setCam {
 	color: #333;
+	
 }
-#CamBox .cambar #camClose:hover{
+#CamBox .cambar #setCam {
+margin-right: 30px;
+}
+#CamBox .cambar #camClose:hover,#CamBox .cambar #setCam:hover{
 	background-position: 0 -31px;
 	}
 #CamBox .cambar #CamOk {
 	background-position: -79px 0;
 	color: #fff;
-	margin-right: 50px;
+	margin-right: 30px;
 }
 #CamBox .cambar #CamOk:hover{
 background-position: -79px -31px;	
