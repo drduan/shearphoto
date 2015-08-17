@@ -4,17 +4,17 @@
 <meta  charset=utf-8 />
 <meta name="renderer" content="webkit"/>
 <meta http-equiv="X-UA-Compatible" content="IE=8,9,10">
-<title>图像，头像截取工具</title>
+<title>shearphoto1.3 头像截取工具,JS截图 切图插件，在线拍照截图</title>
 <link href="css/ShearPhoto.css" rel="stylesheet" type="text/css" media="all">
 <script  type="text/javascript" src="js/ShearPhoto.js" ></script><!--拉伸，截图的核心文件-->
 <script  type="text/javascript"  src="js/move.js" ></script><!--拖拽DIV JS文件 -->
 <script  type="text/javascript"  src="js/processdata.js" ></script><!--与服务器交互数据JS文件 -->
 <script  type="text/javascript"  src="js/UpImg.js" ></script>     <!--上传截图的JS文件 -->
-<script  type="text/javascript"  src="js/webcam.js" ></script>   <!--在线拍照 -->
+<script  type="text/javascript"  src="js/webcam_ShearPhoto.js" ></script>   <!--在线拍照 -->
 <script  type="text/javascript"  src="js/handle.js" ></script>    <!--设置和处理对象方法的文件，要修改设置，请进入这个文件 -->
 </head>
 <body>
-<!--ShearPhoto1.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写
+<!--ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写
 
       经过数20天的开发，shearphoto的第一个版本终于完成，
 我开发shearphoto的全因是切图，截图这类WEB插件实在太少，我特此还专门在网上下载过几个关于截图插件，
@@ -46,20 +46,20 @@ shearphoto的用途非常广，shearphoto截图灵敏，拉伸或拖拽时都非
 shearphoto的官方网站：www.shearphoto.com,网站有开发文档，以及shearphoto讨论区，大家可以在官网进行交流心得或者定制开发
 你也可以加入shearphoto官方QQ群：461550716，分享与我进行交流。
 
-    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：ShearPhoto1.2
+    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：ShearPhoto1.3
     
-                                                        版本号:ShearPhoto1.2
+                                                        版本号:ShearPhoto1.3
                                                         shearphoto官网：www.shearphoto.com
                                                         shearphoto官方QQ群：461550716
                                                                                                               2015年8月7日
                                                                                                                   明哥先生
 
 
-ShearPhoto1.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写-->
+ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写-->
 <!--头部-->
 <div class="header">
         <img src="images/logo.png" alt="ShearPhoto官方网站：www.shearphoto.com" title="ShearPhoto官方网站：www.shearphoto.com">
-<H1>ShearPhoto官方网站：<a href="http://www.shearphoto.com">www.shearphoto.com</a> 官方QQ群：461550716</H1>
+ <a href="http://www.shearphoto.com/bbs" title="shearphoto官方论坛">进入官方论坛</a> 
         <strong>
                 ShearPhoto 作者：明哥先生 QQ399195513-兼容所有浏览器，乞今最好的切图，截图工具！
   </strong>
@@ -72,7 +72,8 @@ ShearPhoto1.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP�
                 </div>
                 <!--没加载方法前-->
                 <div id="SelectBox">
-                <form    name="FORM" enctype="multipart/form-data" method="post"  target="POSTiframe"   > 
+                <form    name="FORM" enctype="multipart/form-data" method="post"  target="POSTiframe"> 
+                <input name="shearphoto" type="hidden" value="我要在这里传参数"> <!--示例传参数到服务端，后端文件用UPLOAD.php用$_POST['shearphoto']接收-->
                         <a href="javascript:;" id="selectImage"><input type="file"  name="UpFile" /></a>
                  </form>           
                         <a href="javascript:;" id="PhotoLoading"></a>
@@ -156,6 +157,7 @@ ShearPhoto1.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP�
 <div id="CamFlash"></div>
 <p class="cambar">
 <a href="javascript:;" id="CamOk"  >拍照</a>
+<a href="javascript:;" id="setCam">设置</a>
 <a href="javascript:;" id="camClose">关闭</a>
 <div style="clear:both;"></div>
 </p>
