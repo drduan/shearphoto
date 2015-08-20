@@ -1,8 +1,8 @@
-ShearPhoto1.3
+ShearPhoto1.4
 支持linux window服务器，国外空间等完美通过
 
 
-ShearPhoto1.3暂时只支持PHP，后续会加NET和JAVA以及NODEJS等后端版本
+ShearPhoto1.4暂时只支持PHP，后续会加NET和JAVA以及NODEJS等后端版本
 
 PHP支持5.2X至7的版本
 

@@ -1,5 +1,5 @@
 //拍照FLASH的AS脚本已全部重写，这是摄象头拍照的JS接口，感谢网友“ROC”对这个拍照FLASH提供开发帮助
-/*************ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
+/*************ShearPhoto1.4 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
 
       经过数20天的开发，shearphoto的第一个版本终于完成，
 我开发shearphoto的全因是切图，截图这类WEB插件实在太少，我特此还专门在网上下载过几个关于截图插件，
@@ -31,17 +31,17 @@ shearphoto的用途非常广，shearphoto截图灵敏，拉伸或拖拽时都非
 shearphoto的官方网站：www.shearphoto.com,网站有开发文档，以及shearphoto讨论区，大家可以在官网进行交流心得或者定制开发
 你也可以加入shearphoto官方QQ群：461550716，分享与我进行交流。
 
-    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：shearphoto1.3
+    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：shearphoto1.4
     
-                                                        版本号:shearphoto1.3
+                                                        版本号:shearphoto1.4
                                                         shearphoto官网：www.shearphoto.com
                                                         shearphoto官方QQ群：461550716
                                                                                                               2015年8月7日
                                                                                                                   明哥先生
 
-****************ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
+****************ShearPhoto1.4 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
 window.webcam = {
-          version:"shearphoto1.3",
+          version:"shearphoto1.4",
           // globals
           ie:!!navigator.userAgent.match(/MSIE/),
           protocol:location.protocol.match(/https/i) ? "https" :"http",
@@ -109,7 +109,7 @@ window.webcam = {
                     if (this.ie) {
                               html += '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="' + this.protocol + '://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="' + width + '" height="' + height + '" id="webcam_movie" align="middle"><param name="allowScriptAccess" value="always" /><param name="allowFullScreen" value="false" /><param name="movie" value="' + this.swf_url + "?bugid=" + Math.random() + '" /><param name="loop" value="false" /><param name="menu" value="false" /><param name="quality" value="best" /><param name="bgcolor" value="#ffffff" /><param name="flashvars" value="' + flashvars + '"/><param name="wmode" value="opaque"/></object>';
                     } else {
-                              html += '<embed id="webcam_movie" src="' + this.swf_url + '?bugid=1.3" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="' + width + '" height="' + height + '" name="webcam_movie" align="middle" allowScriptAccess="always" wmode="opaque" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="' + flashvars + '" />';
+                              html += '<embed id="webcam_movie" src="' + this.swf_url + '?bugid=1.4" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="' + width + '" height="' + height + '" name="webcam_movie" align="middle" allowScriptAccess="always" wmode="opaque" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="' + flashvars + '" />';
                     }
                     this.loaded = false;
                     return html;

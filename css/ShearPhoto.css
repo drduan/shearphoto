@@ -127,7 +127,6 @@ background-position: -43px -1px
 /*选择图片方式*/
 #SelectBox {
 background:url(../images/bg.png);
-hhdisplay:none;
 position:absolute;
 z-index:180
 }
@@ -150,8 +149,8 @@ z-index:180
 #SelectBox #selectImage,#SelectBox #PhotoLoading,#SelectBox #camerasImage {
 	-moz-border-radius:10px;
 	border-radius:10px;
-	-moz-box-shadow:1px 1px 10px 0 #3b3b3f;
-	box-shadow:1px 1px 10px 0 #3b3b3f;
+	-moz-box-shadow:2px 2px 7px 1px #3e4044;
+	     box-shadow:2px 2px 7px 1px #3e4044;
 	background:url(../images/Select.jpg) no-repeat;
 	display:block;
 	height:74px;
