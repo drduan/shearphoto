@@ -4,8 +4,8 @@
 <meta  charset=utf-8 />
 <meta name="renderer" content="webkit"/>
 <meta http-equiv="X-UA-Compatible" content="IE=8,9,10">
-<title>shearphoto1.3 头像截取工具,JS截图 切图插件，在线拍照截图</title>
-<link href="css/ShearPhoto.css" rel="stylesheet" type="text/css" media="all">
+<title>shearphoto1.4 头像截取工具,JS截图 切图插件，在线拍照截图</title>
+<link href="css/ShearPhoto.css" rel="stylesheet" type="text/css" media="all"><!--CSS文件，有点废话-->
 <script  type="text/javascript" src="js/ShearPhoto.js" ></script><!--拉伸，截图的核心文件-->
 <script  type="text/javascript"  src="js/move.js" ></script><!--拖拽DIV JS文件 -->
 <script  type="text/javascript"  src="js/processdata.js" ></script><!--与服务器交互数据JS文件 -->
@@ -14,7 +14,7 @@
 <script  type="text/javascript"  src="js/handle.js" ></script>    <!--设置和处理对象方法的文件，要修改设置，请进入这个文件 -->
 </head>
 <body>
-<!--ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写
+<!--ShearPhoto1.4 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写
 
       经过数20天的开发，shearphoto的第一个版本终于完成，
 我开发shearphoto的全因是切图，截图这类WEB插件实在太少，我特此还专门在网上下载过几个关于截图插件，
@@ -46,16 +46,16 @@ shearphoto的用途非常广，shearphoto截图灵敏，拉伸或拖拽时都非
 shearphoto的官方网站：www.shearphoto.com,网站有开发文档，以及shearphoto讨论区，大家可以在官网进行交流心得或者定制开发
 你也可以加入shearphoto官方QQ群：461550716，分享与我进行交流。
 
-    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：ShearPhoto1.3
+    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：ShearPhoto1.4
     
-                                                        版本号:ShearPhoto1.3
+                                                        版本号:ShearPhoto1.4
                                                         shearphoto官网：www.shearphoto.com
                                                         shearphoto官方QQ群：461550716
                                                                                                               2015年8月7日
                                                                                                                   明哥先生
 
 
-ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写-->
+ShearPhoto1.4 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写-->
 <!--头部-->
 <div class="header">
         <img src="images/logo.png" alt="ShearPhoto官方网站：www.shearphoto.com" title="ShearPhoto官方网站：www.shearphoto.com">
@@ -66,13 +66,13 @@ ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP�
 </div>
 <!--头部-->
 <!--主功能部份-->
-
+<!--主功能部份的标签请勿随意删除，除非你对shearphoto的原理了如指掌，否则JS找不到DOM对象，会给你抱出错误-->
         <div id="main">
            <div class="point">
                 </div>
                 <!--没加载方法前-->
                 <div id="SelectBox">
-                <form    name="FORM" enctype="multipart/form-data" method="post"  target="POSTiframe"> 
+                <form    id="ShearPhotoForm" enctype="multipart/form-data" method="post"  target="POSTiframe"> 
                 <input name="shearphoto" type="hidden" value="我要在这里传参数"> <!--示例传参数到服务端，后端文件用UPLOAD.php用$_POST['shearphoto']接收-->
                         <a href="javascript:;" id="selectImage"><input type="file"  name="UpFile" /></a>
                  </form>           
@@ -85,7 +85,7 @@ ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP�
                         </div>
                         <div id="movebox">
                                 <div id="smallbox">
-                                        <img src="images/default.png" class="MoveImg" />
+                                        <img src="images/default.gif" class="MoveImg" />
                                 </div>
                                 <i id="BottomRight">
                                 </i>
@@ -104,7 +104,7 @@ ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP�
                                 <i id="Bottommiddle">
                                 </i>
                         </div>
-                        <img src="images/default.png" class="BigImg" />
+                        <img src="images/default.gif" class="BigImg" />
                 </div>
         </div>
         <div id="Shearbar">
@@ -133,10 +133,10 @@ ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP�
                         <a id="saveShear" href="javascript:;">保存截图</a>
                 </p>
         </div>
-
+<!--主功能部份的标签请勿随意删除，除非你对shearphoto的原理了如指掌，否则JS找不到DOM对象，会给你抱出错误-->        
 <!--主功能部份-->
  <!--相册-->
-<div id="photoalbum">
+<div id="photoalbum"><!--假如你不要这个相册功能。把相册标签删除了，JS会抱出一个console.log()给你，注意查收，console.log的内容是告诉，某个DOM对象找不到-->
 <h1>假如：这是一个相册--------试试点击图片</h1>
 <i id="close"></i>
 <ul>
@@ -146,13 +146,13 @@ ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP�
 <li><img src="file/photo/4.jpg" serveUrl="file/photo/4.jpg" /></li>
 <li><img src="file/photo/5.jpg" serveUrl="file/photo/5.jpg" /></li>
 <li><img src="file/photo/6.jpg" serveUrl="file/photo/6.jpg" /></li>
-<li><img src="file/photo/7.jpg"  serveUrl="file/photo/7.jpg"/></li>
+<li><img src="file/photo/7.jpg" serveUrl="file/photo/7.jpg" /></li>
 <li><img src="file/photo/8.jpg" serveUrl="file/photo/8.jpg" /></li>
 </ul>
 </div>
 <!--相册-->
 <!--拍照-->
-<div id="CamBox">
+<div id="CamBox"><!--假如你不要这个拍照功能。把拍照标签删除了，JS会抱出一个console.log()给你，注意查收，console.log的内容是告诉，某个DOM对象找不到-->
 <p class="lens"></p>
 <div id="CamFlash"></div>
 <p class="cambar">
@@ -164,7 +164,7 @@ ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP�
 <div id="timing">3</div>
 </div>
 <!--拍照-->
-<!--底部-->  
+<!--底部 尽可能地保留作者肖像不要删-->  
   <div class="bottom">
    ShearPhoto作者：
    <span><img src="images/Author.png" title="这是shearphoto作者肖像，请你保留，不要删除" /> </span> 明哥先生 QQ399195513&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;ShearPhoto兼容目前所有浏览器&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;ShearPhoto官方网站：
@@ -175,6 +175,6 @@ ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP�
 <noscript><a href="http://www.51.la/?18250727" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/18250727.asp" style="border:none" /></a></noscript>
    <!--作者统计使用量，你可以删走 -->
   </div>
-  <!--底部-->
+  <!--底部 尽可能地保留作者肖像不要删-->
 </body>
 </html>

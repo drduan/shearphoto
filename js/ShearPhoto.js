@@ -1,4 +1,4 @@
-/*************ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
+/*************ShearPhoto1.4 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
 
       经过数20天的开发，shearphoto的第一个版本终于完成，
 我开发shearphoto的全因是切图，截图这类WEB插件实在太少，我特此还专门在网上下载过几个关于截图插件，
@@ -30,16 +30,16 @@ shearphoto的用途非常广，shearphoto截图灵敏，拉伸或拖拽时都非
 shearphoto的官方网站：www.shearphoto.com,网站有开发文档，以及shearphoto讨论区，大家可以在官网进行交流心得或者定制开发
 你也可以加入shearphoto官方QQ群：461550716，分享与我进行交流。
 
-    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：shearphoto1.3
+    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：shearphoto1.4
     
-                                                        版本号:shearphoto1.3
+                                                        版本号:shearphoto1.4
                                                         shearphoto官网：www.shearphoto.com
                                                         shearphoto官方QQ群：461550716
                                                                                                               2015年8月7日
                                                                                                                   明哥先生
 
 
-****************ShearPhoto1.3 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
+****************ShearPhoto1.4 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
 
 window.ShearPhoto = function() {
           this.transform = this.DomMoveEve = this.DomUpEve = this.MoveDivEve = this.zoomEve = this.eveMold = false;
@@ -321,7 +321,7 @@ ShearPhoto.prototype = {
                     this_.artworkW = this_.ImgWidth, this_.artworkH = this_.ImgHeight;
           },
           run:function(ImgUrl) {
-                    var this_ = this, arg = this.arg;
+                    var this_ = this, arg = this.arg,relatImgUrl=arg.relativeUrl+ImgUrl;
                     this.pointhandle(0, 10, "图片已加载，正在创建截图环境，请稍等.......", 2, "#fbeb61", "#3a414c");
                     var image = new Image();
                     this.defaultShear();
@@ -329,9 +329,9 @@ ShearPhoto.prototype = {
                     image.onload = function() {
                               if (!this.width > 0 || !this.height > 0) {
                                         this_.pointhandle(3e3, 10, "请选择正确图片", 0, "#f82373", "#fff");
-                                        return;
+                                         return;
                               }
-                              arg.ImgMain.src = arg.ImgDom.src = ImgUrl;
+                              arg.ImgMain.src = arg.ImgDom.src = relatImgUrl;
                               this_.pointhandle(3e3, 10, "可以拖动或拉伸蓝边框进行截图", 1, "#fbeb61", "#3a414c");
                               arg.Shearbar.style.display = "block";
                               arg.SelectBox.style.visibility = "hidden";
@@ -403,11 +403,14 @@ ShearPhoto.prototype = {
                               this_.zoom();
                     };
                     image.onerror = function() {
-                              this_.pointhandle(0, 10, "无法读取图片", 0, "#f82373", "#fff");
+                              this_.pointhandle(0, 10, "无法读取图片。请检测handle.js的relativeUrl参数是否存在问题", 0, "#f82373", "#fff");
                     };
-                    image.src = this.ImgUrl = ImgUrl;
+                    image.src = relatImgUrl;
+					this.ImgUrl = ImgUrl;
           },
           config:function(arg) {
+			        arg.relativeUrl=arg.relativeUrl.replace(/(^\s*)|(\s*$)/g,"");
+					arg.relativeUrl!=="" && (arg.relativeUrl +="/");
                     this.arg = arg;
                     arg.scope.style.width = arg.black.style.width = arg.SelectBox.style.width = arg.scopeWidth + "px";
                     arg.scope.style.height = arg.black.style.height = arg.SelectBox.style.height = arg.scopeHeight + "px";
@@ -669,9 +672,10 @@ ShearPhoto.prototype = {
           again:function() {
                     this.arg.SelectBox.style.visibility = "visible";
                     this.arg.Shearbar.style.display = "none";
-                    this.arg.ImgDom.src = this.arg.ImgMain.src = "images/default.png";
+                    this.arg.ImgDom.src = this.arg.ImgMain.src = this.arg.relativeUrl+"images/default.gif";
           },
-          complete:function(serverdata) {
+          complete:function(serverdata) {//截图完成，shearphoto.php返回数据过来
+			        //alert(serverdata);你可以调试一个这个返回包
                     var point = this.arg.scope.childNodes[0];
                     point.className === "point" && this.arg.scope.removeChild(point);
                     var complete = document.createElement("div");
@@ -680,7 +684,7 @@ ShearPhoto.prototype = {
                     this.arg.scope.insertBefore(complete, this.arg.scope.childNodes[0]);
                     var AllImgSrc = "";
                     var length = serverdata.length;
-                    for (var i = 0; i < length; i++) AllImgSrc += '<img src="' + serverdata[i]["ImgUrl"] + '"/>';
+                    for (var i = 0; i < length; i++) AllImgSrc += '<img src="' + this.arg.relativeUrl+serverdata[i]["ImgUrl"] + '"/>';
                     complete.innerHTML = AllImgSrc + '<div class="completeTxt"><strong><i></i>恭喜你！截图成功</strong> <p>以上是你图片的' + length + '种尺寸</p><a href="javascript:;" id="completeA">完成</a></div>';
                     var completeA = document.getElementById("completeA");
                     var this_ = this;
@@ -691,7 +695,7 @@ ShearPhoto.prototype = {
                               this_.pointhandle(3e3, 10, "截图完成！已返回！", 2, "#fbeb61", "#3a414c");
                     });
           },
-          SendPHP:function(postArgs) {
+          SendPHP:function(postArgs) {//发送坐标数据给PHP
                     var POSTHTML = "";
                     var SendPHPSmaller = function(W, H, P) {
                               if (W < 1) {
@@ -762,7 +766,7 @@ ShearPhoto.prototype = {
                                         this_.complete(serverdata);
                               },
                               error:function(ErroMsg) {
-                                        if (serverdata === false) this_.SendUserMsg("错误:连接后端失败，可能原因，超时！或者后端环境无法运行", 5e3, 0, "#f4102b", "#fff", false);
+                                        this_.SendUserMsg("错误:连接后端失败，可能原因，超时！或者后端环境无法运行", 5e3, 0, "#f4102b", "#fff", false);
                               },
                               cache:false
                     });
