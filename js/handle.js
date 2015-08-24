@@ -1,4 +1,4 @@
-/*************ShearPhoto1.4 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
+/*************ShearPhoto1.5 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
 
       经过数20天的开发，shearphoto的第一个版本终于完成，
 我开发shearphoto的全因是切图，截图这类WEB插件实在太少，我特此还专门在网上下载过几个关于截图插件，
@@ -30,16 +30,16 @@ shearphoto的用途非常广，shearphoto截图灵敏，拉伸或拖拽时都非
 shearphoto的官方网站：www.shearphoto.com,网站有开发文档，以及shearphoto讨论区，大家可以在官网进行交流心得或者定制开发
 你也可以加入shearphoto官方QQ群：461550716，分享与我进行交流。
 
-    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：shearphoto1.4
+    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：shearphoto1.5
     
-                                                        版本号:shearphoto1.4
+                                                        版本号:shearphoto1.5
                                                         shearphoto官网：www.shearphoto.com
                                                         shearphoto官方QQ群：461550716
                                                                                                               2015年8月7日
                                                                                                                   明哥先生
+更新提示：shearphoto1.3时已经加入JAVA版本！需要JAVA的用户请到官网进行下载。
 
-
-****************ShearPhoto1.4 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
+****************ShearPhoto1.5 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
 ShearPhoto.MINGGE(function() {
        var publicRelat= document.getElementById("relat");     //"relat"对像     
 	   var publicRelatImg=publicRelat.getElementsByTagName("img");  //"relat"下的两张图片对像   
@@ -51,7 +51,7 @@ ShearPhoto.MINGGE(function() {
 				//█████████重要设置█████████████████
 					        
 			       /*
-			        relativeUrl有必要详细讲一下，这是1.4新加入的API
+			        relativeUrl有必要详细讲一下，这是1.5新加入的API
 			        相对路径设置(后面不要有斜杠)！
 		            当index.html位置变动时，要填入此值，否则会抱出图片无法读取的情况，如果index.html位置不变，你为空就可以。专门为TP和YII等框架而加入的
 		            ----------------------------------------------------------------------------------------------------------------------
@@ -65,25 +65,28 @@ ShearPhoto.MINGGE(function() {
 					-----------------------------------------------------------------------------
 					 示例2：假如：index.htm        位于  http://xxx.com/abc/shearphot/def/index.html
 		            shearphoto/file  则位于  http://xxx.com/abc/shearphoto/file
-					那么relativeUrl就要写成    relativeUrl:"../"
+					那么relativeUrl就要写成    relativeUrl:".."
 					-----------------------------------------------------------------------------
 					 index.html位置变动后，记得还要手动把 选择图片，相册，拍照的后端处理地址也改一下相对路径哦，要不然报错又问为什么了，因为relativeUrl不作用于你的后端处理地址
 					 relativeUrl的设置比较重要，	表达能力有限，如果不懂，请到官网论坛 QQ群向作者资询	
 		            */
+					traverse:true,//是否在拖动拉伸时能历遍全图，可选true false,
 			        url:"php/shearphoto.php",//后端处理地址，保证正确哦，这是常识，连这个地址都能写错，你就是菜B
 			        scopeWidth:500,                 //可拖动范围宽  也就是"main"对象的初始大小  
                     scopeHeight:500,                //可拖动范围高  也就是"main"对象的初始大小  
-                    relat:publicRelat,              //请查看 id:"relat"对象 
                     proportional:[3/4,               <!--截框的宽高比例（宽除以高的比例值，这个设置其实就是0.75,不设比例请设为0，注意更改比例后，后端也要进行相应设置，否则系统会给你抱出错误-->
 					 100,                            //启动后的截框初始宽度
 					 133.33333                       //比例设置后，这个高度无效，由宽和比例来决定
 					  ],   
 				    Min:50,                 //截框拉伸或拖拽不能少于多少PX
 					Max:500,                //一开始启动时，图片的宽和高，有时候图片会很大的，必须要设置一下
-					Border:1,               //截框的边框大小
-                    BorderStyle:"solid",    //截框的边框类型，其实是引入CSS的border属性，和入CSS的border属性是一样的
-                    BorderColor:"#04B7FB",  //截框的边框色彩
-					/*---------------用户设置部份结束-----------------------------------------------------------------------*/ 
+					backgroundColor:"#000",   //遮层色
+					backgroundOpacity:0.6, //遮层透明度-数字0-1 可选
+					Border:0,               //截框的边框大小 0代表动态边框。大于1表示静态边框，大于1时也代表静态边框的粗细值
+                    BorderStyle:"solid",    //只作用于静态边框，截框的边框类型，其实是引入CSS的border属性，和入CSS的border属性是一样的
+                    BorderColor:"#09F",  //只作用于静态边框，截框的边框色彩
+					/*---------------用户设置截图功能部份结束-----------------------------------------------------------------------*/ 
+					relat:publicRelat,              //请查看 id:"relat"对象 
 					scope:document.getElementById("main"),//main范围对象 
 					ImgDom:publicRelatImg[0],         //截图图片对象（小）  
                     ImgMain:publicRelatImg[1],         //截图图片对象（大）
@@ -101,6 +104,7 @@ ShearPhoto.MINGGE(function() {
                               Rightmiddle:document.getElementById("Rightmiddle"),
                               Bottommiddle:document.getElementById("Bottommiddle")
                      },
+					 DynamicBorder:[document.getElementById("borderTop"),document.getElementById("borderLeft"),document.getElementById("borderRight"),document.getElementById("borderBottom")],
                      SelectBox:document.getElementById("SelectBox"),         //选择图片方式的对象
 					 Shearbar:document.getElementById("Shearbar"),          //截图工具条对象
                     UpFun:function() {                   //鼠标健松开时执行函数
@@ -127,7 +131,7 @@ var up = new ShearPhoto.frameUpImg({
 });
 
 up.run(function(data) {//upload.php成功返回数据后
-         //alert(data);你可以调试一个这个返回包
+         //alert(data);你可以调试一下这个返回包
           data = ShearPhoto.JsonString.StringToJson(data);
           if (data === false) {
                     Shear.SendUserMsg("错误:请保证后端环境运行正常", 5e3, 0, "#f4102b", "#fff",  true,true);
@@ -223,7 +227,7 @@ camerasImage.onclick=camerasImageOnclick;
 
 
 webcam.set_hook("onComplete", function(data) {//拍照服务器返回数据事件
-         //alert(data);你可以调试一个这个返回包
+         //alert(data);你可以调试一下这个返回包
          camClose.onclick();
 		 data = ShearPhoto.JsonString.StringToJson(data);
           if (data === false) {

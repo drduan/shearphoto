@@ -1,5 +1,5 @@
 <?php
-/*************ShearPhoto1.4 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*********
+/*************ShearPhoto1.5 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*********
 
       经过数20天的开发，shearphoto的第一个版本终于完成，
 我开发shearphoto的全因是切图，截图这类WEB插件实在太少，我特此还专门在网上下载过几个关于截图插件，
@@ -31,17 +31,19 @@ shearphoto的用途非常广，shearphoto截图灵敏，拉伸或拖拽时都非
 shearphoto的官方网站：www.shearphoto.com,网站有开发文档，以及shearphoto讨论区，大家可以在官网进行交流心得或者定制开发
 你也可以加入shearphoto官方QQ群：461550716，分享与我进行交流。
 
-    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：ShearPhoto1.4
+    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：ShearPhoto1.5
     
-                                                        版本号:ShearPhoto1.4
+                                                        版本号:ShearPhoto1.5
                                                         shearphoto官网：www.shearphoto.com
                                                         shearphoto官方QQ群：461550716
                                                                                                               2015年8月7日
                                                                                                                   明哥先生
+更新提示：shearphoto1.3时已经加入JAVA版本！需要JAVA的用户请到官网进行下载。
 
-
-****************ShearPhoto1.4 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*******/
+****************ShearPhoto1.5 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*******/
 header('Content-type:text/html;charset=utf-8');
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING); //关闭错误提示
+echo $bb;
 require("shearphoto.config.php");
  $ini_set = array(
     'max_size' => 2 * 1024 * 1024,  //文件大小限制设置  M单位
@@ -55,15 +57,9 @@ require("shearphoto.config.php");
  );
 /*设置部份结束*/
 ini_set('max_execution_time', $ini_set['out_time']);
-function errobug() {
-    $e = error_get_last();
-	$e['type'] > 0 and $e['type'] != 8 and HandleError();
-}
 function HandleError($erro = '系统错误') {
 	 die('{"erro":"'.$erro.'"}');
 }
-register_shutdown_function('errobug'); //注册FUNCTION,接收系统致命错误
-error_reporting(0); //关闭错误提示
 if (!isset($_FILES['UpFile'])) {
     HandleError();
 }
@@ -108,11 +104,12 @@ $UpFile['file_url'] = $ini_set['list'] . $UpFile['filename'];
 file_exists($ini_set['list']) or @mkdir($ini_set['list'], 511,true);
 
 if (!move_uploaded_file($_FILES['UpFile']['tmp_name'], $UpFile['file_url'])) {
-    HandleError('文件保存失败');
+    HandleError('move_uploaded_file函数无法执行，请检查！');
 }
+$UpFile['file_url']=str_replace(array(ShearURL,"\\"),array("","/"),$UpFile['file_url']);
 /*
 来到这里时，已经代表上传成功，你可以在这里尽情写的你逻辑
+$UpFile['file_url']就是那张临时待截图片的路径！
 */
- 
-echo('{"success":"'.str_replace(array("\\\\","\/",ShearURL,"\\"),array("\\","/","","/"),$UpFile['file_url']).'"}');
+echo('{"success":"'.$UpFile['file_url'].'"}');
 ?>

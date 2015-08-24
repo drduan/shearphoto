@@ -1,5 +1,5 @@
 <?php
-/*************ShearPhoto1.4 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*********
+/*************ShearPhoto1.5 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*********
 
       经过数20天的开发，shearphoto的第一个版本终于完成，
 我开发shearphoto的全因是切图，截图这类WEB插件实在太少，我特此还专门在网上下载过几个关于截图插件，
@@ -31,17 +31,18 @@ shearphoto的用途非常广，shearphoto截图灵敏，拉伸或拖拽时都非
 shearphoto的官方网站：www.shearphoto.com,网站有开发文档，以及shearphoto讨论区，大家可以在官网进行交流心得或者定制开发
 你也可以加入shearphoto官方QQ群：461550716，分享与我进行交流。
 
-    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：ShearPhoto1.4
+    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：ShearPhoto1.5
     
-                                                        版本号:ShearPhoto1.4
+                                                        版本号:ShearPhoto1.5
                                                         shearphoto官网：www.shearphoto.com
                                                         shearphoto官方QQ群：461550716
                                                                                                               2015年8月7日
                                                                                                                   明哥先生
+更新提示：shearphoto1.3时已经加入JAVA版本！需要JAVA的用户请到官网进行下载。
 
-
-****************ShearPhoto1.4 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*******/
+****************ShearPhoto1.5 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*******/
 header('Content-type:text/html;charset=utf-8');
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);//关闭错误提示
 require("shearphoto.config.php");
 $ShearPhoto["JSdate"]=isset($_POST["JSdate"])?json_decode(trim(stripslashes($_POST["JSdate"])),true):die('{"erro":"致命错误"}');
 //类开始
@@ -143,12 +144,10 @@ $ShearPhoto["JSdate"]=isset($_POST["JSdate"])?json_decode(trim(stripslashes($_PO
 				
         }
         $src = $this->rotate($src, $JSconfig["R"]);
-		
-			 
-        $dest = imagecreatetruecolor($JSconfig["IW"], $JSconfig["IH"]); 
+		$dest = imagecreatetruecolor($JSconfig["IW"], $JSconfig["IH"]); 
         imagecopy($dest, $src, 0, 0, $JSconfig["X"],  $JSconfig["Y"], $w, $h);
-	     imagedestroy($src);
-        return $this->compression($dest, $PHPconfig, $JSconfig["IW"], $JSconfig["IH"], $type, $strtype, $JSconfig);
+	    imagedestroy($src);
+        return $this->compression($dest, $PHPconfig, $JSconfig, $type, $strtype);
     }
     protected function CreateArray($PHPconfig, $JSconfig, $strtype) {
         $arr = array();
@@ -158,11 +157,8 @@ $ShearPhoto["JSdate"]=isset($_POST["JSdate"])?json_decode(trim(stripslashes($_PO
             $proportion = $JSconfig["IW"] / $JSconfig["IH"];
         }
 		  
-		  if (isset($PHPconfig["water"]) &&  $PHPconfig["water"]  && file_exists($PHPconfig["water"])) {
-              $water_or = true;
-        }else{
-			 $water_or=false;
-		}
+		   $water_or = isset($PHPconfig["water"]) &&  $PHPconfig["water"]  && file_exists($PHPconfig["water"]);
+         
 		if(!file_exists($PHPconfig["saveURL"])) 
 		if(!mkdir($PHPconfig["saveURL"],0777,true)){
 			$this->erro = "目录权限有问题";
@@ -173,29 +169,29 @@ $ShearPhoto["JSdate"]=isset($_POST["JSdate"])?json_decode(trim(stripslashes($_PO
             $height = $v[0] / $proportion;
             $strtype == ".jpeg" and $strtype = ".jpg";
             $file_url = $PHPconfig["saveURL"] .DIRECTORY_SEPARATOR. $PHPconfig["filename"] . $k . $strtype;
-            $water = ($v[1] === true && $water_or === true) ? true : false;
             $arr[$k] = array(
                 $v[0],
                 $height,
                 $file_url,
-                $water
+                ($v[1] === true and $water_or === true and $v[0] > $PHPconfig["water_scope"] and $height > $PHPconfig["water_scope"])
             );
         }
-        return $arr;
+        return array($water_or,$arr);
     }
-    protected function compression($DigShear,$PHPconfig, $w, $h, $type, $strtype, $JSconfig) {
+    protected function compression($DigShear,$PHPconfig, $JSconfig, $type, $strtype) {
         require 'zip_img.php'; 
 		$arrimg=$this->CreateArray($PHPconfig, $JSconfig, $strtype);
-		if(!$arrimg) return false;
-        $zip_photo = new zip_img(array(
+		if(!$arrimg[1]) return false;
+		  $arrimg[0] and $arrimg[0]= $PHPconfig["water"];
+		  $zip_photo = new zip_img(array(
             "dest" => $DigShear,
-            "water" => $PHPconfig["water"],
+            "water" => $arrimg[0],
             "water_scope" => $PHPconfig["water_scope"],
-            "w" => $w,
-            "h" => $h,
+            "w" => $JSconfig["IW"],
+            "h" => $JSconfig["IH"],
             "type" => $type,
             "strtype" => $strtype,
-            "zip_array" => $arrimg
+            "zip_array" => $arrimg[1]
         ));
         return $zip_photo->run();
     }
@@ -205,16 +201,14 @@ $ShearPhoto["JSdate"]=isset($_POST["JSdate"])?json_decode(trim(stripslashes($_PO
 $Shear =new ShearPhoto;//类实例开始
 $result = $Shear->run($ShearPhoto["JSdate"],$ShearPhoto["config"]);//传入参数运行
 if($result===false){       //切图失败时
- echo '{"erro":"'.$Shear->erro.'"}';            //把错误发给JS /请匆随意更改"erro"的编写方式，否则JS出错
+ echo '{"erro":"'.$Shear->erro.'"}';   //把错误发给JS /请匆随意更改"erro"的编写方式，否则JS出错
 }
 else //切图成功时
  {
 	 $dirname=pathinfo($ShearPhoto["JSdate"]["url"]);
 	 $ShearPhotodirname=$dirname["dirname"].DIRECTORY_SEPARATOR."shearphoto.lock";//认证删除的密钥
 	 file_exists($ShearPhotodirname) && @unlink($ShearPhoto["JSdate"]["url"]);//密钥存在，当然就删掉原图
-	 $result = json_encode($result); 
-	 echo str_replace(array("\\\\","\/",ShearURL,"\\"),array("\\","/","","/"),$result);//去掉无用的字符修正URL地址，再把数据传弟给JS
-      /*
+	  /*
      到此程序已运行完毕，并成功！你可以在这里愉快地写下你的逻辑代码
 	 $result[X]["ImgUrl"] //图片路径  X是数字
 	 $result[X]["ImgName"] //图片文件名字  X是数字
@@ -222,6 +216,8 @@ else //切图成功时
 	 $result[X]["ImgHeight"] //图片高度    X是数字
 	 用var_dump($result)展开，你便一目了然！  
       */
-     //ShearPhoto 作者:明哥先生 QQ399195513		
-  }
+     //ShearPhoto 作者:明哥先生 QQ399195513
+	 $str_result = json_encode($result);
+	 echo str_replace( "\/","/",$str_result);//去掉无用的字符修正URL地址，再把数据传弟给JS
+   }
 ?>

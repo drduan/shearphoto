@@ -1,4 +1,4 @@
-/*************ShearPhoto1.4 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
+/*************ShearPhoto1.5 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
 
       经过数20天的开发，shearphoto的第一个版本终于完成，
 我开发shearphoto的全因是切图，截图这类WEB插件实在太少，我特此还专门在网上下载过几个关于截图插件，
@@ -30,16 +30,16 @@ shearphoto的用途非常广，shearphoto截图灵敏，拉伸或拖拽时都非
 shearphoto的官方网站：www.shearphoto.com,网站有开发文档，以及shearphoto讨论区，大家可以在官网进行交流心得或者定制开发
 你也可以加入shearphoto官方QQ群：461550716，分享与我进行交流。
 
-    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：shearphoto1.4
+    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：shearphoto1.5
     
-                                                        版本号:shearphoto1.4
+                                                        版本号:shearphoto1.5
                                                         shearphoto官网：www.shearphoto.com
                                                         shearphoto官方QQ群：461550716
                                                                                                               2015年8月7日
                                                                                                                   明哥先生
+更新提示：shearphoto1.3时已经加入JAVA版本！需要JAVA的用户请到官网进行下载。
 
-
-****************ShearPhoto1.4 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
+****************ShearPhoto1.5 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
 
 window.ShearPhoto = function() {
           this.transform = this.DomMoveEve = this.DomUpEve = this.MoveDivEve = this.zoomEve = this.eveMold = false;
@@ -213,7 +213,7 @@ ShearPhoto.prototype = {
           },
           MovePhoto:function() {
                     var ImgDom = this.arg.ImgDom, ImgMain = this.arg.ImgMain, also, scale, ImgMainL, ImgMainT, ImgDomL, ImgDomT;
-                    if (this.BoxW < this.ImgWidth) {
+                    if (this.arg.traverse && this.BoxW < this.ImgWidth) {
                               var MinusImgWBoxW = this.ImgWidth - this.BoxW;
                               also = this.BoxW - this.formAllW;
                               scale = also && MinusImgWBoxW / also;
@@ -224,7 +224,7 @@ ShearPhoto.prototype = {
                               ImgMainL = 0;
                               ImgDomL = -this.formLeft - this.Border;
                     }
-                    if (this.BoxH < this.ImgHeight) {
+                    if (this.arg.traverse && this.BoxH < this.ImgHeight) {
                               var MinusImgHBoxH = this.ImgHeight - this.BoxH;
                               also = this.BoxH - this.formAllH;
                               scale = also && MinusImgHBoxH / also;
@@ -235,9 +235,11 @@ ShearPhoto.prototype = {
                               ImgMainT = 0;
                               ImgDomT = -this.formTop - this.Border;
                     }
-                    isNaN(ImgMainT) || (ImgMain.style.top = ImgMainT + this.ImgRotateT + "px", this.ImgMainT = ImgMainT), 
+                    if (this.arg.traverse) {
+                              isNaN(ImgMainT) || (ImgMain.style.top = ImgMainT + this.ImgRotateT + "px", this.ImgMainT = ImgMainT), 
+                              isNaN(ImgMainL) || (ImgMain.style.left = ImgMainL + this.ImgRotateL + "px", this.ImgMainL = ImgMainL);
+                    }
                     isNaN(ImgDomT) || (ImgDom.style.top = ImgDomT + this.ImgRotateT + "px", this.ImgDomT = ImgDomT), 
-                    isNaN(ImgMainL) || (ImgMain.style.left = ImgMainL + this.ImgRotateL + "px", this.ImgMainL = ImgMainL), 
                     isNaN(ImgDomL) || (ImgDom.style.left = ImgDomL + this.ImgRotateL + "px", this.ImgDomL = ImgDomL);
           },
           AmendOffset:function() {
@@ -295,8 +297,8 @@ ShearPhoto.prototype = {
                                         this.formH = H - this.Mdouble;
                               }
                     }
-                    this.arg.form.style.width = this.formW + "px";
-                    this.arg.form.style.height = this.formH + "px";
+                    this.arg.form.style.width = this.formW + "px", this.arg.form.style.height = this.formH + "px";
+                    this.ie6(this.formParent, this.formW, this.formH);
           },
           MaxMinLimit:function(this_) {
                     this_.ImgWidth = this_.ImgOWidth = this.width;
@@ -321,7 +323,7 @@ ShearPhoto.prototype = {
                     this_.artworkW = this_.ImgWidth, this_.artworkH = this_.ImgHeight;
           },
           run:function(ImgUrl) {
-                    var this_ = this, arg = this.arg,relatImgUrl=arg.relativeUrl+ImgUrl;
+                    var this_ = this, arg = this.arg, relatImgUrl = arg.relativeUrl + ImgUrl;
                     this.pointhandle(0, 10, "图片已加载，正在创建截图环境，请稍等.......", 2, "#fbeb61", "#3a414c");
                     var image = new Image();
                     this.defaultShear();
@@ -329,7 +331,7 @@ ShearPhoto.prototype = {
                     image.onload = function() {
                               if (!this.width > 0 || !this.height > 0) {
                                         this_.pointhandle(3e3, 10, "请选择正确图片", 0, "#f82373", "#fff");
-                                         return;
+                                        return;
                               }
                               arg.ImgMain.src = arg.ImgDom.src = relatImgUrl;
                               this_.pointhandle(3e3, 10, "可以拖动或拉伸蓝边框进行截图", 1, "#fbeb61", "#3a414c");
@@ -344,7 +346,6 @@ ShearPhoto.prototype = {
                               this_.BoxH = arg.scope.offsetHeight - 2;
                               this_.Border = arg.Border;
                               this_.Mdouble = arg.Border * 2;
-                              arg.form.style.border = arg.Border + "px" + "  " + arg.BorderStyle + "  " + arg.BorderColor;
                               var W, H;
                               if (arg.proportional[0]) {
                                         W = arg.proportional[1] - this_.Mdouble;
@@ -357,7 +358,6 @@ ShearPhoto.prototype = {
                               this_.formH = H;
                               this_.formAllW = W + this_.Mdouble;
                               this_.formAllH = H + this_.Mdouble;
-                              arg.form.style.width = W + "px", arg.form.style.height = H + "px";
                               this_.formParent = arg.form.offsetParent;
                               this_.et();
                               this_.setinitial(arg);
@@ -406,18 +406,40 @@ ShearPhoto.prototype = {
                               this_.pointhandle(0, 10, "无法读取图片。请检测handle.js的relativeUrl参数是否存在问题", 0, "#f82373", "#fff");
                     };
                     image.src = relatImgUrl;
-					this.ImgUrl = ImgUrl;
+                    this.ImgUrl = ImgUrl;
           },
           config:function(arg) {
-			        arg.relativeUrl=arg.relativeUrl.replace(/(^\s*)|(\s*$)/g,"");
-					arg.relativeUrl!=="" && (arg.relativeUrl +="/");
+                    arg.relativeUrl = arg.relativeUrl.replace(/(^\s*)|(\s*$)/g, "");
+                    arg.relativeUrl !== "" && (arg.relativeUrl += "/");
                     this.arg = arg;
+                    arg.Shearbar.style.display = "none";
                     arg.scope.style.width = arg.black.style.width = arg.SelectBox.style.width = arg.scopeWidth + "px";
                     arg.scope.style.height = arg.black.style.height = arg.SelectBox.style.height = arg.scopeHeight + "px";
-                    this.pointhandle(3e3, 10, "请选择本地照片或相册，进行截取头像", 2, "#307ff6", "#fff");
+                    var opacityFun;
+                    if (this.transform) opacityFun = function(t, n) {
+                              t.style.opacity = n;
+                    }; else opacityFun = function(t, n) {
+                              t.style.filter = "alpha(opacity=" + n * 100 + ")";
+                    };
+                    if (arg.Border > 0) {
+                              arg.DynamicBorder[0].style.display = arg.DynamicBorder[1].style.display = arg.DynamicBorder[2].style.display = arg.DynamicBorder[3].style.display = "none";
+                              arg.DynamicBorder[0].style.background = arg.DynamicBorder[1].style.background = arg.DynamicBorder[2].style.background = arg.DynamicBorder[3].style.background = "#FFF";
+                              for (var a in arg.to) {
+                                        arg.to[a].style.border = "1px solid" + " " + arg.BorderColor;
+                                        arg.to[a].style.background = arg.BorderColor;
+                                        opacityFun(arg.to[a], 1);
+                              }
+                              arg.form.style.border = arg.Border + "px" + "  " + arg.BorderStyle + "  " + arg.BorderColor;
+                    }
+                    arg.black.style.background = arg.backgroundColor;
+                    opacityFun(arg.black, arg.backgroundOpacity);
                     arg.scope.ondragstart = function() {
                               return false;
                     };
+                    if (navigator.userAgent.indexOf("MSIE 6.0") > 0 && arg.Border === 0) this.ie6 = function(a, b, c) {
+                              a.style.width = b + 1 + "px", a.style.height = c + 1 + "px";
+                    }; else this.ie6 = function() {};
+                    this.pointhandle(3e3, 10, "请选择本地照片或相册，进行截取头像", 2, "#307ff6", "#fff");
           },
           zoom:function() {
                     var this_ = this;
@@ -592,12 +614,12 @@ ShearPhoto.prototype = {
                     var L = iW - this.formAllW, T = iH - this.formAllH, Left, Top, ImgLeft, ImgTop, this_ = this;
                     var fun = {
                               LL:function() {
-                                        Left = this_.formLeft - L;
+                                        Left = parseFloat(this_.formLeft - L);
                                         this_.formLeft = Left;
                                         formParent.style.left = Left + "px";
                               },
                               TT:function() {
-                                        Top = this_.formTop - T;
+                                        Top = parseFloat(this_.formTop - T);
                                         this_.formTop = Top;
                                         formParent.style.top = Top + "px";
                               },
@@ -646,8 +668,8 @@ ShearPhoto.prototype = {
                                         this_.formAllH = iH;
                                         iW = this_.formW = iW - this_.Mdouble;
                                         iH = this_.formH = iH - this_.Mdouble;
-                                        argform.style.width = iW + "px";
-                                        argform.style.height = iH + "px";
+                                        argform.style.width = iW + "px", argform.style.height = iH + "px";
+                                        this_.ie6(formParent, iW, iH);
                                         this_.MovePhoto();
                               }, 1);
                               return false;
@@ -672,10 +694,11 @@ ShearPhoto.prototype = {
           again:function() {
                     this.arg.SelectBox.style.visibility = "visible";
                     this.arg.Shearbar.style.display = "none";
-                    this.arg.ImgDom.src = this.arg.ImgMain.src = this.arg.relativeUrl+"images/default.gif";
+                    this.arg.ImgDom.src = this.arg.ImgMain.src = this.arg.relativeUrl + "images/default.gif";
           },
-          complete:function(serverdata) {//截图完成，shearphoto.php返回数据过来
-			        //alert(serverdata);你可以调试一个这个返回包
+          complete:function(serverdata) {
+                    //截图成功完成时，由shearphoto.php返回数据过来的包
+                    // alert(serverdata);//你可以调试一下这个返回包
                     var point = this.arg.scope.childNodes[0];
                     point.className === "point" && this.arg.scope.removeChild(point);
                     var complete = document.createElement("div");
@@ -684,7 +707,7 @@ ShearPhoto.prototype = {
                     this.arg.scope.insertBefore(complete, this.arg.scope.childNodes[0]);
                     var AllImgSrc = "";
                     var length = serverdata.length;
-                    for (var i = 0; i < length; i++) AllImgSrc += '<img src="' + this.arg.relativeUrl+serverdata[i]["ImgUrl"] + '"/>';
+                    for (var i = 0; i < length; i++) AllImgSrc += '<img src="' + this.arg.relativeUrl + serverdata[i]["ImgUrl"] + '"/>';
                     complete.innerHTML = AllImgSrc + '<div class="completeTxt"><strong><i></i>恭喜你！截图成功</strong> <p>以上是你图片的' + length + '种尺寸</p><a href="javascript:;" id="completeA">完成</a></div>';
                     var completeA = document.getElementById("completeA");
                     var this_ = this;
@@ -695,7 +718,8 @@ ShearPhoto.prototype = {
                               this_.pointhandle(3e3, 10, "截图完成！已返回！", 2, "#fbeb61", "#3a414c");
                     });
           },
-          SendPHP:function(postArgs) {//发送坐标数据给PHP
+          SendPHP:function(postArgs) {
+                    //发送坐标数据给PHP
                     var POSTHTML = "";
                     var SendPHPSmaller = function(W, H, P) {
                               if (W < 1) {
@@ -753,7 +777,8 @@ ShearPhoto.prototype = {
                               async:true,
                               lock:true,
                               complete:false,
-                              success:function(serverdata) {
+                              success:function(serverdata) {     //与shearphoto.php后端通讯！
+							  //alert(serverdata)//你可以调试一下这个包
                                         serverdata = ShearPhoto.JsonString.StringToJson(serverdata);
                                         if (serverdata === false) {
                                                   this_.SendUserMsg("错误:请保证后端环境运行正常", 5e3, 0, "#f4102b", "#fff", false);
@@ -763,7 +788,7 @@ ShearPhoto.prototype = {
                                                   this_.SendUserMsg("错误:" + serverdata["erro"], 5e3, 0, "#f4102b", "#fff", false);
                                                   return;
                                         }
-                                        this_.complete(serverdata);
+                                        this_.complete(serverdata);//没有错误时，执行成功函数
                               },
                               error:function(ErroMsg) {
                                         this_.SendUserMsg("错误:连接后端失败，可能原因，超时！或者后端环境无法运行", 5e3, 0, "#f4102b", "#fff", false);

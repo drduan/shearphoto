@@ -1,5 +1,5 @@
 <?php
-/*************ShearPhoto1.4 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*********
+/*************ShearPhoto1.5 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*********
 
       经过数20天的开发，shearphoto的第一个版本终于完成，
 我开发shearphoto的全因是切图，截图这类WEB插件实在太少，我特此还专门在网上下载过几个关于截图插件，
@@ -31,16 +31,15 @@ shearphoto的用途非常广，shearphoto截图灵敏，拉伸或拖拽时都非
 shearphoto的官方网站：www.shearphoto.com,网站有开发文档，以及shearphoto讨论区，大家可以在官网进行交流心得或者定制开发
 你也可以加入shearphoto官方QQ群：461550716，分享与我进行交流。
 
-    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：ShearPhoto1.4
+    shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto  本程序版本号：ShearPhoto1.5
     
-                                                        版本号:ShearPhoto1.4
+                                                        版本号:ShearPhoto1.5
                                                         shearphoto官网：www.shearphoto.com
                                                         shearphoto官方QQ群：461550716
                                                                                                               2015年8月7日
-                                                                                                                  明哥先生
+ 更新提示：shearphoto1.3时已经加入JAVA版本！需要JAVA的用户请到官网进行下载。                                                                                                                 明哥先生
 
-
-****************ShearPhoto1.4 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*******/
+****************ShearPhoto1.5 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*******/
 class zip_img {
     protected $arg;
     protected $waterimg = false;
@@ -48,8 +47,8 @@ class zip_img {
 	protected $result =array();
     final function __construct($arg) {
         $this->arg = $arg;
-        if (isset($arg["water"]) and $arg["water"] and file_exists($arg["water"])) {
-            list($W, $H, $type) = getimagesize($arg["water"]);
+        if ($arg["water"]) {
+            list($W, $H, $type) = @getimagesize($arg["water"]);
             if ($type == 3) {
                 $this->waterimg = array(
                     imagecreatefrompng($arg["water"]) ,
@@ -78,19 +77,17 @@ class zip_img {
     protected function zip_img($dest, $width, $height, $save_url, $water) {
         $createsrc = imagecreatetruecolor($width, $height);
         imagecopyresampled($createsrc, $dest, 0, 0, 0, 0, $width, $height, $this->arg["w"], $this->arg["h"]);
-        $water === true and $createsrc = $this->add_water($createsrc, $width, $height);
+        $water and $createsrc = $this->add_water($createsrc, $width, $height);
         $this->saveimg($createsrc,$save_url,$width, $height);
     }
     protected function add_water($src, $width, $height) {
-        if ($this->waterimg and is_numeric($this->arg["water_scope"]) and $width > $this->arg["water_scope"] and $height > $this->arg["water_scope"]) {
-            imagecopy($src, $this->waterimg[0], $width - $this->waterimg[1] - 10, $height - $this->waterimg[2] - 10, 0, 0, $this->waterimg[1], $this->waterimg[2]);
-        }
+        imagecopy($src, $this->waterimg[0], $width - $this->waterimg[1] - 10, $height - $this->waterimg[2] - 10, 0, 0, $this->waterimg[1], $this->waterimg[2]);
         return $src;
     }
     protected function saveimg($createsrc, $save_url,$width, $height) {
         @call_user_func($this->GDfun, $createsrc, $save_url);
         imagedestroy($createsrc);
-		array_push($this->result,array("ImgUrl"=>$save_url, "ImgName"=>basename($save_url),"ImgWidth"=>$width,"ImgHeight"=>$height));
+		array_push($this->result,array("ImgUrl"=>str_replace(array(ShearURL,"\\"),array("","/"),$save_url), "ImgName"=>basename($save_url),"ImgWidth"=>$width,"ImgHeight"=>$height));
     }
     final function __destruct() {
         @imagedestroy($this->arg["dest"]);
@@ -99,6 +96,7 @@ class zip_img {
     public function run() {
         $dest = $this->arg["dest"];
         $zip_array = $this->arg["zip_array"];
+		$water =$this->waterimg and is_numeric($this->arg["water_scope"]);
         foreach ($zip_array as $k => $v) {
             list($width, $height, $save_url, $water) = $v;
             $this->zip_img($dest, $width, $height, $save_url, $water);
