@@ -1,4 +1,15 @@
-shearphoto2.0  是HTML5头像截图插件，拍照截图，JS截图，美工切图插件，能直接压缩数码相机图片进行截图！是互联网上写得最好的一个同类型插件 ShearPhoto 完美支持Linux Windows 服务器，国外空间等完美通过。 兼容IE6及所有浏览器,兼容PHP5.2X至PHP7.0！ ShearPhoto拖动拉伸超准，超流畅，在互联网同类型软件绝对排行第一，除了shearphoto，你别无选择！
+shearphoto2.1  是HTML5头像截图插件，拍照截图，JS截图，美工切图插件，能直接压缩数码相机图片进行截图！是互联网上写得最好的一个同类型插件 ShearPhoto 完美支持Linux Windows 服务器，国外空间等完美通过。 兼容IE6及所有浏览器,兼容PHP5.2X至PHP7.0！ ShearPhoto拖动拉伸超准，超流畅，在互联网同类型软件绝对排行第一，除了shearphoto，你别无选择！
+
+shearphoto2.1 版本升级概况
+
+
+  1： 这个版本并没有新功能的加入，主要修复shearphoto2.0遗留的BUG，而且修复的BUG较多也较为严重，那就不再一一列举了！
+  2： 对程序再次进行深度优化一遍！
+  3： 生成的截图的截图名称以前是写死0 1 2 3... 修改后，能自定义截图尾部的名称
+  3： 对部份表述不清的注释，重新整理了一下
+
+请下载2.1源码体验  2005年9月9日升 11：54分
+
 
 JAVA用户请到http://git.oschina.net/alexyang/JFinal-shearphoto 下载
 
@@ -53,4 +64,5 @@ shearphoto采用原生JS + 原生PHP所写，绝对不含JQ插件，对JQ情有�
                                                                                                          shearphoto作者：明哥先生
                                                                                                          版本号:shearphoto1.5
                                                                                                                                                             shearphoto官网：www.shearphoto.com
-                                                                                                                                              shearphoto官方QQ群：461550716         
+                                                                                                                                              shearphoto官方QQ群：461550716                                                                         
+
