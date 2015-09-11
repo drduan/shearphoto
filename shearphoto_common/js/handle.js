@@ -1,4 +1,4 @@
-/*************ShearPhoto2.0 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
+/*************ShearPhoto2.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
     从shearphoto 1.5直接跳跃到shearphoto 2.0，这是shearphoto重大革新。本来我是想shearphoto 1.6 、1.7、 1.8 慢慢升的，但是这样升级只会让shearphoto慢慢走向灭亡！
 结果我又辛苦了一个多星期，把shearphoto 2.0升级完成！
 shearphoto2.0之前，我认为没必要加入HTML5，兼容IE6 7 8就够。但是直到后来！我知道这是我一个错误的决定
@@ -46,15 +46,14 @@ shearphoto采用原生JS面向对象 + 原生PHP面向对象开发，绝对不�
 
                                                                                                          2015  年  9月  5 日  
                                                                                                          shearphoto作者：明哥先生
-                                                                                                         版本号:shearphoto2.0
+                                                                                                         版本号:shearphoto2.1
                                                                                                          shearphoto官网：www.shearphoto.com
                                                                                                          shearphoto官方QQ群：461550716  
 
-****************ShearPhoto2.0 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
+****************ShearPhoto2.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
 
      /*----------------------------注释结束--程序开始-----------------------------------------------------------*/
-
-ShearPhoto.MINGGE(function() {
+window.ShearPhoto.MINGGE(function() {
 		          //██████████重要设置████████████████
 		
 	               var relativeUrl= "shearphoto_common"; //你不要在后面加斜杠，系统会自动给你加上斜杠，不信看下面！   index.html的JS引用路径自己改，很简单的说
@@ -82,16 +81,16 @@ ShearPhoto.MINGGE(function() {
 	           	//█████████重要设置█████████████████
 	      relativeUrl = relativeUrl.replace(/(^\s*)|(\s*$)/g, "");//去掉相对路径的所有空格
           relativeUrl === "" || (relativeUrl += "/");//在相对地址后面加斜框，不需要用户自己加
-		   var publicRelat= document.getElementById("relat");     //"relat"对像     
-	       var publicRelatImg=publicRelat.getElementsByTagName("img");  //"relat"下的两张图片对像   
-	       var Shear = new ShearPhoto;
+		  var publicRelat= document.getElementById("relat");     //"relat"对像     
+	      var publicRelatImg=publicRelat.getElementsByTagName("img");  //"relat"下的两张图片对像   
+	      var Shear = new ShearPhoto;
           Shear.config({
 			     	/*---------------用户设置部份开始-----------------------------------------------------------------------*/ 
 			            relativeUrl:relativeUrl,  //取回相对路径，不懂原理的话，你不要改动哦，否则你又鸡巴痛了
 					 
 					    traverse:true,//可选 true,false 。 是否在拖动或拉伸时允许历遍全图（是否让大图动呢）,
 					
-		/*HTML5重点功能*/	translate3d:false,  //默认没有开启，作者认为PC端没必要！手机端效果会明显！是否开启3D移动，CPU加速。可选true  false。 原来是采用left top进行定位的，那么3D移动就是CSS3的translate3d属性。去百度一下translate3D吧
+		/*HTML5重点功能*/	translate3d:false,  //是否开启3D移动，CPU加速。可选true  false。默认关闭的，作者认为PC端没必要！在PC端开启后，有部份浏览器页面走位的问题。主要是各大浏览器不统一所致，手机端效果会明显！PC端没什么感觉。 原来是采用left top进行定位的，那么3D移动就是CSS3的translate3d属性。去百度一下translate3D吧
 					
 		/*HTML5重点功能*/HTML5:true,//可选 true,false  是否使用HTML5进行切图 ，支持HTML5浏览器会使用HTML5进行切图，没有HTML5浏览器则采用原始的方式(先上传大图再截取)，SHEARPHOTO这个方案无可挑剔了吧！
 					
@@ -107,36 +106,36 @@ ShearPhoto.MINGGE(function() {
 				
 				/*记住 preview (预览图片功能) 尽量设false*/
 				
-					preview:[150],// 开启动态预览图片 (数组成员整数型，禁止含小数点 可选false 和数组)     数组内是宽度设置，没有高度设！因为高度会按比例做事 ，此设置代表分别预览150 大小的预览图（你可以增加多个预览图），设置越多预览图,shearphoto性能越差！官方不建意你开启这个功能，尽可能请设为preview:false
+					      preview:[100],// 开启动态预览图片 (数组成员整数型，禁止含小数点 可选false 和数组)     数组内是宽度设置，没有高度设！因为高度会按比例做事 ，此设置代表分别预览150 大小的预览图（你可以增加多个预览图），设置越多预览图,shearphoto性能越差！官方不建意你开启这个功能，尽可能请设为preview:false
 			      
 			   /*记住 preview 尽量设false*/ 
 			      
-					url:relativeUrl+"php/shearphoto.php",   //后端处理地址，保证正确哦，这是常识，连这个地址都能写错，你就是菜B，已经在本版本中帮你加入相对路径，你基本不用改这里了
+					          url:relativeUrl+"php/shearphoto.php",   //后端处理地址，保证正确哦，这是常识，连这个地址都能写错，你就是菜B，已经在本版本中帮你加入相对路径，你基本不用改这里了
 			        
-					scopeWidth:500,                 //可拖动范围宽  也就是"main"对象的初始大小(整数型，禁止含小数点)  
+					    scopeWidth:500,                 //可拖动范围宽  也就是"main"对象的初始大小(整数型，禁止含小数点)  
                     
-					scopeHeight:500,                //可拖动范围高  也就是"main"对象的初始大小(整数型，禁止含小数点)    
+					   scopeHeight:500,                //可拖动范围高  也就是"main"对象的初始大小(整数型，禁止含小数点)    
                     
-					proportional:[1/1,               <!--截框的宽高比例（宽除以高的比例值，这个设置其实就是0.75,不设比例请设为0，注意更改比例后，后端也要进行相应设置，否则系统会给你抱出错误-->
+				      proportional:[1/1,               <!--截框的宽高比例（宽除以高的比例值，这个设置其实就是1，对！你可以直接写1  如填3/4 那么就是0.75的比例,不设比例请设为0，注意更改比例后，后端也要进行相应设置，否则系统会给你抱出错误-->
 					 
 					 100,                      //必须整数！启动后的截框初始宽度(整数型，禁止含小数点)  
 					
 					 133                       //比例设置后，这个高度无效，由宽和比例来决定(整数型，禁止含小数点)  
 					  ],   
 				   
-				    Min:50,                 //截框拉伸或拖拽不能少于多少PX(整数型，禁止含小数点)  
+				               Min:50,                 //截框拉伸或拖拽不能少于多少PX(整数型，禁止含小数点)  
 					
-					Max:500,                //一开始启动时，图片的宽和高，有时候图片会很大的，必须要设置一下(整数型，禁止含小数点)  
+					           Max:500,                //一开始启动时，图片的宽和高，有时候图片会很大的，必须要设置一下(整数型，禁止含小数点)  
 					
-					backgroundColor:"#000",   //遮层色
+				   backgroundColor:"#000",   //遮层色
 					
-					backgroundOpacity:0.6, //遮层透明度-数字0-1 可选
+			     backgroundOpacity:0.6, //遮层透明度-数字0-1 可选
 					
-					Border:0,               //截框的边框大小 0代表动态边框。大于0表示静态边框，大于0时也代表静态边框的粗细值
+					        Border:0,               //截框的边框大小 0代表动态边框。大于0表示静态边框，大于0时也代表静态边框的粗细值
                     
-					BorderStyle:"solid",    //只作用于静态边框，截框的边框类型，其实是引入CSS的border属性，和CSS2的border属性是一样的
+				       BorderStyle:"solid",    //只作用于静态边框，截框的边框类型，其实是引入CSS的border属性，和CSS2的border属性是一样的
                     
-					BorderColor:"#09F",  //只作用于静态边框，截框的边框色彩
+				       BorderColor:"#09F",  //只作用于静态边框，截框的边框色彩
 					/*---------------用户设置截图功能部份..还没结束----------------------页面下面还有一些细节设置，去看一下-------------------------------------------------*/ 
 					relat:publicRelat,              //请查看 id:"relat"对象 
 					scope:document.getElementById("main"),//main范围对象 
@@ -160,9 +159,9 @@ ShearPhoto.MINGGE(function() {
 					 DynamicBorder:[document.getElementById("borderTop"),document.getElementById("borderLeft"),document.getElementById("borderRight"),document.getElementById("borderBottom")],
                      SelectBox:document.getElementById("SelectBox"),         //选择图片方式的对象
 					 Shearbar:document.getElementById("Shearbar"),          //截图工具条对象
-                    UpFun:function() {                   //鼠标健松开时执行函数
+                     UpFun:function() {                   //鼠标健松开时执行函数
                               Shear.MoveDiv.DivWHFun();   //把截框现时的宽高告诉JS    
-                    }
+                     }
                     
           });
 		/*--------------------------------------------------------------截图成功后，返回来的callback-------------------------*/  
@@ -203,31 +202,36 @@ var photoalbum = document.getElementById("photoalbum");//相册对象
 
 /*.................................................选择图片上传的设置...............................................................*/
 
+var ShearPhotoForm = document.getElementById("ShearPhotoForm");//FORM对象
+ShearPhotoForm.UpFile.onclick=function(){return false}//一开始时先不让用户点免得事件阻塞
 var up = new ShearPhoto.frameUpImg({
-           url:relativeUrl+"php/upload.php",//HTML5切图时，不会用到该文件，后端处理地址，保证正确哦，这是常识，连这个地址都能写错，你就是菜B，已经在本版本中帮你加入相对路径，你基本不用改这里了
+	
+	         url:relativeUrl+"php/upload.php",            //HTML5切图时，不会用到该文件，后端处理地址，保证正确哦，这是常识，连这个地址都能写错，你就是菜B，已经在本版本中帮你加入相对路径，你基本不用改这里了
+		   
+		    FORM:ShearPhotoForm,                         //FORM对象传到设置
 		   
 		  UpType:new Array("jpg", "jpeg", "png", "gif"),//图片类限制，上传的一定是图片，你就不要更改了
           
-		  FilesSize:2,                             //选择的图片不能超过 单位M
+	   FilesSize:2,                             //选择的图片不能超过 单位M
 		  
-		 HTML5:Shear.HTML5,                       //切匆改动这句，不然你他妈又问为什么出错
+		   HTML5:Shear.HTML5,                       //切匆改动这句，不然你他妈又问为什么出错
 			
-		 HTML5FilesSize:Shear.arg.HTML5FilesSize,//切匆改动这句 如果是HTML5切图时，选择的图片不能超过 单位M，设太大话，如果客户端HTML5加截超大图片时，会卡爆的
+  HTML5FilesSize:Shear.arg.HTML5FilesSize,//切匆改动这句 如果是HTML5切图时，选择的图片不能超过 单位M，设太大话，如果客户端HTML5加截超大图片时，会卡爆的
          
-		 HTML5ZIP:Shear.arg.HTML5ZIP,           //切匆改动这句, 把压缩设置转移到这里
+	    HTML5ZIP:Shear.arg.HTML5ZIP,      //切匆改动这句, 把压缩设置转移到这里
 		  
-		 erro:function(msg) {
+	        erro:function(msg) {
                     Shear.pointhandle(3e3, 10, msg, 0, "#f82373", "#fff");
 		  },
          fileClick:function(){//先择图片被点击时，触发的事件
 		   Shear.pointhandle(-1);//关闭提示，防止线程阻塞事件冒泡
 			 },
-		  preced:function(True) {
+		  preced:function(fun) { //点击选择图，载入图片时的事件
                   try{
 				  photoalbum.style.display = "none"; //什么情况下都关了相册
                   camClose.onclick(); //什么情况下都关了视频
 				  }catch (e){console.log("在加载图片时，发现相册或拍照的对象检测不到，错误代码："+e);}
-				Shear.pointhandle(0, 10, "正在为你加载图片，请你稍等哦......", 2, "#307ff6", "#fff");
+				 Shear.pointhandle(0, 10, "正在为你加载图片，请你稍等哦......", 2, "#307ff6", "#fff",fun);
           }
 });
 
@@ -284,7 +288,7 @@ PhotoLoading.onclick = function() {             //从相册选取事件
           Shear.Rotate("right");
 });
  
- Shear.addEvent(document.getElementById("againIMG"), "click", function() {          //重新选择事件
+ Shear.addEvent(document.getElementById("againIMG"), "click", function() {     //重新选择事件
            Shear.preview.close_();
 		   Shear.again();
 		   Shear.HTML5.EffectsReturn();

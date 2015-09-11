@@ -1,5 +1,5 @@
 <?php 
-/*************ShearPhoto2.0免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*********
+/*************ShearPhoto2.1免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*********
  
      从shearphoto 1.5直接跳跃到shearphoto 2.0，这是shearphoto重大革新。本来我是想shearphoto 1.6 、1.7、 1.8 慢慢升的，但是这样升级只会让shearphoto慢慢走向灭亡！
 结果我又辛苦了一个多星期，把shearphoto 2.0升级完成！
@@ -48,15 +48,13 @@ shearphoto采用原生JS面向对象 + 原生PHP面向对象开发，绝对不�
 
                                                                                                          2015  年  9月  5 日  
                                                                                                          shearphoto作者：明哥先生
-                                                                                                         版本号:shearphoto2.0
+                                                                                                         版本号:shearphoto2.1
                                                                                                          shearphoto官网：www.shearphoto.com
                                                                                                          shearphoto官方QQ群：461550716                                                                                                             
 
-****************ShearPhoto2.0 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*******/
+****************ShearPhoto2.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*******/
 
 /*.......................注意.............所有图片的截取，缩放都要用到该文件............................注意.......文件最后修改时间2015年9月日..作者：明哥先生.................*/
-
-
 header('Content-type:text/html;charset=utf-8');   //编码
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING); //关闭错误提示
 require ("shearphoto.config.php");              //加载设置文件
@@ -76,8 +74,7 @@ class ShearPhoto {
 	public function html5_run($PHPconfig,$JSconfig){
 		$ShearPhoto["config"]=$PHPconfig;
         require("shearphoto.up.php");
-		//move_uploaded_file($_FILES['UpFile']['tmp_name'], $UpFile['file_url']);//我测试的
-	    $tempurl = $PHPconfig["temp"] . DIRECTORY_SEPARATOR . "shearphoto.lock";
+		$tempurl = $PHPconfig["temp"] . DIRECTORY_SEPARATOR . "shearphoto.lock";
         !file_exists($tempurl) && file_put_contents($tempurl, "ShearPhoto Please don't delete");
         $this->delTempImg($PHPconfig["temp"], $PHPconfig["tempSaveTime"]);
 	    $imagecreatefrom=$this->imagecreatefrom($_FILES['UpFile']['tmp_name'],$int_type[2]);
@@ -205,14 +202,15 @@ class ShearPhoto {
                 return false;
             }
         }
+	    $file_url =	$PHPconfig["saveURL"] . $PHPconfig["filename"];
         foreach ($PHPconfig["width"] as $k => $v) {
             ($v[0] == 0) ? ($v[0] = $JSconfig["FW"]):($v[0] == -1) and ($v[0] = $JSconfig["IW"]);
             $height = $v[0] / $proportion;
-            $file_url = $PHPconfig["saveURL"] . DIRECTORY_SEPARATOR . $PHPconfig["filename"] . $k;
-            $arr[$k] = array(
+			$suffix=isset($v[2])?$v[2]:"0";
+             $arr[$k] = array(
                 $v[0],
                 $height,
-                $file_url,
+                $file_url.$suffix,
                 ($v[1] === true and $water_or === true and $v[0] > $PHPconfig["water_scope"] and $height > $PHPconfig["water_scope"])
             );
         }
@@ -307,6 +305,7 @@ if(isset($_POST["JSdate"])){//普通截取时
     用var_dump($result)展开，你便一目了然！
     */
     //ShearPhoto 作者:明哥先生 QQ399195513
-    $str_result = json_encode($result);
-    echo str_replace("\/\/", "/", $str_result); //去掉无用的字符修正URL地址，再把数据传弟给JS
+	 
+ $str_result = json_encode($result);
+  echo str_replace("\/", "/", $str_result); //去掉无用的字符修正URL地址，再把数据传弟给JS
 ?>

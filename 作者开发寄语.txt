@@ -21,14 +21,20 @@ shearphoto的应用范围：
 
 shearphoto的用途非常广，shearphoto截图灵敏，拉伸或拖拽时都非常流畅，不像FLASH的截图插件那么卡，半于反应不过来，shearphoto易于二次开发，所有代码都是开源的HTML,JS PHP编写，二次非常简单 shearphoto的官方网站：www.shearphoto.com,网站有开发文档，以及shearphoto讨论区，大家可以在官网进行交流心得或者定制开发 你也可以加入shearphoto官方QQ群：461550716，分享与我进行交流。 
 
-shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto 本程序版本号：shearphoto1.5 
+shearphoto是属于大家的，shearphoto创造崭新截图环境，希望大家喜欢shearphoto 
 
+ 
 
-版本号:ShearPhoto1.5
- shearphoto官网：www.shearphoto.com
- shearphoto官方QQ群：461550716
+shearphoto官网：www.shearphoto.com
+
+shearphoto官方QQ群：461550716
 
 更新提示：shearphoto1.3时已经加入JAVA版本！需要JAVA的用户请到官网进行下载。 
 
 2015年8月7日
  明哥先生 
+
+
+
+
+PS :版本号:ShearPhoto2.1

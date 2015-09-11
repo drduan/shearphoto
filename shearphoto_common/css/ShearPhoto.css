@@ -729,8 +729,8 @@ width:100%
 	background-color: #A7A7A7;
  }
 .Effects a img {
--moz-border-radius:5px;
-border-radius:5px;
+-moz-border-radius:3px;
+border-radius:3px;
 display:inline-block;
 height:42px;
 margin-left:7px;

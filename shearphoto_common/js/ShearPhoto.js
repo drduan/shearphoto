@@ -1,4 +1,4 @@
-/*************ShearPhoto2.0 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
+/*************ShearPhoto2.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
     从shearphoto 1.5直接跳跃到shearphoto 2.0，这是shearphoto重大革新。本来我是想shearphoto 1.6 、1.7、 1.8 慢慢升的，但是这样升级只会让shearphoto慢慢走向灭亡！
 结果我又辛苦了一个多星期，把shearphoto 2.0升级完成！
 shearphoto2.0之前，我认为没必要加入HTML5，兼容IE6 7 8就够。但是直到后来！我知道这是我一个错误的决定
@@ -46,11 +46,11 @@ shearphoto采用原生JS面向对象 + 原生PHP面向对象开发，绝对不�
 
                                                                                                          2015  年  9月  5 日  
                                                                                                          shearphoto作者：明哥先生
-                                                                                                         版本号:shearphoto2.0
+                                                                                                         版本号:shearphoto2.1
                                                                                                          shearphoto官网：www.shearphoto.com
                                                                                                          shearphoto官方QQ群：461550716  
 
-****************ShearPhoto2.0 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
+****************ShearPhoto2.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
 
      /*----------------------------注释结束--程序开始-----------------------------------------------------------*/
 
@@ -69,8 +69,7 @@ window.ShearPhoto = function() {
 
 window.ShearPhoto.prototype = {
           transformFun:function() {
-                    var Imgstyle = document.body.style,
-                        arr = new Array("MsTransform", "MozTransform", "WebkitTransform", "WebkitTransform", "OTransform", "transform");
+                    var Imgstyle = document.body.style, arr = new Array("MsTransform", "MozTransform", "WebkitTransform", "WebkitTransform", "OTransform", "transform");
                     for (var i = 0; i < arr.length; i++) {
                               if (arr[i] in Imgstyle) {
                                         this.transform = arr[i];
@@ -98,8 +97,7 @@ window.ShearPhoto.prototype = {
                                                   domstyle[Transform] = RegTrue ? domstyleTransform + " " + txt :str;
                                         };
                                         this.setL = function(dom, L) {
-                                                  var domstyle = dom.style, RegTrue = true, domstyleTransform = domstyle[Transform],
-                                                      str = domstyleTransform.replace(this.Reg, function(a, b) {
+                                                  var domstyle = dom.style, RegTrue = true, domstyleTransform = domstyle[Transform], str = domstyleTransform.replace(this.Reg, function(a, b) {
                                                             RegTrue = false;
                                                             var T = b.split(",", 2)[1];
                                                             return "translate3d(" + L + "," + T + ",0)";
@@ -107,8 +105,7 @@ window.ShearPhoto.prototype = {
                                                   domstyle[Transform] = RegTrue ? domstyleTransform + " " + "translate3d(" + L + ",0,0)" :str;
                                         };
                                         this.setT = function(dom, T) {
-                                                  var domstyle = dom.style, RegTrue = true, domstyleTransform = domstyle[Transform],
-                                                      str = domstyleTransform.replace(this.Reg, function(a, b) {
+                                                  var domstyle = dom.style, RegTrue = true, domstyleTransform = domstyle[Transform], str = domstyleTransform.replace(this.Reg, function(a, b) {
                                                             RegTrue = false;
                                                             var L = b.split(",", 2)[0];
                                                             return "translate3d(" + L + "," + T + ",0)";
@@ -132,7 +129,7 @@ window.ShearPhoto.prototype = {
                                         };
                               }
                     },
-                    URL:window.URL || window.webkitURL || false,
+                    URL:window.URL || window.webkitURL || window.mozURL || window.msURL || false,
                     canvas:false,
                     Images:false,
                     ImagesType:"image/jpeg",
@@ -174,6 +171,7 @@ window.ShearPhoto.prototype = {
                               newcanvas.width = SendArry.IW = W;
                               newcanvas.height = SendArry.IH = H;
                               ctx.putImageData(imgData, -SendArry.X * p, -SendArry.Y * p);
+                              delete imgData;
                     },
                     zipImg:function(DataUrl, maxs, type, functions) {
                               var Image64 = new Image(), this_ = this;
@@ -182,8 +180,7 @@ window.ShearPhoto.prototype = {
                                         newcanvas.style.display = "none";
                                         var bodys = document.body;
                                         bodys.appendChild(newcanvas);
-                                        var ctx = newcanvas.getContext("2d"),
-                                            width = this.width, height = this.height;
+                                        var ctx = newcanvas.getContext("2d"), width = this.width, height = this.height;
                                         if (maxs) {
                                                   var P = width / height;
                                                   if (width > maxs[0]) {
@@ -215,8 +212,10 @@ window.ShearPhoto.prototype = {
                                         ctx.clearRect(0, 0, width, height);
                                         bodys.removeChild(newcanvas);
                                         delete DATA64;
+                                        delete Image64;
                               };
                               Image64.src = DataUrl;
+                              delete DataUrl;
                     },
                     CtxDrawImage:function(ctx, SendArry, newcanvas, this_) {
                               var MyR = SendArry.R, arg = this_.arg;
@@ -226,7 +225,6 @@ window.ShearPhoto.prototype = {
                                         W = Math.round(H * p))) :H > this.HTML5MAX && (H = this.HTML5MAX, W = Math.round(H * p), 
                                         W > this.HTML5MAX && (W = this.HTML5MAX, H = Math.round(W / p)));
                                         p = W / WW;
-                                        delete this.Images;
                                         if (MyR === 0) {
                                                   var twx = this_.ImgOWidth - SendArry.X, twy = this_.ImgOHeight - SendArry.Y, IMGWx = twx * p, IMGHy = twy * p;
                                                   newcanvas.width = SendArry.IW = W;
@@ -252,11 +250,11 @@ window.ShearPhoto.prototype = {
                     lock:false,
                     PhotoHTML5True:false,
                     SetSrc:function(newsrc, ImgMain, ImgDom, domimg) {
-                              var Dimg = ImgMain.src = ImgDom.src = newsrc;
+                               ImgMain.src = ImgDom.src = newsrc;
                               for (var i = 0; i < domimg[1]; i++) {
-                                        domimg[0][i].src = Dimg;
+                                        domimg[0][i].src = newsrc;
                               }
-                              delete Dimg;
+                              delete newsrc;
                     },
                     BOLBID:false,
                     Aclick:false,
@@ -273,7 +271,7 @@ window.ShearPhoto.prototype = {
                               return function() {
                                         if (HTML5.lock) return;
                                         if (HTML5.Aclick === this) {
-                                                  this_.pointhandle(0, 1, "亲！现在已经是" + StrEvent + "效果了,吃饱饭没事干吗？", 2, "#307ff6", "#fff");
+                                                  this_.pointhandle(1500, 1, "亲！现在已经是" + StrEvent + "效果了,吃饱饭没事干吗？", 2, "#307ff6", "#fff");
                                                   return;
                                         }
                                         HTML5.lock = true;
@@ -300,15 +298,18 @@ window.ShearPhoto.prototype = {
                                                             this_.pointhandle(1500, 1, StrEvent + "效果加载成功！提示：如果机器配置差，效果加载时间会更长哦", 1, "#307ff6", "#fff");
                                                             HTML5.lock = false;
                                                             HTML5.PhotoHTML5True = true;
-                                                  }, 300);
+                                                  }, 1);
                                         });
                               };
                     },
+                    BlobRegExp:new RegExp("^data:.*base64,"),
                     FormBlob:function(dataURI) {
-                              var byteString, splits = dataURI.split(","), splits1 = splits[1];
-                              if (splits[0].indexOf("base64") >= 0) byteString = atob(splits1); else byteString = unescape(splits1);
-                              var byteStringlength = byteString.length,
-                                  ia = new Uint8Array(byteStringlength);
+                              var byteString, splits = false, splits1 = dataURI.replace(this.BlobRegExp, function() {
+                                        splits = true;
+                                        return "";
+                              });
+                              if (splits) byteString = atob(splits1); else byteString = unescape(splits1);
+                              var byteStringlength = byteString.length, ia = new Uint8Array(byteStringlength);
                               for (var i = 0; i < byteStringlength; i++) {
                                         ia[i] = byteString.charCodeAt(i);
                               }
@@ -327,8 +328,7 @@ window.ShearPhoto.prototype = {
                               transform && H5True && (this.canvas = true, this.HTML5MAX = HTML5MAX);
                     },
                     CanvasImg:function(SendArry, postArgs, this_) {
-                              var newcanvas = document.createElement("canvas"),
-							      bodys = document.body;
+                              var newcanvas = document.createElement("canvas"), bodys = document.body;
                               newcanvas.style.display = "none";
                               bodys.appendChild(newcanvas);
                               var ctx = newcanvas.getContext("2d");
@@ -440,13 +440,12 @@ window.ShearPhoto.prototype = {
                                                   var domimg = [ this.dom.getElementsByTagName("img"), this.dom.getElementsByTagName("a") ], imgUrlFun = function(d, u) {
                                                             d.src = u;
                                                   }, imgWHFun = function(d, WH, pro, i) {
-                                                            var W = Math.round(WH[0] * pro),
-                                                                H = Math.round(WH[1] * pro),
-                                                                True = false;
+                                                            var W = Math.round(WH[0] * pro), H = Math.round(WH[1] * pro), True = false;
                                                             _this.isW[i] === W || (d.style.width = W + "px", _this.isW[i] = W, True = true);
                                                             _this.isH[i] === H || (d.style.height = H + "px", _this.isH[i] = H, True = true);
-                                                            if (True && thisMain.rotate > 10 && thisMain.rotate !== 180) {
-                                                                      var mylt = (_this.isW[i] - _this.isH[i]) / 2 + "px";
+															
+                                                            if (True && thisMain.rotate > 10 && thisMain.rotate !== 180) { 
+															       var  mylt = (_this.isW[i] - _this.isH[i]) / (thisMain.rotate===270?-2:2) + "px";
                                                                       d.style[thisMain.transform] = thisMain.SetRote.runSL(d, thisMain.transform, "translate(" + mylt + "," + mylt + ")");
                                                             }
                                                   }, RFun = function(d, styleR, R, pro) {
@@ -475,9 +474,9 @@ window.ShearPhoto.prototype = {
                                                             typeof R === "boolean" ? funthree = EmptyFun :funthree = RFun;
                                                             typeof left === "boolean" ? left = EmptyFun :(leftBorder = left + arg.Border, topBorder = top + arg.Border, 
                                                             left = function(pro) {
-                                                                      HTML3D.setLT(domimgi, Math.round(leftBorder * pro) + "px", Math.round(topBorder * pro) + "px");
+                                                                      HTML3D.setLT(domimgi, leftBorder * pro + "px", topBorder * pro+ "px");
                                                             });
-                                                            for (var i = 0; i < leng; i++) {
+															for (var i = 0; i < leng; i++) {
                                                                       domimgi = domimgA[i];
                                                                       pro = arg.preview[i] / formAllW;
                                                                       left(pro);
@@ -518,7 +517,7 @@ window.ShearPhoto.prototype = {
                               if (this.dom) {
                                         var this_ = this;
                                         this.dom.style.display = "block";
-                                        this.dom.parentNode.style.width = arg.scopeWidth + this.domWidth + efffwidth +10 + "px";
+                                        this.dom.parentNode.style.width = arg.scopeWidth + this.domWidth + efffwidth + 10 + "px";
                               } else {
                                         arg.Effects && (arg.Effects.parentNode.style.width = arg.scopeWidth + this.domWidth + efffwidth + 2 + "px");
                               }
@@ -633,8 +632,7 @@ window.ShearPhoto.prototype = {
                     show(num, 0, speed, 1);
           },
           setinitial:function(arg, TF) {
-                    var cl = 0, ct = 0, TrueTraverse = !arg.traverse,
-                        HTML53D = this.HTML5, RL, BL, RT, BT;
+                    var cl = 0, ct = 0, TrueTraverse = !arg.traverse, HTML53D = this.HTML5, RL, BL, RT, BT;
                     if (this.BoxW > this.ImgWidth) {
                               this.relatW = this.ImgWidth;
                               arg.relat.style.width = this.ImgWidth + "px";
@@ -794,12 +792,10 @@ window.ShearPhoto.prototype = {
           },
           run:function(ImgUrl, Trues) {
                     this.HTML5.HTML5PHP = Trues;
-                    var this_ = this, arg = this.arg, relatImgUrl;
-                    this.HTML5.canvas && Trues ? relatImgUrl = ImgUrl :(this.pointhandle(0, 1, "图片已加载，正在创建截图环境，请稍等.......", 2, "#fbeb61", "#3a414c"), 
-                    relatImgUrl = arg.relativeUrl + ImgUrl);
-                    var image = this.HTML5.Images = new Image();
+                    var this_ = this, arg = this.arg, relatImgUrl = this.HTML5.canvas && Trues ? ImgUrl :arg.relativeUrl + ImgUrl, image = this.HTML5.Images = new Image();
                     this.defaultShear();
                     this.arg = arg;
+                    this.HTML5.canvas && Trues || (this.ImgUrl = ImgUrl);
                     image.onload = function() {
                               if (!(this.width = Math.round(this.width)) > 0 || !(this.height = Math.round(this.height)) > 0) {
                                         this_.pointhandle(3e3, 10, "请选择正确图片", 0, "#f82373", "#fff");
@@ -885,15 +881,16 @@ window.ShearPhoto.prototype = {
                               arg.Shearbar.style.display = "block";
                               arg.SelectBox.style.visibility = "hidden";
                               this_.zoom();
-                              this_.pointhandle(3e3, 10, "可以拖动或拉伸蓝边框进行截图", 1, "#fbeb61", "#3a414c");
+                              this_.pointhandle(2e3, 10, "可以拖动或拉伸蓝边框进行截图", 1, "#fbeb61", "#3a414c");
                               delete relatImgUrl;
                               delete ImgUrl;
                     };
                     image.onerror = function() {
                               this_.pointhandle(0, 10, "无法读取图片。图片类型或路径不正确 或 relativeUrl参数是否存在问题", 0, "#f82373", "#fff");
                     };
-                    image.src = relatImgUrl;
-                    this.HTML5.canvas && Trues || (this.ImgUrl = ImgUrl);
+					 this.pointhandle(0, 1, "图片已加载，正在创建截图环境，请稍等........", 2, "#fbeb61", "#3a414c", function() {
+                              image.src = relatImgUrl;
+                    });
           },
           config:function(arg) {
                     this.arg = arg;
@@ -941,14 +938,12 @@ window.ShearPhoto.prototype = {
                     this.pointhandle(3e3, 10, "请选择本地照片、相册、拍照，进行截取头像", 2, "#307ff6", "#fff");
           },
           zoom:function() {
-                    var this_ = this,
-                        zoom = new window.ShearPhoto.MoveDiv();
+                    var this_ = this, zoom = new window.ShearPhoto.MoveDiv();
                     zoom.reckon(this_.arg.ZoomDist, false);
                     zoom.selectionempty = this_.selectionempty;
                     zoom.addevent = this_.addevent;
                     zoom.HTML5 = this.HTML5;
-                    var Draggable = this_.arg.ZoomBar,
-                        MH, MW;
+                    var Draggable = this_.arg.ZoomBar, MH, MW;
                     if (this_.arg.proportional[0]) {
                               MH = this_.Min;
                               MW = Math.round(MH * this_.arg.proportional[0]);
@@ -975,8 +970,7 @@ window.ShearPhoto.prototype = {
                               MoveFun:function(L) {
                                         var schedule;
                                         if (L < bisect) schedule = Math.round(Zoomout * L + 10) / 100; else schedule = Math.round(L * magnify - 100) / 100;
-                                        var W = Math.round(this_.artworkW * schedule),
-                                            H = Math.round(this_.artworkH * schedule);
+                                        var W = Math.round(this_.artworkW * schedule), H = Math.round(this_.artworkH * schedule);
                                         W < MW && (W = MW, H = Math.round(W / this_.ImgScales));
                                         H < MH && (H = MH, W = Math.round(H * this_.ImgScales));
                                         var IMGWH = this_.ImgRotateFun(W, H);
@@ -991,10 +985,7 @@ window.ShearPhoto.prototype = {
                     this_.zoomEve = function() {
                               zoom.delDownEve();
                     };
-                    var zoomMAx = zoom.ReckonWH.W - zoom.DivW,
-                        bisect = zoomMAx * .5,
-                        magnify = 200 / bisect,
-                        Zoomout = 90 / bisect;
+                    var zoomMAx = zoom.ReckonWH.W - zoom.DivW, bisect = zoomMAx * .5, magnify = 200 / bisect, Zoomout = 90 / bisect;
           },
           PointerShape:function(Shape) {
                     this.arg.scope.style.cursor = this.arg.form.style.cursor = Shape;
@@ -1112,9 +1103,7 @@ window.ShearPhoto.prototype = {
                     return this.CycleCalculation(iW, iH, proportional, MaxW, MaxH);
           },
           amend:function(iW, iH, formParent, strLL, strTT) {
-                    var L = iW - this.formAllW, T = iH - this.formAllH, Left, Top, ImgLeft, ImgTop, this_ = this,
-                        HTML5 = this.HTML5,
-                        fun = {
+                    var L = iW - this.formAllW, T = iH - this.formAllH, Left, Top, ImgLeft, ImgTop, this_ = this, HTML5 = this.HTML5, fun = {
                               LL:function() {
                                         Left = Math.round(this_.formLeft - L);
                                         this_.formLeft = Left;
@@ -1189,8 +1178,11 @@ window.ShearPhoto.prototype = {
                               this.arg.ImgMain.setAttribute("style", "");
                               this.arg.ImgDom.setAttribute("style", "");
                     }
-                    this.arg = this.ImgUrl = this.formW = this.formH = this.formAllW = this.formAllH = this.drawfun = this.formParent = this.ImgWidth = this.ImgHeight = this.artworkW = this.artworkH = this.BoxW = this.BoxH = this.Border = this.Mdouble = this.ImgScales = this.Min = this.formLeft = this.formTop = this.relatL = this.relatT = this.relatW = this.relatH = this.saveL = this.ImgOWidth = this.ImgOHeight = this.saveT = this.HTML5.lock = this.HTML5.PhotoHTML5True = false;
+                    this.arg = this.ImgUrl = this.formW = this.formH = this.formAllW = this.formAllH = this.drawfun = this.formParent = this.ImgWidth = this.ImgHeight = this.artworkW = this.artworkH = this.BoxW = this.BoxH = this.Border = this.Mdouble = this.ImgScales = this.Min = this.formLeft = this.formTop = this.relatL = this.relatT = this.relatW = this.relatH =  this.saveL = this.ImgOWidth = this.ImgOHeight = this.saveT = this.HTML5.lock = this.HTML5.PhotoHTML5True = false;
                     this.rotate = this.ImgMainT = this.ImgDomT = this.ImgMainL = this.ImgDomL = 0;
+				     this.preview.isW=[];
+					 this.preview.isH=[];
+					  
                     this.ImgRotateFun = function(W, H) {
                               return [ W, H ];
                     };
@@ -1216,8 +1208,7 @@ window.ShearPhoto.prototype = {
                                         W = Math.round(P);
                               }
                               return [ W, H ];
-                    },
-                    SendArry = {};
+                    }, SendArry = {};
                     True || (SendArry.url = "../" + this.ImgUrl);
                     var R = {
                               1:270,
@@ -1226,22 +1217,17 @@ window.ShearPhoto.prototype = {
                               "90":270,
                               "180":180,
                               "270":90
-                    }[this.rotate] || (R = this.rotate),
-                        LT = this.ImgWidth,
-                        TL = this.ImgHeight,
-                        XYWH = {
+                    }[this.rotate] || (R = this.rotate), LT = this.ImgWidth, TL = this.ImgHeight, XYWH = {
                               0:LT,
                               90:TL,
                               180:LT,
                               270:TL
-                    },
-                    XYWHP = this.ImgOWidth / XYWH[R];
+                    }, XYWHP = this.ImgOWidth / XYWH[R];
                     SendArry.R = R;
                     SendArry.X = Math.round((Math.abs(this.ImgDomL) - this.Border) * XYWHP);
                     SendArry.Y = Math.round((Math.abs(this.ImgDomT) - this.Border) * XYWHP);
                     SendArry.P = this.arg.proportional[0];
-                    var P = this.formAllW / this.formAllH,
-                        Smaller = SendPHPSmaller(Math.round(this.formAllW * XYWHP), Math.round(this.formAllH * XYWHP), P);
+                    var P = this.formAllW / this.formAllH, Smaller = SendPHPSmaller(Math.round(this.formAllW * XYWHP), Math.round(this.formAllH * XYWHP), P);
                     SendArry.IW = Smaller[0];
                     SendArry.IH = Smaller[1];
                     Smaller = SendPHPSmaller(this.formAllW, this.formAllH, P);
@@ -1251,8 +1237,7 @@ window.ShearPhoto.prototype = {
           },
           SendPHP:function(postArgs) {
                     this.SendUserMsg("正在为你处理截图，稍等...", 0, 2, "#fbeb61", "#3a414c", true, true);
-                    var this_ = this, SendArry,
-                        HTML5 = this.HTML5, ResultData;
+                    var this_ = this, SendArry, HTML5 = this.HTML5, ResultData;
                     if ((HTML5.HTML5PHP || HTML5.PhotoHTML5True) && HTML5.canvas) {
                               try {
                                         HTML5.BOLBID && HTML5.URL.revokeObjectURL(HTML5.BOLBID);
@@ -1291,6 +1276,7 @@ window.ShearPhoto.prototype = {
                                                   return;
                                         }
                                         typeof this_.complete === "function" && this_.complete(serverdata);
+                                         delete this_.HTML5.Images;
                               },
                               error:function(ErroMsg) {
                                         this_.SendUserMsg("错误：连接后端失败，可能原因，超时！或者后端环境无法运行", 5e3, 0, "#f4102b", "#fff", false);
@@ -1396,7 +1382,7 @@ window.ShearPhoto.prototype = {
                                              default:
                                                   break;
                                         }
-                                        var disX = clientX - PNW * W,disY = clientY - PNH * H;
+                                        var disX = clientX - PNW * W, disY = clientY - PNH * H;
                                         this.setCapture && this.setCapture();
                                         typeof this_.DomMoveEve === "function" && this_.delEvent(document, this_.eveMold[1], this_.DomMoveEve);
                                         this_.DomMoveEve = this_.DomMove(this_, this, disX, disY, PNW, PNH, formParent, MaxW, MaxH, strLL, strTT);
@@ -1885,7 +1871,7 @@ window.ShearPhoto.MyAjax.prototype.carry = function(arg) {
 /*--------------------------选择上传截图的JS部份开始-------------------------------------------------------------------------------*/
 window.ShearPhoto.frameUpImg = function(config) {
           this.BodyDom = document.body;
-          this.FORM = document.getElementById("ShearPhotoForm");
+          this.FORM = config.FORM;
           this.upfile = this.FORM.UpFile;
           this.config = config;
           this.upfileclick = false;
@@ -1953,7 +1939,7 @@ window.ShearPhoto.frameUpImg.prototype = {
           },
           DelCreateUpfile:function() {
                     var change = this.upfile.onchange;
-                    this.upfile.onchange = null;
+                    this.upfile.onchange = this.upfile.onclick= null;
                     this.parentNodes.removeChild(this.upfile);
                     var inputfile = document.createElement("input");
                     inputfile.setAttribute("type", "file");
@@ -1993,9 +1979,10 @@ window.ShearPhoto.frameUpImg.prototype = {
                                                   return;
                                         }
                               }
-                              typeof this.config.preced === "function" && this.config.preced(this.config.HTML5.canvas);
-                              if (this.config.HTML5.canvas) {
-                                        var this_ = this;
+							  var  this_ =this;
+                              typeof this.config.preced === "function"
+							   && this.config.preced(function(){
+								           if (this_.config.HTML5.canvas) {
                                         var reader = new FileReader();
                                         reader.onload = function() {
                                                   this_.DelCreateUpfile();
@@ -2003,15 +1990,16 @@ window.ShearPhoto.frameUpImg.prototype = {
                                                             typeof this_.fun === "function" && this_.fun({
                                                                       success:DataUrl
                                                             }, true);
+															delete (reader);
                                                   });
                                         };
-                                        setTimeout(function() {
-                                                  reader.readAsDataURL(files);
-                                        }, 500);
+                                        reader.readAsDataURL(files);
                                         return;
                               }
-                              this.createframe();
-                              this.FORM.submit();
+                              this_.createframe();
+                              this_.FORM.submit();
+								    });
+							  
                     } catch (e) {
                               this.DelCreateUpfile();
                               this.config.erro("你选择了非图片类型，或 图片路径有误");
