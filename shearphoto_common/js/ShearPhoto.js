@@ -1,4 +1,4 @@
-/*************ShearPhoto2.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
+/*************ShearPhoto2.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
     从shearphoto 1.5直接跳跃到shearphoto 2.0，这是shearphoto重大革新。本来我是想shearphoto 1.6 、1.7、 1.8 慢慢升的，但是这样升级只会让shearphoto慢慢走向灭亡！
 结果我又辛苦了一个多星期，把shearphoto 2.0升级完成！
 shearphoto2.0之前，我认为没必要加入HTML5，兼容IE6 7 8就够。但是直到后来！我知道这是我一个错误的决定
@@ -44,13 +44,13 @@ shearphoto免费开源的，没有利润可图，纯粹是抱着为互联网做�
 支持linux WINDOW服务器
 shearphoto采用原生JS面向对象 + 原生PHP面向对象开发，绝对不含JQ插件，对JQ情有独忠的，这个插件不合适你                                                     
 
-                                                                                                         2015  年  9月  5 日  
+                                                                                                         2015  年  9月  25 日  
                                                                                                          shearphoto作者：明哥先生
-                                                                                                         版本号:shearphoto2.1
+                                                                                                         版本号:shearphoto2.2
                                                                                                          shearphoto官网：www.shearphoto.com
                                                                                                          shearphoto官方QQ群：461550716  
 
-****************ShearPhoto2.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
+****************ShearPhoto2.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
 
      /*----------------------------注释结束--程序开始-----------------------------------------------------------*/
 
@@ -250,7 +250,7 @@ window.ShearPhoto.prototype = {
                     lock:false,
                     PhotoHTML5True:false,
                     SetSrc:function(newsrc, ImgMain, ImgDom, domimg) {
-                               ImgMain.src = ImgDom.src = newsrc;
+                              ImgMain.src = ImgDom.src = newsrc;
                               for (var i = 0; i < domimg[1]; i++) {
                                         domimg[0][i].src = newsrc;
                               }
@@ -337,11 +337,11 @@ window.ShearPhoto.prototype = {
                               ctx.clearRect(0, 0, SendArry.IW, SendArry.IH);
                               bodys.removeChild(newcanvas);
                               var readerForm = new FormData();
-                              readerForm.append("ShearPhotoHTML5", "True");
-                              readerForm.append("IW", SendArry.IW);
-                              readerForm.append("IH", SendArry.IH);
-                              readerForm.append("FW", SendArry.FW);
-                              readerForm.append("FH", SendArry.FH);
+                              readerForm.append("ShearPhotoIW", SendArry.IW);
+                              readerForm.append("ShearPhotoIH", SendArry.IH);
+                              readerForm.append("ShearPhotoFW", SendArry.FW);
+                              readerForm.append("ShearPhotoFH", SendArry.FH);
+                              readerForm.append("ShearPhotoP", this_.arg.proportional[0]);
                               if (Object.prototype.toString.call(postArgs) === "[object Object]") {
                                         for (var key in postArgs) {
                                                   readerForm.append(key, postArgs[key]);
@@ -443,9 +443,8 @@ window.ShearPhoto.prototype = {
                                                             var W = Math.round(WH[0] * pro), H = Math.round(WH[1] * pro), True = false;
                                                             _this.isW[i] === W || (d.style.width = W + "px", _this.isW[i] = W, True = true);
                                                             _this.isH[i] === H || (d.style.height = H + "px", _this.isH[i] = H, True = true);
-															
-                                                            if (True && thisMain.rotate > 10 && thisMain.rotate !== 180) { 
-															       var  mylt = (_this.isW[i] - _this.isH[i]) / (thisMain.rotate===270?-2:2) + "px";
+                                                            if (True && thisMain.rotate > 10 && thisMain.rotate !== 180) {
+                                                                      var mylt = (_this.isW[i] - _this.isH[i]) / (thisMain.rotate === 270 ? -2 :2) + "px";
                                                                       d.style[thisMain.transform] = thisMain.SetRote.runSL(d, thisMain.transform, "translate(" + mylt + "," + mylt + ")");
                                                             }
                                                   }, RFun = function(d, styleR, R, pro) {
@@ -474,9 +473,9 @@ window.ShearPhoto.prototype = {
                                                             typeof R === "boolean" ? funthree = EmptyFun :funthree = RFun;
                                                             typeof left === "boolean" ? left = EmptyFun :(leftBorder = left + arg.Border, topBorder = top + arg.Border, 
                                                             left = function(pro) {
-                                                                      HTML3D.setLT(domimgi, leftBorder * pro + "px", topBorder * pro+ "px");
+                                                                      HTML3D.setLT(domimgi, leftBorder * pro + "px", topBorder * pro + "px");
                                                             });
-															for (var i = 0; i < leng; i++) {
+                                                            for (var i = 0; i < leng; i++) {
                                                                       domimgi = domimgA[i];
                                                                       pro = arg.preview[i] / formAllW;
                                                                       left(pro);
@@ -636,6 +635,7 @@ window.ShearPhoto.prototype = {
                     if (this.BoxW > this.ImgWidth) {
                               this.relatW = this.ImgWidth;
                               arg.relat.style.width = this.ImgWidth + "px";
+
                               var BiW = Math.round((this.BoxW - this.ImgWidth) * .5);
                               RL = (this.relatL = BiW) + "px";
                               BL = -BiW + "px";
@@ -888,7 +888,7 @@ window.ShearPhoto.prototype = {
                     image.onerror = function() {
                               this_.pointhandle(0, 10, "无法读取图片。图片类型或路径不正确 或 relativeUrl参数是否存在问题", 0, "#f82373", "#fff");
                     };
-					 this.pointhandle(0, 1, "图片已加载，正在创建截图环境，请稍等........", 2, "#fbeb61", "#3a414c", function() {
+                    this.pointhandle(0, 1, "图片已加载，正在创建截图环境，请稍等........", 2, "#fbeb61", "#3a414c", function() {
                               image.src = relatImgUrl;
                     });
           },
@@ -1178,18 +1178,17 @@ window.ShearPhoto.prototype = {
                               this.arg.ImgMain.setAttribute("style", "");
                               this.arg.ImgDom.setAttribute("style", "");
                     }
-                    this.arg = this.ImgUrl = this.formW = this.formH = this.formAllW = this.formAllH = this.drawfun = this.formParent = this.ImgWidth = this.ImgHeight = this.artworkW = this.artworkH = this.BoxW = this.BoxH = this.Border = this.Mdouble = this.ImgScales = this.Min = this.formLeft = this.formTop = this.relatL = this.relatT = this.relatW = this.relatH =  this.saveL = this.ImgOWidth = this.ImgOHeight = this.saveT = this.HTML5.lock = this.HTML5.PhotoHTML5True = false;
+                    this.arg = this.ImgUrl = this.formW = this.formH = this.formAllW = this.formAllH = this.drawfun = this.formParent = this.ImgWidth = this.ImgHeight = this.artworkW = this.artworkH = this.BoxW = this.BoxH = this.Border = this.Mdouble = this.ImgScales = this.Min = this.formLeft = this.formTop = this.relatL = this.relatT = this.relatW = this.relatH = this.saveL = this.ImgOWidth = this.ImgOHeight = this.saveT = this.HTML5.lock = this.HTML5.PhotoHTML5True = false;
                     this.rotate = this.ImgMainT = this.ImgDomT = this.ImgMainL = this.ImgDomL = 0;
-				     this.preview.isW=[];
-					 this.preview.isH=[];
-					  
+                    this.preview.isW = [];
+                    this.preview.isH = [];
                     this.ImgRotateFun = function(W, H) {
                               return [ W, H ];
                     };
           },
-          SendUserMsg:function(msg, n, p, b, c, i, k) {
+          SendUserMsg:function(msg, n, p, b, c, i, k, f) {
                     this.arg.black.style.zIndex = i ? 199 :99;
-                    this.pointhandle(n, 10, msg, p, b, c);
+                    this.pointhandle(n, 5, msg, p, b, c, f);
                     k ? this.arg.Shearbar.style.display = "none" :this.arg.Shearbar.style.display = "block";
           },
           again:function() {
@@ -1236,52 +1235,53 @@ window.ShearPhoto.prototype = {
                     return SendArry;
           },
           SendPHP:function(postArgs) {
-                    this.SendUserMsg("正在为你处理截图，稍等...", 0, 2, "#fbeb61", "#3a414c", true, true);
                     var this_ = this, SendArry, HTML5 = this.HTML5, ResultData;
-                    if ((HTML5.HTML5PHP || HTML5.PhotoHTML5True) && HTML5.canvas) {
-                              try {
-                                        HTML5.BOLBID && HTML5.URL.revokeObjectURL(HTML5.BOLBID);
-                                        SendArry = this.CoordinateData(true);
-                                        ResultData = HTML5.CanvasImg(SendArry, postArgs, this);
-                              } catch (e) {
-                                        this_.SendUserMsg("错误：切割图片时严重报错,请更换浏览器试试，或者换张图片", 5e3, 0, "#f4102b", "#fff", false);
-                                        return;
-                              }
-                    } else {
-                              var POSTHTML = "";
-                              if (Object.prototype.toString.call(postArgs) === "[object Object]") {
-                                        for (var key in postArgs) {
-                                                  POSTHTML += "&" + key + "=" + postArgs[key];
-                                        }
-                              }
-                              SendArry = this.CoordinateData();
-                              ResultData = "JSdate=" + window.ShearPhoto.JsonString.JsonToString(SendArry) + POSTHTML;
-                    }
-                    this.MyAjax.carry({
-                              url:this_.arg.url,
-                              data:ResultData,
-                              type:"POST",
-                              timeout:1e4,
-                              async:true,
-                              lock:true,
-                              complete:false,
-                              success:function(serverdata) {
-                                        serverdata = window.ShearPhoto.JsonString.StringToJson(serverdata);
-                                        if (serverdata === false) {
-                                                  this_.SendUserMsg("错误：请保证后端环境运行正常", 5e3, 0, "#f4102b", "#fff", false);
+                    this.SendUserMsg("正在为你处理截图，稍等...", 0, 2, "#fbeb61", "#3a414c", true, true, function() {
+                              if ((HTML5.HTML5PHP || HTML5.PhotoHTML5True) && HTML5.canvas) {
+                                        try {
+                                                  HTML5.BOLBID && HTML5.URL.revokeObjectURL(HTML5.BOLBID);
+                                                  SendArry = this_.CoordinateData(true);
+                                                  ResultData = HTML5.CanvasImg(SendArry, postArgs, this_);
+                                        } catch (e) {
+                                                  this_.SendUserMsg("错误：切割图片时严重报错,请更换浏览器试试，或者换张图片", 5e3, 0, "#f4102b", "#fff", false);
                                                   return;
                                         }
-                                        if (serverdata["erro"]) {
-                                                  this_.SendUserMsg("错误：" + serverdata["erro"], 5e3, 0, "#f4102b", "#fff", false);
-                                                  return;
+                              } else {
+                                        var POSTHTML = "";
+                                        if (Object.prototype.toString.call(postArgs) === "[object Object]") {
+                                                  for (var key in postArgs) {
+                                                            POSTHTML += "&" + key + "=" + postArgs[key];
+                                                  }
                                         }
-                                        typeof this_.complete === "function" && this_.complete(serverdata);
-                                         delete this_.HTML5.Images;
-                              },
-                              error:function(ErroMsg) {
-                                        this_.SendUserMsg("错误：连接后端失败，可能原因，超时！或者后端环境无法运行", 5e3, 0, "#f4102b", "#fff", false);
-                              },
-                              cache:false
+                                        SendArry = this_.CoordinateData();
+                                        ResultData = "JSdate=" + window.ShearPhoto.JsonString.JsonToString(SendArry) + POSTHTML;
+                              }
+                              this_.MyAjax.carry({
+                                        url:this_.arg.url,
+                                        data:ResultData,
+                                        type:"POST",
+                                        timeout:9e4,
+                                        async:true,
+                                        lock:true,
+                                        complete:false,
+                                        success:function(serverdata) {
+                                                  serverdata = window.ShearPhoto.JsonString.StringToJson(serverdata);
+                                                  if (serverdata === false) {
+                                                            this_.SendUserMsg("错误：请保证后端环境运行正常", 5e3, 0, "#f4102b", "#fff", false);
+                                                            return;
+                                                  }
+                                                  if (serverdata["erro"]) {
+                                                            this_.SendUserMsg("错误：" + serverdata["erro"], 5e3, 0, "#f4102b", "#fff", false);
+                                                            return;
+                                                  }
+                                                  typeof this_.complete === "function" && this_.complete(serverdata);
+                                                  delete this_.HTML5.Images;
+                                        },
+                                        error:function(ErroMsg) {
+                                                  this_.SendUserMsg("错误：连接后端失败，可能原因，超时！或者后端环境无法运行", 5e3, 0, "#f4102b", "#fff", false);
+                                        },
+                                        cache:false
+                              });
                     });
           },
           DivDown:function(a) {
@@ -1398,18 +1398,27 @@ window.ShearPhoto.prototype = {
 window.ShearPhoto.MINGGE = function(a) {
           function b() {
                     try {
+                              var c = function() {
+                                        "complete" === document.readyState && (document.detachEvent("onreadystatechange", c), 
+                                        a());
+                              }, d = window.frameElement;
+                    } catch (e) {
+                              return document.attachEvent("onreadystatechange", c), void 0;
+                    }
+                    if (null != d) return document.attachEvent("onreadystatechange", c), void 0;
+                    try {
                               document.documentElement.doScroll("left");
                     } catch (c) {
                               return setTimeout(b, 13), void 0;
                     }
                     a();
           }
-          "function" == typeof a && (document.addEventListener ? document.addEventListener("DOMContentLoaded", a, !1) :window.attachEvent ? b() :alert("MINGGE  ERRO"));
+          var c;
+          "function" == typeof a && (document.addEventListener ? (c = function() {
+                    document.removeEventListener("DOMContentLoaded", c, !1), a();
+          }, document.addEventListener("DOMContentLoaded", c, !1)) :b());
 };
 /*--------------------------拉伸，截图.HTML5的压缩，剪图的处理核心部份结束-----------------------------------------------------------------------------*/
-
-
-
 
 
 /*--------------------------拖拽移动处理开始-----------------------------------------------------------------------------*/
@@ -1958,11 +1967,11 @@ window.ShearPhoto.frameUpImg.prototype = {
                                         this.config.erro("请选择正确图片类型");
                                         return;
                               }
-                              var files = upfile.files;
+                              var files = upfile.files,type;
                               if (files) {
                                         files = files[0];
-                                        files.type && (this.config.HTML5.ImagesType = files.type);
-                                        if (files.size <= 0) {
+										files.type && (type= files.type==="image/gif" ? "image/jpeg":files.type,this.config.HTML5.ImagesType = type); 
+										if (files.size <= 0) {
                                                   this.DelCreateUpfile();
                                                   this.config.erro("错误：不能选择空字节文件");
                                                   return;
@@ -1986,7 +1995,7 @@ window.ShearPhoto.frameUpImg.prototype = {
                                         var reader = new FileReader();
                                         reader.onload = function() {
                                                   this_.DelCreateUpfile();
-                                                  this_.config.HTML5.zipImg(this.result, this_.config.HTML5ZIP, files.type, function(DataUrl) {
+                                                  this_.config.HTML5.zipImg(this.result, this_.config.HTML5ZIP, type, function(DataUrl) {
                                                             typeof this_.fun === "function" && this_.fun({
                                                                       success:DataUrl
                                                             }, true);
@@ -2021,5 +2030,4 @@ window.ShearPhoto.frameUpImg.prototype = {
                     };
           }
 };
-
 /*--------------------------选择上传截图的JS部份结束-------------------------------------------------------------------------------*/

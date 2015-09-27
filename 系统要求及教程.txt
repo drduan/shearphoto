@@ -1,4 +1,4 @@
-ShearPhoto2.1 支持HTML5本地切图。 支持linux window服务器，国外空间等完美通过
+ShearPhoto2.2 支持HTML5本地切图。 支持linux window服务器，国外空间等完美通过
 
 
 ShearPhoto1.5支持PHP，JAVA,后端版本
@@ -22,4 +22,4 @@ PHP支持5.2X至7的版本
 
 
 
-   本程序版本号：shearphoto2.1
+   本程序版本号：shearphoto2.2

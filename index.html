@@ -4,15 +4,15 @@
 <meta  charset=utf-8 />
 <meta name="renderer" content="webkit"/>
 <meta http-equiv="X-UA-Compatible" content="IE=8,9,10">
-<title>ShearPhoto2.1修正版_支持HTML5头像截取工具_JS截图_切图插件_数码照片压缩截图插件_商品图片编辑_在线拍照截图</title>
+<title>ShearPhoto2.2正式版_支持HTML5头像截取工具_JS截图_切图插件_数码照片压缩截图插件_商品图片编辑_在线拍照截图</title>
 <link href="shearphoto_common/css/ShearPhoto.css" rel="stylesheet" type="text/css" media="all"><!--CSS文件，有点废话-->
 <script  type="text/javascript" src="shearphoto_common/js/ShearPhoto.js" ></script><!--ShearPhoto的核心文件 截取，拖拽，HTML5切图，数据交互等都是由这个文件处理，全部由明哥先生汗水交织而成-->
 <script  type="text/javascript"  src="shearphoto_common/js/webcam_ShearPhoto.js" ></script> <!--在线拍照那个FLASH的接口，非技术性文件-->
 <script  type="text/javascript"  src="shearphoto_common/js/alloyimage.js" ></script>   <!--图片特效处理,他只负责特效，其他功能与这个文件完全无关，这个JS从腾讯AI文件  如你不要特效的话，顺带删除这个文件，在hendle.js设置关闭特效-->
-<script  type="text/javascript"  src="shearphoto_common/js/handle.js" ></script>    <!--设置和处理对象方法的JS文件，要修改设置，请进入这个文件 --> 
+<script  type="text/javascript"  src="shearphoto_common/js/handle.js" ></script>    <!--设置和处理对象方法的JS文件，要修改设置，请进入这个文件--> 
 </head>
 <body>
-<!--ShearPhoto2.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写
+<!--ShearPhoto2.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写
  从shearphoto 1.5直接跳跃到shearphoto 2.0，这是shearphoto重大革新。本来我是想shearphoto 1.6 、1.7、 1.8 慢慢升的，但是这样升级只会让shearphoto慢慢走向灭亡！
 结果我又辛苦了一个多星期，把shearphoto 2.0升级完成！
 shearphoto2.0之前，我认为没必要加入HTML5，兼容IE6 7 8就够。但是直到后来！我知道这是我一个错误的决定
@@ -57,15 +57,8 @@ shearphoto免费开源的，没有利润可图，纯粹是抱着为互联网做�
 系统支持：
 支持linux WINDOW服务器
 shearphoto采用原生JS面向对象 + 原生PHP面向对象开发，绝对不含JQ插件，对JQ情有独忠的，这个插件不合适你                                                     
-
-                                                                                                         2015  年  9月  5 日  
-                                                                                                         shearphoto作者：明哥先生
-                                                                                                         版本号:shearphoto2.1
-                                                                                                         shearphoto官网：www.shearphoto.com
-                                                                                                         shearphoto官方QQ群：461550716  
-
-
-*******************************ShearPhoto2.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写-->
+ 
+*******************************ShearPhoto2.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写-->
 <!--头部-->
 <div class="header">
         <img src="shearphoto_common/images/logo.png" alt="ShearPhoto官方网站：www.shearphoto.com" title="ShearPhoto官方网站：www.shearphoto.com">
@@ -75,11 +68,11 @@ shearphoto采用原生JS面向对象 + 原生PHP面向对象开发，绝对不�
   </strong>
 </div>
 <!--头部-->
-<!--主功能部份-->
-<!--主功能部份的标签请勿随意删除，除非你对shearphoto的原理了如指掌，否则JS找不到DOM对象，会给你抱出错误-->
- <div class="shearphoto_main">
+<!--主功能部份 主功能部份的标签请勿随意删除，除非你对shearphoto的原理了如指掌，否则JS找不到DOM对象，会给你抱出错误-->
+<div id="shearphoto_loading">程序加载中......</div><!--这是2.2版本加入的缓冲效果，JS方法加载前显示的等待效果-->
+ <div id="shearphoto_main">
 <!--效果开始.............如果你不要特效，可以直接删了........-->
-<div class="Effects" id="shearphoto_Effects">
+<div class="Effects" id="shearphoto_Effects" autocomplete="off">
   <strong class="EffectsStrong">截图效果</strong>
   <a href="javascript:;" StrEvent="原图" class="Aclick"><img src="shearphoto_common/images/Effects/e0.jpg"/>原图</a>
   <a href="javascript:;" StrEvent="美肤"><img src="shearphoto_common/images/Effects/e1.jpg"/>美肤效果</a>
@@ -104,16 +97,16 @@ shearphoto采用原生JS面向对象 + 原生PHP面向对象开发，绝对不�
         <div id="main">
            <div class="point">
                 </div>
-                <!--没加载方法前-->
+                <!--选择加载图片方式开始-->
                 <div id="SelectBox">
                 <form    id="ShearPhotoForm" enctype="multipart/form-data" method="post"  target="POSTiframe"> 
-                <input name="shearphoto" type="hidden" value="我要在这里传参数"> <!--示例传参数到服务端，后端文件UPLOAD.php用$_POST['shearphoto']接收-->
-                        <a href="javascript:;" id="selectImage"><input type="file"  name="UpFile" /></a>
+                <input name="shearphoto" type="hidden" value="我要传参数" autocomplete="off"> <!--示例传参数到服务端，后端文件UPLOAD.php用$_POST['shearphoto']接收,注意：HTML5切图时，这个参数是不会传的-->
+                        <a href="javascript:;" id="selectImage"><input type="file"  name="UpFile" autocomplete="off"/></a>
                  </form>           
                         <a href="javascript:;" id="PhotoLoading"></a>
                         <a href="javascript:;" id="camerasImage"></a>
                 </div>
-                <!--没加载方法前结束-->
+                <!--选择加载图片方式结束--->
                 <div id="relat">
                         <div id="black">
                         </div>
@@ -168,7 +161,7 @@ shearphoto采用原生JS面向对象 + 原生PHP面向对象开发，绝对不�
                 <div class="ZoomDist" id="ZoomDist">
                         <div id="Zoomcentre">
                         </div>
-                        <div id="ZoomBar">
+                        <div id="ZoomBar"> 
                         </div>
                         <span class="progress">
                         </span>
@@ -192,8 +185,7 @@ shearphoto采用原生JS面向对象 + 原生PHP面向对象开发，绝对不�
         </div>
 <!--shearphoto_main范围结束-->
 
-<!--主功能部份的标签请勿随意删除，除非你对shearphoto的原理了如指掌，否则JS找不到DOM对象，会给你抱出错误-->        
-<!--主功能部份-->
+<!--主功能部份 主功能部份的标签请勿随意删除，除非你对shearphoto的原理了如指掌，否则JS找不到DOM对象，会给你抱出错误-->        
  <!--相册-->
 <div id="photoalbum"><!--假如你不要这个相册功能。把相册标签删除了，JS会抱出一个console.log()给你，注意查收，console.log的内容是告诉，某个DOM对象找不到-->
 <h1>假如：这是一个相册--------试试点击图片</h1>
@@ -223,7 +215,7 @@ shearphoto采用原生JS面向对象 + 原生PHP面向对象开发，绝对不�
 <div id="timing"></div>
 </div>
 <!--拍照-->
-<!--底部 尽可能地保留作者肖像不要删-->  
+<!--底部 尽可能地保留作者肖像不要删，作者的肖像一如天安门毛泽东头一样神圣，请你保留着-->  
   <div class="bottom">
    ShearPhoto作者：
    <span><img src="shearphoto_common/images/Author.png" title="这是shearphoto作者肖像，请你保留，不要删除" /> </span> 明哥先生 QQ399195513&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;ShearPhoto兼容目前所有浏览器&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;ShearPhoto官方网站：

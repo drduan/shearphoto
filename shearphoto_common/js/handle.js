@@ -1,4 +1,4 @@
-/*************ShearPhoto2.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
+/*************ShearPhoto2.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
     从shearphoto 1.5直接跳跃到shearphoto 2.0，这是shearphoto重大革新。本来我是想shearphoto 1.6 、1.7、 1.8 慢慢升的，但是这样升级只会让shearphoto慢慢走向灭亡！
 结果我又辛苦了一个多星期，把shearphoto 2.0升级完成！
 shearphoto2.0之前，我认为没必要加入HTML5，兼容IE6 7 8就够。但是直到后来！我知道这是我一个错误的决定
@@ -44,13 +44,13 @@ shearphoto免费开源的，没有利润可图，纯粹是抱着为互联网做�
 支持linux WINDOW服务器
 shearphoto采用原生JS面向对象 + 原生PHP面向对象开发，绝对不含JQ插件，对JQ情有独忠的，这个插件不合适你                                                     
 
-                                                                                                         2015  年  9月  5 日  
+                                                                                                         2015  年  9月  25 日  
                                                                                                          shearphoto作者：明哥先生
-                                                                                                         版本号:shearphoto2.1
+                                                                                                         版本号:shearphoto2.2
                                                                                                          shearphoto官网：www.shearphoto.com
                                                                                                          shearphoto官方QQ群：461550716  
 
-****************ShearPhoto2.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
+****************ShearPhoto2.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
 
      /*----------------------------注释结束--程序开始-----------------------------------------------------------*/
 window.ShearPhoto.MINGGE(function() {
@@ -69,11 +69,11 @@ window.ShearPhoto.MINGGE(function() {
 		            -----------------------------------------------------------------------------
 		            示例1：假如：index.htm        位于  http://xxx.com/abc/index.html
 		            shearphoto/file  则位于  http://xxx.com/abc/shearphoto/file
-					那么relativeUrl就要写成    relativeUrl:"shearphoto"
+					那么relativeUrl就要写成    relativeUrl:"shearphoto/shearphoto_common"
 					-----------------------------------------------------------------------------
 					 示例2：假如：index.htm        位于  http://xxx.com/abc/shearphot/def/index.html
 		            shearphoto/file  则位于  http://xxx.com/abc/shearphoto/file
-					那么relativeUrl就要写成    relativeUrl:".."
+					那么relativeUrl就要写成    relativeUrl:"../shearphoto_common"
 					-----------------------------------------------------------------------------
 					  ，	表达能力有限，如果不懂，请到官网论坛 QQ群向作者资询	
 	 */
@@ -102,21 +102,21 @@ window.ShearPhoto.MINGGE(function() {
 				
 		/*HTML5重点功能*/	 HTML5Effects:true,//是否开启图片特效功能给用户  可选true false,  提示：有HTML5浏览器才会开启的！当然开启HTML5切图，该设置才有效
 					
-		/*HTML5重点功能*/	 HTML5ZIP:[900,0.9],//HTML5截图前载入的大图 是否压缩图片(数组成员 是数字) ，如果不压缩的话填false，在处理特效时或者拉伸时会明显出卡顿,不流畅！官方强烈建意你进行设置 ，默认填写的是[800,0.9] ,代表宽和高都不能大于800，质量是0.9（最大是1） 
+		/*HTML5重点功能*/	 HTML5ZIP:[900,0.9],//HTML5截图前载入的大图 是否压缩图片(数组成员 是数字) ，如果不压缩的话填false，在处理特效时或者拉伸时会明显出卡顿,不流畅！官方强烈建意你进行设置 ，默认填写的是[900,0.9] ,代表宽和高都不能大于900，质量是0.9（最大是1） 
 				
 				/*记住 preview (预览图片功能) 尽量设false*/
 				
-					      preview:[100],// 开启动态预览图片 (数组成员整数型，禁止含小数点 可选false 和数组)     数组内是宽度设置，没有高度设！因为高度会按比例做事 ，此设置代表分别预览150 大小的预览图（你可以增加多个预览图），设置越多预览图,shearphoto性能越差！官方不建意你开启这个功能，尽可能请设为preview:false
+					      preview:[150],// 开启动态预览图片 (数组成员整数型，禁止含小数点 可选false 和数组)     数组内是宽度设置，没有高度设！因为高度会按比例做事 ，此设置代表预览150 大小的预览图（你可以增加多个预览图,如[100,70,50]），设置越多预览图,shearphoto性能越差！官方不建意你开启这个功能，尽可能请设为preview:false
 			      
 			   /*记住 preview 尽量设false*/ 
 			      
 					          url:relativeUrl+"php/shearphoto.php",   //后端处理地址，保证正确哦，这是常识，连这个地址都能写错，你就是菜B，已经在本版本中帮你加入相对路径，你基本不用改这里了
 			        
-					    scopeWidth:500,                 //可拖动范围宽  也就是"main"对象的初始大小(整数型，禁止含小数点)  
+					    scopeWidth:500,                 //可拖动范围宽  也就是"main"对象的初始大小(整数型，禁止含小数点) 宽和高的值最好能一致  
                     
-					   scopeHeight:500,                //可拖动范围高  也就是"main"对象的初始大小(整数型，禁止含小数点)    
+					   scopeHeight:500,                //可拖动范围高  也就是"main"对象的初始大小(整数型，禁止含小数点) 宽和高的值最好能一致      
                     
-				      proportional:[1/1,               <!--截框的宽高比例（宽除以高的比例值，这个设置其实就是1，对！你可以直接写1  如填3/4 那么就是0.75的比例,不设比例请设为0，注意更改比例后，后端也要进行相应设置，否则系统会给你抱出错误-->
+				      proportional:[1,               <!--截框的宽高比例（宽除以高的比例值，这个设置其实就是1，对！你可以直接写1  如填3/4 那么就是0.75的比例,不设比例请设为0，注意更改比例后，后端也要进行相应设置，否则系统会给你抱出错误-->
 					 
 					 100,                      //必须整数！启动后的截框初始宽度(整数型，禁止含小数点)  
 					
@@ -125,7 +125,7 @@ window.ShearPhoto.MINGGE(function() {
 				   
 				               Min:50,                 //截框拉伸或拖拽不能少于多少PX(整数型，禁止含小数点)  
 					
-					           Max:500,                //一开始启动时，图片的宽和高，有时候图片会很大的，必须要设置一下(整数型，禁止含小数点)  
+					           Max:500,                //一开始启动时，图片的宽和高，有时候图片会很大的，必须要设置一下(整数型，禁止含小数点)，尽可能和scopeWidth值 一致  
 					
 				   backgroundColor:"#000",   //遮层色
 					
@@ -212,7 +212,7 @@ var up = new ShearPhoto.frameUpImg({
 		   
 		  UpType:new Array("jpg", "jpeg", "png", "gif"),//图片类限制，上传的一定是图片，你就不要更改了
           
-	   FilesSize:2,                             //选择的图片不能超过 单位M
+	   FilesSize:2,                             //选择的图片不能超过 单位M（注意：是非HTML5时哦）
 		  
 		   HTML5:Shear.HTML5,                       //切匆改动这句，不然你他妈又问为什么出错
 			
@@ -253,11 +253,17 @@ up.run(function(data,True) {//upload.php成功返回数据后
 
 /*.................................................相册部份....看好作者是怎么调用方法的...........................................................*/
 try{
+var AllType= {".jpg":"image/jpeg",  ".jpeg":"image/jpeg",  ".gif":"image/jpeg", ".png":"image/png"};
+var	URLType =function(url){
+             return AllType[/\.[^.]+$/.exec(url)] || "image/jpeg";
+             }
 var DE = document.documentElement;
 var PhotoLoading = document.getElementById("PhotoLoading");
 var photoalbumLi = photoalbum.getElementsByTagName("li");
 var photoalbumLifun = function() {
-          Shear.run(this.getElementsByTagName("img")[0].getAttribute("serveUrl"));
+	      var serveUrl= this.getElementsByTagName("img")[0].getAttribute("serveUrl");
+	      Shear.HTML5.ImagesType=URLType(serveUrl);//告诉HTML5，图片的类型
+          Shear.run(serveUrl);       
           photoalbum.style.display = "none";
 };
 
@@ -362,8 +368,16 @@ webcam.set_hook("onComplete", function(data) {//拍照服务器返回数据事�
                     Shear.SendUserMsg("错误：" + data["erro"], 5e3, 0, "#f4102b", "#fff", true,true);
 					return;
           }
+		  Shear.HTML5.ImagesType="image/jpeg";//告诉HTML5，图片的类型
           Shear.run(data["success"]);
 });
 }catch (e){console.log("拍照对象检测不到，默认你抱弃这个功能，错误代码："+e);}
- });
  /*----------------------------------拍照-----------拍照功能在这设置-----------结束----------------------------------------------------------------------*/
+ 
+ /*...........2.2加入的缓冲效果............................*/
+var shearphoto_loading=document.getElementById("shearphoto_loading");
+var shearphoto_main=document.getElementById("shearphoto_main");
+shearphoto_loading && shearphoto_loading.parentNode.removeChild(shearphoto_loading);
+shearphoto_main.style.visibility="visible";
+  /*................2.2加入的缓冲效果结束..................*/
+ });

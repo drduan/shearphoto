@@ -1,5 +1,5 @@
 //拍照FLASH的AS脚本已全部重写，这是摄象头拍照的JS接口，感谢网友“ROC”对这个拍照FLASH提供开发帮助
-/*************ShearPhoto2.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
+/*************ShearPhoto2.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*********
     从shearphoto 1.5直接跳跃到shearphoto 2.0，这是shearphoto重大革新。本来我是想shearphoto 1.6 、1.7、 1.8 慢慢升的，但是这样升级只会让shearphoto慢慢走向灭亡！
 结果我又辛苦了一个多星期，把shearphoto 2.0升级完成！
 shearphoto2.0之前，我认为没必要加入HTML5，兼容IE6 7 8就够。但是直到后来！我知道这是我一个错误的决定
@@ -45,17 +45,17 @@ shearphoto免费开源的，没有利润可图，纯粹是抱着为互联网做�
 支持linux WINDOW服务器
 shearphoto采用原生JS面向对象 + 原生PHP面向对象开发，绝对不含JQ插件，对JQ情有独忠的，这个插件不合适你                                                     
 
-                                                                                                         2015  年  9月  5 日  
+                                                                                                         2015  年  9月  25 日  
                                                                                                          shearphoto作者：明哥先生
-                                                                                                         版本号:shearphoto2.1
+                                                                                                         版本号:shearphoto2.2
                                                                                                          shearphoto官网：www.shearphoto.com
                                                                                                          shearphoto官方QQ群：461550716  
 
-****************ShearPhoto2.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
+****************ShearPhoto2.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写*******/
 
 /*-----------------------------------------------------这是FLASH拍照接口文件-----------------------------*/
 window.webcam = {
-          version:"shearphoto2.1",
+          version:"shearphoto2.2",
           // globals
           ie:!!navigator.userAgent.match(/MSIE/),
           protocol:location.protocol.match(/https/i) ? "https" :"http",

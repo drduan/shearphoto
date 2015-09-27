@@ -1,4 +1,4 @@
-/*全局CSS文件，二次开发时小心操作里面的CSS样式   作者：明哥先生 版本号：shearphoto2.0*/
+ /*全局CSS文件，二次开发时小心操作里面的CSS样式   作者：明哥先生 版本号：shearphoto2.2正式版*/
 @charset "utf-8";
 /*公用开始*/
 img,div,i,em,a,body,p,H1,ul,li {
@@ -11,21 +11,36 @@ padding:0;
 text-decoration:none
 }
 /*公用结束*/
+/*缓冲效果开始 2.2加入的*/
+#shearphoto_main {
+visibility:hidden;
+margin:0 auto;
+}
+
+#shearphoto_loading {
+left:50%;
+position:absolute;
+top:50%;
+width:100px;
+z-index:500;
+text-align:center;
+line-height:130px;
+color:#999;
+margin:-130px 0 0 -50px;
+background:url(../images/loading.gif) no-repeat;
+}
+/*缓冲效果结束*/
 /*头部部份开始*/
 .header {
-	height:65px;
-	margin-bottom:10px;
-	width:100%;
-	background-color: #505153;
-	background-image: url(../images/bg_headLine1.png);
-	background-repeat: no-repeat;
-	background-position: 290px;
-	overflow: hidden;
+height:65px;
+margin-bottom:10px;
+width:100%;
+overflow:hidden;
+background:url(../images/bg_headLine1.png) no-repeat 290px #505153;
 }
 
 .header A {
 -moz-border-radius:5px;
-background:#3E8BFF;
 border-radius:5px;
 color:#FFF;
 display:inline-block;
@@ -33,43 +48,14 @@ float:left;
 font-size:15px;
 font-weight:700;
 line-height:50px;
-margin-left:100px;
-margin-top:7px;
 text-align:center;
-width:150px
+width:150px;
+margin:7px 0 0 100px;
+background:#3E8BFF;
 }
 .header A:hover{
 	text-decoration: underline;
 	background-color: #0F6FFF;
-}
-.shearphoto_main {
-	margin-right: auto;
-	margin-left: auto;
-}
-
-/*预览开始*/
-#preview {
-	float:left;
-	position: relative;
-}
-
-#preview a {
-	display:inline;
-	float:left;
-	-moz-border-radius:5px;
-	border-radius:5px;
-	-moz-box-shadow:1px 1px 3px 1px #999;
-	box-shadow:1px 1px 3px 1px #999;
-	overflow: hidden;
-    position: relative;
-}
-#preview a img{
-	position: relative;
-	}
-/*预览结束*/
-.bottom a:hover{
-	color: #39F;
-	text-decoration: underline;
 }
 .header img {
 display:inline-block;
@@ -86,23 +72,46 @@ line-height:60px;
 margin-right:20px
 }
 /*头部部份结束*/
-/*旋转开始*/
-#LeftRotate {
-margin-left:10px;
-margin-right:10px
+/*预览开始*/
+#shearphoto_main #preview {
+	float:left;
+	position: relative;
 }
 
-#LeftRotate em,#RightRotate em {
-background:url(../images/bch.jpg) no-repeat;
+#shearphoto_main #preview a {
+	display:inline;
+	float:left;
+	-moz-border-radius:5px;
+	border-radius:5px;
+	-moz-box-shadow:1px 1px 3px 1px #999;
+	box-shadow:1px 1px 3px 1px #999;
+	overflow: hidden;
+    position: relative;
+}
+#shearphoto_main #preview a img{
+	position: relative;
+	}
+/*预览结束*/
+.bottom a:hover{
+	color: #39F;
+	text-decoration: underline;
+}
+
+/*旋转开始*/
+#Shearbar #LeftRotate {
+  margin:0 10px;
+}
+
+#Shearbar #LeftRotate em,#Shearbar #RightRotate em {
 display:inline-block;
 height:21px;
-margin-right:3px;
-margin-top:1px;
 vertical-align:middle;
-width:15px
+width:15px;
+margin:1px 3px 0 0;
+background:url(../images/bch.jpg) no-repeat;
 }
 
-#LeftRotate,#RightRotate {
+#Shearbar #LeftRotate,#Shearbar #RightRotate {
 -moz-border-radius:5px;
 border:1px solid #CCC;
 border-radius:5px;
@@ -111,28 +120,25 @@ cursor:pointer;
 float:left;
 font-size:12px;
 margin-top:-5px;
-padding-bottom:5px;
-padding-top:5px;
 text-align:center;
-width:80px
+width:80px;
+padding:5px 0;
 }
 
-#LeftRotate:hover,#RightRotate:hover {
+#Shearbar #LeftRotate:hover,#Shearbar #RightRotate:hover {
 border:1px solid #919191;
 color:#414141
 }
 
-#RightRotate {
+#Shearbar #RightRotate {
 margin-left:10px
 }
 
-#RightRotate em {
-background-position:-91px 0;
-margin-left:3px;
-margin-right:0;
-margin-top:1px
+#Shearbar #RightRotate em {
+	background-position:-91px 0;
+	margin:1px 0 0 3px;
 }
-.hint {
+#Shearbar .hint {
 color:#333;
 display:block;
 float:left;
@@ -143,11 +149,11 @@ line-height:15px;
 width:19px
 }
 
-.hint.L,.hint.R {
+#Shearbar .hint.L,#Shearbar .hint.R {
 background:url(../images/zoom.png) no-repeat -2px -1px
 }
 
-.hint.R {
+#Shearbar .hint.R {
 background-position: -43px -1px
 }
 /*旋转结束*/
@@ -174,19 +180,18 @@ z-index:180
 }
 
 #SelectBox #selectImage,#SelectBox #PhotoLoading,#SelectBox #camerasImage {
-	-moz-border-radius:10px;
-	border-radius:10px;
-	-moz-box-shadow:2px 2px 7px 1px #3e4044;
-	     box-shadow:2px 2px 7px 1px #3e4044;
-	background:url(../images/Select.jpg) no-repeat;
-	display:block;
-	height:74px;
-	margin-left:-112px;
-	margin-top:-37px;
-	outline:0 none;
-	position:absolute;
-	width:223px;
-	overflow: hidden;
+-moz-border-radius:10px;
+border-radius:10px;
+-moz-box-shadow:2px 2px 7px 1px #3e4044;
+box-shadow:2px 2px 7px 1px #3e4044;
+display:block;
+height:74px;
+outline:0 none;
+position:absolute;
+width:223px;
+overflow:hidden;
+margin:-37px 0 0 -112px;
+background:url(../images/Select.jpg) no-repeat;
 }
 #SelectBox #PhotoLoading {
 background-position:0 -148px;
@@ -204,20 +209,23 @@ left:50%;
 top:79%
 }
 #SelectBox #selectImage:hover,#SelectBox #PhotoLoading:hover,#SelectBox #camerasImage:hover {
-	border:3px solid #666;
-	margin-left:-115px;
-	margin-top:-40px;
+border:3px solid #666;
+margin:-40px 0 0 -115px;
 }
 /*选择图片方式结束*/
 /*工具条开始*/
-.Psava {
-	clear:both;
-	height:40px;
-	padding-left:110px;
-	padding-top:20px;
+#shearphoto_main #Shearbar {
+padding-top:10px;
+width:442px;
+margin:0 auto;
+}
+#Shearbar .Psava {
+clear:both;
+height:40px;
+padding:20px 0 0 110px
 }
 
-.Psava #againIMG,.Psava #saveShear {
+#Shearbar .Psava #againIMG ,#Shearbar .Psava #saveShear {
 	background:url(../images/btn5.jpg) no-repeat;
 	color:#666;
 	float:left;
@@ -228,51 +236,46 @@ top:79%
 	height: 31px;
 }
 
-.Psava #againIMG:hover {
+#Shearbar .Psava #againIMG:hover {
 background-position: 0px -31px;
 }
 
-.Psava #saveShear {
+#Shearbar .Psava #saveShear {
 background-position: -79px 0px;
 color:#FFF;
 
 }
 
-.Psava #saveShear:hover {
+#Shearbar .Psava #saveShear:hover {
 background-position:-79px -31px
 }
-#Shearbar {
-	padding-top:10px;
-	width:442px;
-	margin-right: auto;
-	margin-left: auto;
- }
 
-#ZoomDist {
+
+#Shearbar #ZoomDist {
 	float:left;
 	height:20px;
 	position:relative;
 	width:200px
 }
 
-#ZoomDist #ZoomBar {
+#Shearbar #ZoomDist #ZoomBar {
 background:url(../images/ZoomBar.gif) no-repeat;
 filter:alpha(opacity=80);
-height:20px;
-jbackground-color:#09F;
-left:0;
 opacity:0.8;
+height:20px;
+left:0;
 position:absolute;
 width:15px
 }
-#Shearbar #Zoomcentre {
-background:url(../images/Zoomcentre.jpg) no-repeat;
+#ZoomDist #Zoomcentre {
+filter:alpha(opacity=100);
 height:9px;
 left:50%;
-margin-left:-5px;
-position:absolute;
 top:25px;
-width:10px
+position:absolute;
+width:10px;
+margin-left:-4px;
+background:url(../images/Zoomcentre.jpg) no-repeat
 }
 
 #ZoomDist .progress {
@@ -288,12 +291,14 @@ width:100%
 }
 /*工具条结束*/
 /*主功能界面开始*/
-#black {
+#shearphoto_main #black {
 position:absolute;
 z-index:99
 }
-
-#main {
+#shearphoto_main .primary {
+	float: left;
+}
+#shearphoto_main #main {
 	-moz-user-select:none;
 	-ms-user-select:none;
 	-webkit-user-select:none;
@@ -456,49 +461,44 @@ z-index:60
 display:inline-block;
 height:16px;
 width:15px;
-margin-top:10px;
 float:left;
-margin-left:20px;
-margin-right:10px;
+margin:10px 10px 0 20px;
 background:url(../images/bg_repno.png) no-repeat;
 }
 /*上滚下滚提示的CSS结束*/
 /*截图完成后的CSS开始*/
-.complete {
-background:url(../images/bg.jpg) #CCC;
+#shearphoto_main .complete {
 float:left;
 overflow:hidden;
-padding-left:5px;
-padding-top:10px;
 position:absolute;
 width:100%;
 z-index:250;
+padding:10px 0 0 5px;
+background:url(../images/bg.jpg) #CCC;
 }
 
 .complete .completeTxt {
 -moz-border-radius:10px;
 -moz-box-shadow:0 0 15px 0 #666;
-background:#FBFDFF;
 border-radius:10px;
 bottom:30px;
 box-shadow:0 0 15px 0 #666;
-padding-bottom:30px;
-padding-top:30px;
 position:absolute;
 right:30px;
 text-align:center;
 width:280px;
+padding:30px 0;
+background:#FBFDFF;
 }
 
 .complete .completeTxt a {
-background:url(../images/bg_index.gif) no-repeat 0 -2px;
 color:#FFF;
 display:block;
 font-size:14px;
 line-height:40px;
-margin-left:auto;
-margin-right:auto;
 width:128px;
+margin:0 auto;
+background:url(../images/bg_index.gif) no-repeat 0 -2px;
 }
 
 .complete .completeTxt a:hover {
@@ -509,8 +509,7 @@ background-position: -137px -2px
 color:#666;
 font-size:12px;
 font-weight:700;
-margin-bottom:10px;
-margin-top:10px
+margin:10px 0;
 }
 
 .complete .completeTxt strong {
@@ -526,13 +525,12 @@ font-size:14px
 	
 }
 .complete .completeTxt strong i {
-	background:url(../images/bg_repno.png) no-repeat;
-	display:inline-block;
-	height:16px;
-	margin-right:5px;
-	margin-top:-3px;
-	width:15px;
-	vertical-align: middle;
+display:inline-block;
+height:16px;
+width:15px;
+vertical-align:middle;
+margin:-3px 5px 0 0;
+background:url(../images/bg_repno.png) no-repeat;
 }
 /*截图完成后的CSS结束*/
 
@@ -540,19 +538,18 @@ font-size:14px
 #photoalbum {
 -moz-border-radius:10px;
 -moz-box-shadow:3px 3px 10px 0 #000;
-background:#DFEFFF;
 border:8px solid #999;
 border-radius:10px;
 box-shadow:3px 3px 10px 0 #000;
 display:none;
 height:340px;
 left:50%;
-margin-left:-240.5px;
-margin-top:-178px;
 position:absolute;
 top:50%;
 width:465px;
-z-index:210
+z-index:210;
+margin:-178px 0 0 -240.5px;
+background:#DFEFFF;
 }
 
 #photoalbum h1 {
@@ -603,7 +600,7 @@ border:1px solid #09F
 }
 /*弹出相册结束*/
  /*弹出拍照开始*/
-#CamBox {
+ #CamBox {
 -moz-border-radius:10px;
 border-radius:10px;
 left:50%;
@@ -614,17 +611,15 @@ width:550px;
 z-index:250;
 display:none;
 top:50%;
-margin-left:-276px;
-margin-top:-285px;
-background:url(../images/cam_bg.jpg) #d5d5d5
+margin:-285px 0 0 -276px;
+background:url(../images/cam_bg.jpg) #d5d5d5;
 }
 
 #CamBox #CamFlash {
-	background:#fff;
-	height:450px;
-	margin-left:auto;
-	margin-right:auto;
-	width:450px
+height:450px;
+width:450px;
+margin:0 auto;
+background:#fff;
 }
 
 #CamBox #timing {
@@ -635,20 +630,18 @@ font-weight:700;
 height:200px;
 left:50%;
 line-height:200px;
-margin-left:-100px;
-margin-top:-100px;
 position:absolute;
 text-align:center;
 top:50%;
-width:200px
+width:200px;
+margin:-100px 0 0 -100px;
 }
 
 #CamBox .cambar {
-	height:50px;
-	margin-left:auto;
-	margin-right:auto;
-	padding-top:20px;
-	width:300px;
+height:50px;
+padding-top:20px;
+width:300px;
+margin:0 auto;
 }
 
 #CamBox .cambar a {
@@ -686,25 +679,20 @@ background-position: -79px -31px;
 	}
 /*弹出拍照结束*/
 /*图片特效*/
-.Effects {
-	background:url(../images/Effects/cardboard.png);
-	border-bottom-color:#CCC;
-	border-bottom-style:solid;
-	border-bottom-width:1px;
-	border-top-color:#CCC;
-	border-top-style:solid;
-	border-top-width:1px;
-	color:#FFF;
-	overflow-x:hidden;
-	width:155px;
-	display: none;
-	float: left;
+#shearphoto_main .Effects {
+color:#FFF;
+overflow-x:hidden;
+width:155px;
+display:none;
+float:left;
+border-color:#CCC;
+border-style:solid none;
+border-width:1px;
+background:url(../images/Effects/cardboard.png);
 }
 
-.Effects .EffectsStrong {
-border-bottom-color:#676767;
-border-bottom-style:solid;
-border-bottom-width:1px;
+#shearphoto_main .Effects .EffectsStrong {
+border-bottom:solid 1px #676767;
 display:block;
 font-size:14px;
 height:30px;
@@ -713,33 +701,28 @@ text-align:center;
 width:100%
 }
 
-.Effects a {
-border-bottom-color:#676767;
-border-bottom-style:solid;
-border-bottom-width:1px;
+#shearphoto_main .Effects a {
+border-bottom:solid 1px #676767;
 color:#FFF;
 display:block;
-padding-bottom:7px;
-padding-top:5px;
 vertical-align:middle;
-text-shadow: #000 0 2px 0;
-width:100%
+text-shadow:#000 0 2px 0;
+width:100%;
+padding:5px 0 7px;
 }
-.Effects a:hover, .Effects .Aclick{
+#shearphoto_main .Effects a:hover, #shearphoto_main .Effects .Aclick{
 	background-color: #A7A7A7;
  }
-.Effects a img {
+#shearphoto_main .Effects a img {
 -moz-border-radius:3px;
 border-radius:3px;
 display:inline-block;
 height:42px;
-margin-left:7px;
-margin-right:7px;
-margin-top:2px;
 vertical-align:middle;
--moz-box-shadow:0 0 5px 0 #999;
-	box-shadow:0 0 5px 0 #999;
-width:70px
+-moz-box-shadow:0 0 5px 0 #000;
+box-shadow:0 0 5px 0 #000;
+width:70px;
+margin:2px 7px 0;
 }
 
 ::-webkit-scrollbar {
@@ -765,22 +748,18 @@ border-left:1px solid #d2d2d2
 /*图片特效结束*/
 /*底部开始*/
 .bottom {
-	width: 1000px;
-	padding-bottom: 10px;
-	left: 2px;
-	color: #666;
-	padding-left: 5px;
-	margin-right: auto;
-	margin-left: auto;
-	clear: both;
-	text-align: center;
+width:1000px;
+left:2px;
+color:#666;
+clear:both;
+text-align:center;
+margin:0 auto;
+padding:0 0 10px 5px
 }
 .bottom span {
-	vertical-align: middle;
-	display: inline-block;
-	margin-right: 5px;
-	margin-left: 2px;
-	
+vertical-align:middle;
+display:inline-block;
+margin:0 5px 0 2px
 }
 .bottom a {
 	color: #666;
@@ -795,6 +774,3 @@ border-left:1px solid #d2d2d2
 	-moz-border-radius:30px;	
 	}
 /*底部结束*/
-.shearphoto_main .primary {
-	float: left;
-}

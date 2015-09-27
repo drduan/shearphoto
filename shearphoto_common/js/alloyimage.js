@@ -1,4 +1,3 @@
-/*腾讯AI特效文件，作者已改过大部份代码，请匆替换文件*/
 try{
 Array.prototype.del = function(a) {
     a.sort();

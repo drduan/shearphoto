@@ -1,5 +1,5 @@
 <?php 
-/*************ShearPhoto2.1免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*********
+/*************ShearPhoto2.2免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*********
  
      从shearphoto 1.5直接跳跃到shearphoto 2.0，这是shearphoto重大革新。本来我是想shearphoto 1.6 、1.7、 1.8 慢慢升的，但是这样升级只会让shearphoto慢慢走向灭亡！
 结果我又辛苦了一个多星期，把shearphoto 2.0升级完成！
@@ -46,13 +46,13 @@ shearphoto免费开源的，没有利润可图，纯粹是抱着为互联网做�
 支持linux WINDOW服务器
 shearphoto采用原生JS面向对象 + 原生PHP面向对象开发，绝对不含JQ插件，对JQ情有独忠的，这个插件不合适你                                                     
 
-                                                                                                         2015  年  9月  5 日  
+                                                                                                         2015  年  9月  25 日  
                                                                                                          shearphoto作者：明哥先生
-                                                                                                         版本号:shearphoto2.1
+                                                                                                         版本号:shearphoto2.2
                                                                                                          shearphoto官网：www.shearphoto.com
                                                                                                          shearphoto官方QQ群：461550716                                                                                                             
 
-****************ShearPhoto2.1 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*******/
+****************ShearPhoto2.2 免费，开源，兼容目前所有浏览器，纯原生JS和PHP编写,完美兼容linux和WINDOW服务器*******/
 
 /*.......................注意.............所有图片的截取，缩放都要用到该文件............................注意.......文件最后修改时间2015年9月日..作者：明哥先生.................*/
 header('Content-type:text/html;charset=utf-8');   //编码
@@ -71,8 +71,12 @@ class ShearPhoto {
         }
         return $rotatesrc;
     }
-	public function html5_run($PHPconfig,$JSconfig){
-		$ShearPhoto["config"]=$PHPconfig;
+	public function html5_run(&$PHPconfig,&$JSconfig){
+	      $ShearPhoto["config"]=$PHPconfig; 
+		  if ($PHPconfig["proportional"] != $JSconfig["P"]) {
+            $this->erro = "JS设置的比例和PHP设置不一致!";
+            return false;
+        }
         require("shearphoto.up.php");
 		$tempurl = $PHPconfig["temp"] . DIRECTORY_SEPARATOR . "shearphoto.lock";
         !file_exists($tempurl) && file_put_contents($tempurl, "ShearPhoto Please don't delete");
@@ -82,9 +86,7 @@ class ShearPhoto {
 		        list($src,$GdFun)= $imagecreatefrom;
                  return      $this->compression($src, $PHPconfig, $JSconfig, $int_type[2], $GdFun);
         }
-	
-	
-    protected function delTempImg($temp, $deltime) {
+	protected function delTempImg($temp, $deltime) {
         if ($deltime == 0) return;
         $dir = opendir($temp);
         $time = time();
@@ -97,7 +99,7 @@ class ShearPhoto {
         }
         closedir($dir);
     }
-    public function run($JSconfig, $PHPconfig) {
+    public function run(&$JSconfig, &$PHPconfig) {
         $tempurl = $PHPconfig["temp"] . DIRECTORY_SEPARATOR . "shearphoto.lock";
         !file_exists($tempurl) && file_put_contents($tempurl, "ShearPhoto Please don't delete");
         $this->delTempImg($PHPconfig["temp"], $PHPconfig["tempSaveTime"]);
@@ -133,14 +135,14 @@ class ShearPhoto {
             $this->erro = "无法读取图片";
             return false;
         }
-        $strtype == ".jpeg" && $strtype == ".jpg";
+        
         if ($JSconfig["R"] ==  90 || $JSconfig["R"] ==  270) {
             list($w, $h) = array(
                 $h,
                 $w
             );
         }
-        return $this->createshear($PHPconfig, $w, $h, $type, $strtype, $JSconfig);
+        return $this->createshear($PHPconfig, $w, $h, $type , $JSconfig);
     }
 	 protected  function imagecreatefrom($url,$type){
 		switch ($type) {
@@ -148,7 +150,7 @@ class ShearPhoto {
                 $src = @imagecreatefromgif($url);
                 $GdFun = array(
                     "imagegif",
-                    $strtype
+                    ".gif"
                 );
                 break;
 
@@ -156,7 +158,7 @@ class ShearPhoto {
                 $src = @imagecreatefromjpeg($url);
                 $GdFun = array(
                     "imagejpeg",
-                    $strtype
+                    ".jpg"
                 );
                 break;
 
@@ -164,7 +166,7 @@ class ShearPhoto {
                 $src = @imagecreatefrompng($url);
                 $GdFun = array(
                     "imagepng",
-                    $strtype
+                    ".png"
                 );
                 break;
 
@@ -176,7 +178,7 @@ class ShearPhoto {
 		return array($src,$GdFun);
 		 }
 	
-    protected function createshear($PHPconfig, $w, $h, $type, $strtype, $JSconfig) { 
+    protected function createshear(&$PHPconfig, $w, $h, $type , &$JSconfig) { 
         $imagecreatefrom=$this->imagecreatefrom($JSconfig["url"],$type);
 		if(!$imagecreatefrom)return false;
 		list($src,$GdFun)= $imagecreatefrom;
@@ -188,7 +190,7 @@ class ShearPhoto {
         imagedestroy($src);
         return $this->compression($dest, $PHPconfig, $JSconfig, $type, $GdFun);
     }
-    protected function CreateArray($PHPconfig, $JSconfig) {
+    protected function CreateArray(&$PHPconfig, &$JSconfig) {
         $arr = array();
         if ($PHPconfig["proportional"] > 0) {
             $proportion = $PHPconfig["proportional"];
@@ -219,7 +221,7 @@ class ShearPhoto {
             $arr
         );
     }
-    protected function compression($DigShear, $PHPconfig, $JSconfig, $type, $GdFun) {
+    protected function compression($DigShear, &$PHPconfig, &$JSconfig, $type, $GdFun) {
         require 'zip_img.php';
         $arrimg = $this->CreateArray($PHPconfig, $JSconfig);
         if (count($arrimg[1]) < 1) {$this->erro = "系统没有检测到处理截图的命令！";return false;}
@@ -268,17 +270,17 @@ if(isset($_POST["JSdate"])){//普通截取时
 	
 	                                   /*........................HTML5截取时..........................*/
 	
-	 elseif (isset($_POST["ShearPhotoHTML5"]) &&  
-              $_POST["ShearPhotoHTML5"]=="True" && 
-               isset($_POST["IW"]) && 
-               isset($_POST["IH"]) &&
-               isset($_POST["FW"]) && 
-               isset($_POST["FH"]) &&
-               is_numeric($JSconfig["IW"]=trim($_POST["IW"]))&&
-               is_numeric($JSconfig["IH"]=trim($_POST["IH"]))&&
-               is_numeric($JSconfig["FW"]=trim($_POST["FW"]))&&
-               is_numeric($JSconfig["FH"]=trim($_POST["FW"]))){
-					     $Shear = new ShearPhoto; //类实例开始
+	   elseif (isset($_POST["ShearPhotoIW"]) && 
+               isset($_POST["ShearPhotoIH"]) &&
+               isset($_POST["ShearPhotoFW"]) && 
+               isset($_POST["ShearPhotoFH"]) &&
+			   isset($_POST["ShearPhotoP"]) &&
+			   is_numeric($JSconfig["P"]=trim($_POST["ShearPhotoP"]))&&
+               is_numeric($JSconfig["IW"]=trim($_POST["ShearPhotoIW"]))&&
+               is_numeric($JSconfig["IH"]=trim($_POST["ShearPhotoIH"]))&&
+               is_numeric($JSconfig["FW"]=trim($_POST["ShearPhotoFW"]))&&
+               is_numeric($JSconfig["FH"]=trim($_POST["ShearPhotoFH"]))){
+				          $Shear = new ShearPhoto; //类实例开始
 	                      $result =$Shear->html5_run($ShearPhoto["config"],$JSconfig);//加载HTML5已切好的图片独有方法
 						  if ($result === false) { //切图失败时
                               echo '{"erro":"' . $Shear->erro . '"}'; //把错误发给JS /请匆随意更改"erro"的编写方式，否则JS出错
@@ -288,24 +290,25 @@ if(isset($_POST["JSdate"])){//普通截取时
                                            /*........................HTML5截取时结束..........................*/
 			  
 			  /*........错误的操作................*/
-			    else {die('{"erro":"错误的操作！"}');}
+			    else {die('{"erro":"错误的操作！或缺少参数或错误参数"}');}
 			 /*........错误的操作................*/			
 			 
 			 
 			 		
 /*..........................................................结果输出给JS..............................................................*/	
-
-									
     /*
      到此程序已运行完毕，并成功！你可以在这里愉快地写下你的逻辑代码
-    $result[X]["ImgUrl"] //图片路径  X是数字
-    $result[X]["ImgName"] //图片文件名字  X是数字
+    $result[X]["ImgUrl"] //图片URL路径  X是数字
+    $result[X]["ImgName"] //纯图片名字  X是数字
     $result[X]["ImgWidth"]//图片宽度    X是数字
     $result[X]["ImgHeight"] //图片高度    X是数字
+	
     用var_dump($result)展开，你便一目了然！
+	
+	很多人问怎么把截好图片写到数据库， $result[X]["ImgUrl"]是完整的URL地址（包含文件名），不适宜写到数据库，因为图片路径一旦变动你会很麻烦
+	一般写到数据库都是纯图片名字写进为好，那么正确的做法是把 $result[X]["ImgName"]  写进去数据库
     */
     //ShearPhoto 作者:明哥先生 QQ399195513
-	 
- $str_result = json_encode($result);
+  $str_result = json_encode($result);
   echo str_replace("\/", "/", $str_result); //去掉无用的字符修正URL地址，再把数据传弟给JS
 ?>

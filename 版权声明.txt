@@ -8,4 +8,4 @@ shearphoto是作者心血与汗水开发而成，
 
 开发文当，教程，下载最新版本，请到官网www.shearphoto.com 
 
-版本号 ：shearphoto2.1
+版本号 ：shearphoto2.2
